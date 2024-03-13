@@ -15,6 +15,4 @@ public class HelloWorldSwing3 {
         frame.pack(); //calcola le dimensioni della finestra in base alle preferenze impostate
         frame.setVisible(true); //La rende visibile.
     }
-    
-    
 }
