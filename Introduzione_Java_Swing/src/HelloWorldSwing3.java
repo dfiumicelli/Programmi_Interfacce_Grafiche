@@ -13,7 +13,7 @@ public class HelloWorldSwing3 {
         contPane.add(label); //Aggiunge l'etichetta al panel del frame e calcola le dimensioni della finestra in base a quelle del componente
         frame.setPreferredSize(new Dimension(FRAME_WIDTH, FRAME_HEIGHT)); //Ridimensiona la finestra "ignorando" le dimensioni impostate dal contPane
         frame.pack(); //calcola le dimensioni della finestra in base alle preferenze impostate
-        frame.setVisible(true); //La rende visibile
+        frame.setVisible(true); //La rende visibile.
     }
     
     
