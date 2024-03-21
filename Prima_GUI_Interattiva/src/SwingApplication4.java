@@ -81,7 +81,7 @@ public class SwingApplication4 extends JFrame implements ActionListener {
     }
 
     private void executeSlowMethodInBackground(final int sec) {
-        SwingWorker worker = new SwingWorker<Void, Void>() {
+        SwingWorker<Void,Void> worker = new SwingWorker<Void, Void>() {
             @Override
             public Void doInBackground() {
                 System.out.println("in ... doInBackground()");
@@ -110,3 +110,5 @@ public class SwingApplication4 extends JFrame implements ActionListener {
     } // end method main()
 
 } // end class
+
+//fava <3
