@@ -26,7 +26,7 @@ public class CelsiusConverterGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        TempTextField = new javax.swing.JTextField();
+        tempTextField = new javax.swing.JTextField();
         celsiusLabel = new javax.swing.JLabel();
         convertButton = new javax.swing.JButton();
         fahrenehitLabel = new javax.swing.JLabel();
@@ -52,7 +52,7 @@ public class CelsiusConverterGUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(convertButton)
-                    .addComponent(TempTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tempTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(celsiusLabel)
@@ -60,13 +60,13 @@ public class CelsiusConverterGUI extends javax.swing.JFrame {
                 .addGap(0, 101, Short.MAX_VALUE))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {TempTextField, convertButton});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {convertButton, tempTextField});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(TempTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tempTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(celsiusLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -75,14 +75,14 @@ public class CelsiusConverterGUI extends javax.swing.JFrame {
                 .addGap(0, 40, Short.MAX_VALUE))
         );
 
-        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {TempTextField, convertButton});
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {convertButton, tempTextField});
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void convertButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_convertButtonActionPerformed
         // TODO add your handling code here:
-        int tempFahr = (int)(Double.parseDouble(this.TempTextField.getText())*1.8 +32);
+        int tempFahr = (int)(Double.parseDouble(this.tempTextField.getText())*1.8 +32);
         this.fahrenehitLabel.setText(tempFahr + " Fahrenheit");
         
     }//GEN-LAST:event_convertButtonActionPerformed
@@ -123,9 +123,9 @@ public class CelsiusConverterGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField TempTextField;
     private javax.swing.JLabel celsiusLabel;
     private javax.swing.JButton convertButton;
     private javax.swing.JLabel fahrenehitLabel;
+    private javax.swing.JTextField tempTextField;
     // End of variables declaration//GEN-END:variables
 }
