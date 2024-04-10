@@ -31,7 +31,7 @@ public class ReadCSV {
 
             while ((s = buffRead.readLine()) != null)
                 if (!s.isEmpty() && s.contains(";"))
-                    lstRows.add(s.trim().split(";"));
+                    lstRows.add(s.trim().split(";")); //trim ripulisce la stringa da eventuali spaziature, split rstituisce l'arrey splittato in base al token ";"
         }
         catch(IOException ioe) {
             ioe.printStackTrace();
