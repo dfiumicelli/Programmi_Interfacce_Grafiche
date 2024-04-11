@@ -13,7 +13,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
 
 public class ReadCSV {
 
@@ -22,6 +24,8 @@ public class ReadCSV {
 
         BufferedReader buffRead = null; //ci permette di fare un'acquisizione bufferizzata più efficiente. Si inoltre carico del metodo readLine()
         try {
+            //buffRead = new BufferedReader(new FileReader(fileName));
+            //metodo alternativo tramite la libreria nio;
             buffRead = new BufferedReader(
                 new InputStreamReader(
                     new FileInputStream(fileName), charset)); //charset è la codifica, ad esempio utf-8
@@ -36,7 +40,7 @@ public class ReadCSV {
         catch(IOException ioe) {
             ioe.printStackTrace();
         }
-        finally {
+        finally { //lo esegue in ogni caso, sia se ci sono eccezione sia che non ci sono.
             if (buffRead != null)
                 buffRead.close();
         }
