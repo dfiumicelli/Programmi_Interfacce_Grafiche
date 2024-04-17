@@ -1,0 +1,8 @@
+# A list of colors for my application
+backgroundColor = blue
+lineColor = green
+padColor = black
+starColor = yellow
+
+# The parameter "level" can be one of the following: {"basic", "normal", "difficult"}
+level = difficult
