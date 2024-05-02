@@ -15,9 +15,15 @@ import java.awt.geom.Rectangle2D;
 public class ConcreteDrawing extends AbstractDrawing {
 
     private Rectangle2D.Double rect;
+    private Rectangle2D.Double unscaledRect;
 
     public ConcreteDrawing() {
-        this.rect = new Rectangle2D.Double(100, 100, 300, 300); // x, y, width, height
+        this.unscaledRect = new Rectangle2D.Double(100, 100, 300, 300); // x, y, width, height
+        this.rect = new Rectangle2D.Double(
+                        this.unscaledRect.getX() * this.scaleFactor,
+                        this.unscaledRect.getY() * this.scaleFactor,
+                        this.unscaledRect.getWidth() * this.scaleFactor,
+                        this.unscaledRect.getHeight() * this.scaleFactor);
     }
 
     @Override
@@ -43,10 +49,10 @@ public class ConcreteDrawing extends AbstractDrawing {
     @Override
     protected void rescaleDrawing() {
         this.rect.setRect(
-                this.rect.getX() * this.scaleFactor / this.previousScaleFactor,
-                this.rect.getY() * this.scaleFactor / this.previousScaleFactor,
-                this.rect.getWidth() * this.scaleFactor / this.previousScaleFactor,
-                this.rect.getHeight() * this.scaleFactor / this.previousScaleFactor);
+                this.unscaledRect.getX() * this.scaleFactor,
+                this.unscaledRect.getY() * this.scaleFactor,
+                this.unscaledRect.getWidth() * this.scaleFactor,
+                this.unscaledRect.getHeight() * this.scaleFactor);
     }
 
 } // end class
