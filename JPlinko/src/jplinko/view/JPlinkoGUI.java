@@ -6,6 +6,7 @@ package jplinko.view;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
+import javax.swing.UIManager;
 /**
  *
  * @author dfiumicelli
@@ -90,7 +91,14 @@ public class JPlinkoGUI extends JFrame{
         
         setVisible(true);
     }
-    public static void main(String args[]) {
+    public static void main(String args[]) throws Exception{
+        
+        //UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+        
+        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        //UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+        //UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+        //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
