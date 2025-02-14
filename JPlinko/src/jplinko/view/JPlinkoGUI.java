@@ -3,10 +3,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package jplinko.view;
+import jplinko.utils.BallIcon;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
+import java.awt.event.ItemEvent;
 import javax.swing.UIManager;
+
 /**
  *
  * @author dfiumicelli
@@ -15,16 +17,29 @@ public class JPlinkoGUI extends JFrame{
 
     public JPlinkoGUI() {
         setTitle("Plinko Game");
-        setSize(600, 400);
+        setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new GridLayout(1, 2));
+        setLayout(new BorderLayout());
         
         // Left panel (Menu)
         JPanel menuPanel = new JPanel();
-        menuPanel.setLayout(new GridLayout(10, 1));
+        menuPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 40));
+        menuPanel.setPreferredSize(new Dimension(getWidth() * 30 / 100, getHeight()));
         
-        JToggleButton manualAutoToggle = new JToggleButton("Manual/Auto");
-        menuPanel.add(manualAutoToggle);
+        JToggleButton manualToggle = new JToggleButton("Manual",true);
+        manualToggle.setIcon(new BallIcon(15, Color.LIGHT_GRAY));
+        manualToggle.setSelectedIcon(new BallIcon(15, Color.GREEN));
+        manualToggle.setPreferredSize(new Dimension(100,40));
+
+        
+        JToggleButton autoToggle = new JToggleButton("Auto",false);
+        autoToggle.setIcon(new BallIcon(15, Color.LIGHT_GRAY));
+        autoToggle.setSelectedIcon(new BallIcon(15, Color.GREEN));
+        autoToggle.setPreferredSize(new Dimension(100,40));
+        autoToggle.addItemListener(e-> handleAuto(e,manualToggle));
+        manualToggle.addItemListener(e -> handleManual(e,autoToggle));
+        menuPanel.add(manualToggle);
+        menuPanel.add(autoToggle);
         
         JPanel riskPanel = new JPanel(new FlowLayout());
         riskPanel.add(new JLabel("Risk: "));
@@ -54,12 +69,13 @@ public class JPlinkoGUI extends JFrame{
         menuPanel.add(betPanel);
         
         JButton betButton = new JButton("BET");
+        betButton.setPreferredSize(new Dimension(200,50));
         menuPanel.add(betButton);
         
         JLabel balanceLabel = new JLabel("Demo Balance: €5000.00", SwingConstants.CENTER);
         menuPanel.add(balanceLabel);
         
-        add(menuPanel);
+        add(menuPanel, BorderLayout.WEST);
         
         // Right panel (Pyramid)
         JPanel pyramidPanel = new JPanel() {
@@ -73,24 +89,48 @@ public class JPlinkoGUI extends JFrame{
                 g2d.setPaint(gradient);
                 g2d.fillRect(0, 0, getWidth(), getHeight());
                 
-                g2d.setColor(Color.WHITE);
                 int rows = 16;
                 int startX = getWidth() / 2;
-                int startY = 50;
                 int gap = 40;
+                int startY = (getHeight() - (rows * gap)) / 2;;
+                
                 for (int i = 0; i < rows; i++) {
                     int offsetX = startX - (i * gap / 2);
                     for (int j = 0; j <= i; j++) {
-                        g2d.fill(new Ellipse2D.Double(offsetX + j * gap, startY + i * gap, 10, 10));
+                        int circleSize = 14;
+                        
+                        // Create a 3D effect for the pegs
+                        GradientPaint sphereGradient = new GradientPaint(
+                            offsetX + j * gap, startY + i * gap, Color.LIGHT_GRAY,
+                            offsetX + j * gap + circleSize, startY + i * gap + circleSize, Color.WHITE);
+                        g2d.setPaint(sphereGradient);
+                        g2d.fillOval(offsetX + j * gap, startY + i * gap, circleSize, circleSize);
+                        
+                        // Add a slight shadow effect
+                        g2d.setColor(new Color(50, 50, 50, 80));
+                        g2d.fillOval(offsetX + j * gap + 2, startY + i * gap + 2, circleSize, circleSize);
                     }
                 }
             }
         };
-        pyramidPanel.setBackground(Color.DARK_GRAY);
-        add(pyramidPanel);
+        pyramidPanel.setPreferredSize(new Dimension(getWidth() * 70 / 100, getHeight()));
+        add(pyramidPanel, BorderLayout.CENTER);
         
         setVisible(true);
     }
+    
+    public void handleManual(ItemEvent e, JToggleButton autoToggle){
+        if (e.getStateChange() == ItemEvent.SELECTED)
+            autoToggle.setSelected(false);
+        
+    }
+    
+    public void handleAuto(ItemEvent e, JToggleButton manualToggle){
+        if (e.getStateChange() == ItemEvent.SELECTED)
+            manualToggle.setSelected(false);
+        
+    }
+    
     public static void main(String args[]) throws Exception{
         
         //UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
