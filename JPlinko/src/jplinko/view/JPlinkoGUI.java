@@ -121,7 +121,7 @@ public class JPlinkoGUI extends JFrame{
                 if (backgroundImage != null) {
                     g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
                     }
-                createPyramid(this,g2d);
+                createPyramid(this,g2d,16);
                 
             }
         };
@@ -130,9 +130,8 @@ public class JPlinkoGUI extends JFrame{
     
     }
     
-    private void createPyramid(JPanel pyramidPanel, Graphics2D g2d){
+    private void createPyramid(JPanel pyramidPanel, Graphics2D g2d, int rows){
     
-        int rows = 16;
         int startX = pyramidPanel.getWidth() / 2;
         int gap = 40;
         int startY = (pyramidPanel.getHeight() - ((rows +2) * gap)) / 2;;
