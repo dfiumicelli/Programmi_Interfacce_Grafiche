@@ -54,6 +54,7 @@ public class JPlinkoGUI extends JFrame{
         menuPanel.setBackground(new Color(1,56,156));
 
         
+        ButtonGroup version = new ButtonGroup();
         JToggleButton manualToggle = new JToggleButton("Manual",true);
         manualToggle.setIcon(new BallIcon(15, Color.LIGHT_GRAY));
         manualToggle.setSelectedIcon(new BallIcon(15, Color.GREEN));
@@ -64,8 +65,10 @@ public class JPlinkoGUI extends JFrame{
         autoToggle.setIcon(new BallIcon(15, Color.LIGHT_GRAY));
         autoToggle.setSelectedIcon(new BallIcon(15, Color.GREEN));
         autoToggle.setPreferredSize(new Dimension(150,50));
-        autoToggle.addItemListener(e-> handleAuto(e,manualToggle));
-        manualToggle.addItemListener(e -> handleManual(e,autoToggle));
+        autoToggle.addItemListener(e-> handleAuto(e));
+        manualToggle.addItemListener(e -> handleManual(e));
+        version.add(manualToggle);
+        version.add(autoToggle);
         menuPanel.add(manualToggle);
         menuPanel.add(autoToggle);
         
@@ -82,6 +85,7 @@ public class JPlinkoGUI extends JFrame{
         riskPanel.add(mediumRisk);
         riskPanel.add(highRisk);
         menuPanel.add(riskPanel);
+        
         
         JPanel rowsPanel = new JPanel(new FlowLayout());
         rowsPanel.add(new JLabel("Rows: "));
@@ -144,16 +148,12 @@ public class JPlinkoGUI extends JFrame{
         }
     }
     
-    public void handleManual(ItemEvent e, JToggleButton autoToggle){
-        if (e.getStateChange() == ItemEvent.SELECTED)
-            autoToggle.setSelected(false);
-        
+    public void handleManual(ItemEvent e){
+        //to do
     }
     
-    public void handleAuto(ItemEvent e, JToggleButton manualToggle){
-        if (e.getStateChange() == ItemEvent.SELECTED)
-            manualToggle.setSelected(false);
-        
+    public void handleAuto(ItemEvent e){
+        //to do
     }
     
     public void loadBackgroundImage() {
@@ -175,11 +175,11 @@ public class JPlinkoGUI extends JFrame{
         //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
         
         try {
-            InputStream fontStream = JPlinkoGUI.class.getResourceAsStream("../utils/Exo2-VariableFont_wght.ttf");
+            InputStream fontStream = JPlinkoGUI.class.getResourceAsStream("../utils/Orbitron-VariableFont_wght.ttf");
             if (fontStream == null) {
                 throw new RuntimeException("Font file not found!");
             }
-            Font globalFont = Font.createFont(Font.TRUETYPE_FONT, fontStream).deriveFont(Font.BOLD, 15);
+            Font globalFont = Font.createFont(Font.TRUETYPE_FONT, fontStream).deriveFont(Font.PLAIN,15);
             GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(globalFont);
             UIManager.put("Label.font", globalFont);
             UIManager.put("Button.font", globalFont);
