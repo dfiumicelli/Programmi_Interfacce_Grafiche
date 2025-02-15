@@ -4,6 +4,7 @@
  */
 package jplinko.view;
 import jplinko.utils.BallIcon;
+import jplinko.utils.RoundedButton;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemEvent;
@@ -12,6 +13,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.UIManager;
 import java.awt.Toolkit;
+import java.io.InputStream;
 
 /**
  *
@@ -20,10 +22,11 @@ import java.awt.Toolkit;
 public class JPlinkoGUI extends JFrame{
     
     private BufferedImage backgroundImage;
-    private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    private final Dimension screenSize;
+
 
     public JPlinkoGUI() {
-        loadBackgroundImage();
+        this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.createGUI();
         
     }
@@ -48,17 +51,19 @@ public class JPlinkoGUI extends JFrame{
         JPanel menuPanel = new JPanel();
         menuPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 40));
         menuPanel.setPreferredSize(new Dimension(menuWidth, screenSize.height));
+        menuPanel.setBackground(new Color(1,56,156));
+
         
         JToggleButton manualToggle = new JToggleButton("Manual",true);
         manualToggle.setIcon(new BallIcon(15, Color.LIGHT_GRAY));
         manualToggle.setSelectedIcon(new BallIcon(15, Color.GREEN));
-        manualToggle.setPreferredSize(new Dimension(100,40));
+        manualToggle.setPreferredSize(new Dimension(150,50));
 
         
         JToggleButton autoToggle = new JToggleButton("Auto",false);
         autoToggle.setIcon(new BallIcon(15, Color.LIGHT_GRAY));
         autoToggle.setSelectedIcon(new BallIcon(15, Color.GREEN));
-        autoToggle.setPreferredSize(new Dimension(100,40));
+        autoToggle.setPreferredSize(new Dimension(150,50));
         autoToggle.addItemListener(e-> handleAuto(e,manualToggle));
         manualToggle.addItemListener(e -> handleManual(e,autoToggle));
         menuPanel.add(manualToggle);
@@ -91,8 +96,8 @@ public class JPlinkoGUI extends JFrame{
         betPanel.add(betAmountField);
         menuPanel.add(betPanel);
         
-        JButton betButton = new JButton("BET");
-        betButton.setPreferredSize(new Dimension(200,50));
+        RoundedButton betButton = new RoundedButton("BET",50);
+        betButton.setPreferredSize(new Dimension(300,50));
         menuPanel.add(betButton);
         
         JLabel balanceLabel = new JLabel("Demo Balance: €5000.00", SwingConstants.CENTER);
@@ -103,6 +108,8 @@ public class JPlinkoGUI extends JFrame{
     }
     
     private void setRightPanel(){
+        
+        loadBackgroundImage();
     
         int pyramidWidth = (int) (screenSize.width * 0.8); // 80% della larghezza
         JPanel pyramidPanel = new JPanel() {
@@ -114,34 +121,28 @@ public class JPlinkoGUI extends JFrame{
                 if (backgroundImage != null) {
                     g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
                     }
+                createPyramid(this,g2d);
                 
-                int rows = 16;
-                int startX = getWidth() / 2;
-                int gap = 40;
-                int startY = (getHeight() - (rows * gap)) / 2;;
-                
-                for (int i = 0; i < rows; i++) {
-                    int offsetX = startX - (i * gap / 2);
-                    for (int j = 0; j <= i; j++) {
-                        int circleSize = 14;
-                        
-                        // Create a 3D effect for the pegs
-                        GradientPaint sphereGradient = new GradientPaint(
-                            offsetX + j * gap, startY + i * gap, Color.YELLOW,
-                            offsetX + j * gap + circleSize, startY + i * gap + circleSize, Color.WHITE);
-                        g2d.setPaint(sphereGradient);
-                        g2d.fillOval(offsetX + j * gap, startY + i * gap, circleSize, circleSize);
-                        
-                        // Add a slight shadow effect
-                        g2d.setColor(new Color(50, 50, 50, 80));
-                        g2d.fillOval(offsetX + j * gap + 2, startY + i * gap + 2, circleSize, circleSize);
-                    }
-                }
             }
         };
         pyramidPanel.setPreferredSize(new Dimension(pyramidWidth, screenSize.height));
         add(pyramidPanel, BorderLayout.CENTER);
     
+    }
+    
+    private void createPyramid(JPanel pyramidPanel, Graphics2D g2d){
+    
+        int rows = 16;
+        int startX = pyramidPanel.getWidth() / 2;
+        int gap = 40;
+        int startY = (pyramidPanel.getHeight() - ((rows +2) * gap)) / 2;;
+        for (int i = 2; i < rows+2; i++) {
+            int offsetX = startX - (i * gap / 2);
+            for (int j = 0; j <= i; j++) {
+                BallIcon nail = new BallIcon(8, Color.YELLOW);    
+                nail.paintIcon(this, g2d, offsetX + j * gap, startY + i * gap);
+            }
+        }
     }
     
     public void handleManual(ItemEvent e, JToggleButton autoToggle){
@@ -173,6 +174,26 @@ public class JPlinkoGUI extends JFrame{
         //UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
         //UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+        
+        try {
+            InputStream fontStream = JPlinkoGUI.class.getResourceAsStream("../utils/Exo2-VariableFont_wght.ttf");
+            if (fontStream == null) {
+                throw new RuntimeException("Font file not found!");
+            }
+            Font globalFont = Font.createFont(Font.TRUETYPE_FONT, fontStream).deriveFont(Font.BOLD, 15);
+            GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(globalFont);
+            UIManager.put("Label.font", globalFont);
+            UIManager.put("Button.font", globalFont);
+            UIManager.put("ToggleButton.font", globalFont);
+            UIManager.put("RadioButton.font", globalFont);
+            UIManager.put("ComboBox.font", globalFont);
+            UIManager.put("TextField.font", globalFont);
+            UIManager.put("Panel.font", globalFont);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
