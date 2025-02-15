@@ -7,24 +7,47 @@ import jplinko.utils.BallIcon;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.UIManager;
+import java.awt.Toolkit;
 
 /**
  *
  * @author dfiumicelli
  */
 public class JPlinkoGUI extends JFrame{
+    
+    private BufferedImage backgroundImage;
+    private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
     public JPlinkoGUI() {
+        loadBackgroundImage();
+        this.createGUI();
+        
+    }
+    
+    private void createGUI(){
+    
         setTitle("Plinko Game");
-        setSize(800, 600);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
+
+        setLeftPanel();
+        setRightPanel();
+ 
+        setVisible(true);
         
-        // Left panel (Menu)
+    }
+    
+    private void setLeftPanel(){
+        
+        int menuWidth = (int) (screenSize.width * 0.2); // 20% della larghezza
         JPanel menuPanel = new JPanel();
         menuPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 40));
-        menuPanel.setPreferredSize(new Dimension(getWidth() * 30 / 100, getHeight()));
+        menuPanel.setPreferredSize(new Dimension(menuWidth, screenSize.height));
         
         JToggleButton manualToggle = new JToggleButton("Manual",true);
         manualToggle.setIcon(new BallIcon(15, Color.LIGHT_GRAY));
@@ -75,19 +98,22 @@ public class JPlinkoGUI extends JFrame{
         JLabel balanceLabel = new JLabel("Demo Balance: €5000.00", SwingConstants.CENTER);
         menuPanel.add(balanceLabel);
         
-        add(menuPanel, BorderLayout.WEST);
+        add(menuPanel, BorderLayout.WEST); 
         
-        // Right panel (Pyramid)
+    }
+    
+    private void setRightPanel(){
+    
+        int pyramidWidth = (int) (screenSize.width * 0.8); // 80% della larghezza
         JPanel pyramidPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 Graphics2D g2d = (Graphics2D) g;
                 
-                // Gradient background
-                GradientPaint gradient = new GradientPaint(0, 0, Color.BLUE, getWidth(), getHeight(), Color.CYAN);
-                g2d.setPaint(gradient);
-                g2d.fillRect(0, 0, getWidth(), getHeight());
+                if (backgroundImage != null) {
+                    g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+                    }
                 
                 int rows = 16;
                 int startX = getWidth() / 2;
@@ -101,7 +127,7 @@ public class JPlinkoGUI extends JFrame{
                         
                         // Create a 3D effect for the pegs
                         GradientPaint sphereGradient = new GradientPaint(
-                            offsetX + j * gap, startY + i * gap, Color.LIGHT_GRAY,
+                            offsetX + j * gap, startY + i * gap, Color.YELLOW,
                             offsetX + j * gap + circleSize, startY + i * gap + circleSize, Color.WHITE);
                         g2d.setPaint(sphereGradient);
                         g2d.fillOval(offsetX + j * gap, startY + i * gap, circleSize, circleSize);
@@ -113,10 +139,9 @@ public class JPlinkoGUI extends JFrame{
                 }
             }
         };
-        pyramidPanel.setPreferredSize(new Dimension(getWidth() * 70 / 100, getHeight()));
+        pyramidPanel.setPreferredSize(new Dimension(pyramidWidth, screenSize.height));
         add(pyramidPanel, BorderLayout.CENTER);
-        
-        setVisible(true);
+    
     }
     
     public void handleManual(ItemEvent e, JToggleButton autoToggle){
@@ -130,6 +155,15 @@ public class JPlinkoGUI extends JFrame{
             manualToggle.setSelected(false);
         
     }
+    
+    public void loadBackgroundImage() {
+        try {
+            backgroundImage = ImageIO.read(getClass().getResource("../utils/background.jpg")); // Percorso relativo
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+}
     
     public static void main(String args[]) throws Exception{
         
