@@ -27,6 +27,7 @@ public class JPlinkoGUI extends JFrame {
 
     private BufferedImage backgroundImage;
     private final Dimension screenSize;
+    private JPanel menuPanel;
 
     public JPlinkoGUI() {
         super("JPlinkoGUI");
@@ -46,13 +47,15 @@ public class JPlinkoGUI extends JFrame {
         setRightPanel();
 
         addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                // Ridisegna i pannelli quando la finestra viene ridimensionata
-                getContentPane().revalidate();
-                getContentPane().repaint();
-            }
-        });
+        @Override
+        public void componentResized(ComponentEvent e) {
+            // Ridimensiona il pannello di sinistra in base alla nuova dimensione della finestra
+            int newWidth = getWidth();
+            int newHeight = getHeight();
+            menuPanel.setPreferredSize(new Dimension((int) (newWidth * 0.2), newHeight)); // 20% della larghezza
+            menuPanel.revalidate(); // Aggiorna il layout
+        }
+    });
 
         setVisible(true);
 
@@ -61,7 +64,7 @@ public class JPlinkoGUI extends JFrame {
     private void setLeftPanel() {
 
         //int menuWidth = (int) (screenSize.width * 0.2); // 20% della larghezza
-        JPanel menuPanel = new JPanel();
+        menuPanel = new JPanel();
         menuPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 40));
         int width = (int) (screenSize.width * 0.2);
         int height = (int) (screenSize.height);
@@ -126,6 +129,23 @@ public class JPlinkoGUI extends JFrame {
         JLabel balanceLabel = new JLabel("Demo Balance: €5000.00", SwingConstants.CENTER);
         balanceLabel.setForeground(Color.WHITE);
         menuPanel.add(balanceLabel);
+        
+        menuPanel.addComponentListener(new ComponentAdapter() {
+        @Override
+        public void componentResized(ComponentEvent e) {
+            // Ricalcola le dimensioni dei componenti in base alla nuova dimensione del pannello
+            int newWidth = menuPanel.getWidth();
+            int newHeight = menuPanel.getHeight();
+
+            // Ridimensiona i pulsanti
+            manualToggle.setPreferredSize(new Dimension((int) (newWidth * 0.45), 50));
+            autoToggle.setPreferredSize(new Dimension((int) (newWidth * 0.45), 50));
+            betButton.setPreferredSize(new Dimension((int) (newWidth * 0.9), 50));
+            // Ridisegna il pannello
+            menuPanel.revalidate();
+            menuPanel.repaint();
+        }
+    });
 
         add(menuPanel, BorderLayout.WEST);
 
@@ -134,8 +154,6 @@ public class JPlinkoGUI extends JFrame {
     private void setRightPanel() {
 
         loadBackgroundImage();
-
-        int pyramidWidth = (int) (screenSize.width * 0.8); // 80% della larghezza
         JPanel pyramidPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -149,7 +167,7 @@ public class JPlinkoGUI extends JFrame {
 
             }
         };
-        pyramidPanel.setPreferredSize(new Dimension((int) (screenSize.width * 0.8), screenSize.height));
+        pyramidPanel.setPreferredSize(new Dimension((int) (screenSize.width), screenSize.height));
         pyramidPanel.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -197,11 +215,7 @@ public class JPlinkoGUI extends JFrame {
 
     public static void main(String args[]) throws Exception {
 
-        //UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        //UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
-        //UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-        //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 
         try {
             InputStream fontStream = JPlinkoGUI.class.getResourceAsStream("../utils/Orbitron-VariableFont_wght.ttf");
