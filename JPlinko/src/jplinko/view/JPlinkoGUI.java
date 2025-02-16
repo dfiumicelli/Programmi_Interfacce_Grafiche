@@ -5,6 +5,7 @@
 package jplinko.view;
 import jplinko.utils.BallIcon;
 import jplinko.utils.RoundedButton;
+import jplinko.utils.RoundedToggleButton;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ItemEvent;
@@ -55,16 +56,16 @@ public class JPlinkoGUI extends JFrame{
 
         
         ButtonGroup version = new ButtonGroup();
-        JToggleButton manualToggle = new JToggleButton("Manual",true);
+        RoundedToggleButton manualToggle = new RoundedToggleButton("Manual",50,true);
         manualToggle.setIcon(new BallIcon(15, Color.LIGHT_GRAY));
         manualToggle.setSelectedIcon(new BallIcon(15, Color.GREEN));
-        manualToggle.setPreferredSize(new Dimension(150,50));
+        manualToggle.setPreferredSize(new Dimension(160,50));
 
         
-        JToggleButton autoToggle = new JToggleButton("Auto",false);
+        RoundedToggleButton autoToggle = new RoundedToggleButton("Auto",50,false);
         autoToggle.setIcon(new BallIcon(15, Color.LIGHT_GRAY));
         autoToggle.setSelectedIcon(new BallIcon(15, Color.GREEN));
-        autoToggle.setPreferredSize(new Dimension(150,50));
+        autoToggle.setPreferredSize(new Dimension(160,50));
         autoToggle.addItemListener(e-> handleAuto(e));
         manualToggle.addItemListener(e -> handleManual(e));
         version.add(manualToggle);
@@ -73,17 +74,22 @@ public class JPlinkoGUI extends JFrame{
         menuPanel.add(autoToggle);
         
         JPanel riskPanel = new JPanel(new FlowLayout());
-        riskPanel.add(new JLabel("Risk: "));
+        JLabel riskLabel = new JLabel("Risk: ");
+        riskLabel.setForeground(Color.WHITE);
+        riskPanel.add(riskLabel);
+        riskPanel.setBackground(menuPanel.getBackground());
+        riskPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
         ButtonGroup riskGroup = new ButtonGroup();
-        JRadioButton lowRisk = new JRadioButton("Low");
-        JRadioButton mediumRisk = new JRadioButton("Medium", true);
-        JRadioButton highRisk = new JRadioButton("High");
+        RoundedToggleButton lowRisk = new RoundedToggleButton("Low",30,false);
+        RoundedToggleButton mediumRisk = new RoundedToggleButton("Medium", 30, true);
+        RoundedToggleButton highRisk = new RoundedToggleButton("High",30,false);
         riskGroup.add(lowRisk);
         riskGroup.add(mediumRisk);
         riskGroup.add(highRisk);
         riskPanel.add(lowRisk);
         riskPanel.add(mediumRisk);
         riskPanel.add(highRisk);
+        menuPanel.add(riskLabel);
         menuPanel.add(riskPanel);
         
         
@@ -101,10 +107,13 @@ public class JPlinkoGUI extends JFrame{
         menuPanel.add(betPanel);
         
         RoundedButton betButton = new RoundedButton("BET",50);
-        betButton.setPreferredSize(new Dimension(300,50));
+        betButton.setPreferredSize(new Dimension(320,50));
+        betButton.setForeground(Color.BLUE);
+        
         menuPanel.add(betButton);
         
         JLabel balanceLabel = new JLabel("Demo Balance: €5000.00", SwingConstants.CENTER);
+        balanceLabel.setForeground(Color.WHITE);
         menuPanel.add(balanceLabel);
         
         add(menuPanel, BorderLayout.WEST); 
