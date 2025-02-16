@@ -15,6 +15,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.UIManager;
 import java.awt.Toolkit;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.io.InputStream;
 
 /**
@@ -27,6 +29,7 @@ public class JPlinkoGUI extends JFrame {
     private final Dimension screenSize;
 
     public JPlinkoGUI() {
+        super("JPlinkoGUI");
         this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.createGUI();
 
@@ -42,8 +45,16 @@ public class JPlinkoGUI extends JFrame {
         setLeftPanel();
         setRightPanel();
 
-        setVisible(true);
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                // Ridisegna i pannelli quando la finestra viene ridimensionata
+                getContentPane().revalidate();
+                getContentPane().repaint();
+            }
+        });
 
+        setVisible(true);
 
     }
 
@@ -52,8 +63,8 @@ public class JPlinkoGUI extends JFrame {
         //int menuWidth = (int) (screenSize.width * 0.2); // 20% della larghezza
         JPanel menuPanel = new JPanel();
         menuPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 40));
-        int width = (int) (screenSize.width * 0.2);  // 30% della larghezza dello schermo
-        int height = (int) (screenSize.height * 0.9); // 90% dell'altezza dello schermo
+        int width = (int) (screenSize.width * 0.2);
+        int height = (int) (screenSize.height);
         menuPanel.setPreferredSize(new Dimension(width, height));
         menuPanel.setBackground(new Color(1, 56, 156));
 
@@ -61,12 +72,12 @@ public class JPlinkoGUI extends JFrame {
         RoundedToggleButton manualToggle = new RoundedToggleButton("Manual", 50, true);
         manualToggle.setIcon(new BallIcon(15, Color.LIGHT_GRAY));
         manualToggle.setSelectedIcon(new BallIcon(15, Color.GREEN));
-        manualToggle.setPreferredSize(new Dimension(160, 50));
+        manualToggle.setPreferredSize(new Dimension((int) (width * 0.45), 50));
 
         RoundedToggleButton autoToggle = new RoundedToggleButton("Auto", 50, false);
         autoToggle.setIcon(new BallIcon(15, Color.LIGHT_GRAY));
         autoToggle.setSelectedIcon(new BallIcon(15, Color.GREEN));
-        autoToggle.setPreferredSize(new Dimension(160, 50));
+        autoToggle.setPreferredSize(new Dimension((int) (width * 0.45), 50));
         autoToggle.addItemListener(e -> handleAuto(e));
         manualToggle.addItemListener(e -> handleManual(e));
         version.add(manualToggle);
@@ -107,7 +118,7 @@ public class JPlinkoGUI extends JFrame {
         menuPanel.add(betPanel);
 
         RoundedButton betButton = new RoundedButton("BET", 50);
-        betButton.setPreferredSize(new Dimension(320, 50));
+        betButton.setPreferredSize(new Dimension((int) (width * 0.9), 50));
         betButton.setForeground(Color.BLUE);
 
         menuPanel.add(betButton);
@@ -138,16 +149,26 @@ public class JPlinkoGUI extends JFrame {
 
             }
         };
-        pyramidPanel.setPreferredSize(new Dimension(pyramidWidth, screenSize.height));
+        pyramidPanel.setPreferredSize(new Dimension((int) (screenSize.width * 0.8), screenSize.height));
+        pyramidPanel.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                pyramidPanel.repaint(); // Ridisegna la piramide
+            }
+        });
+
         add(pyramidPanel, BorderLayout.CENTER);
 
     }
 
     private void createPyramid(JPanel pyramidPanel, Graphics2D g2d, int rows) {
 
-        int startX = pyramidPanel.getWidth() / 2;
-        int gap = 40;
-        int startY = (pyramidPanel.getHeight() - ((rows + 2) * gap)) / 2;;
+        int panelWidth = pyramidPanel.getWidth();
+        int panelHeight = pyramidPanel.getHeight();
+        int startX = panelWidth / 2;
+        int gap = panelWidth / 40; // Gap proporzionale alla larghezza del pannello
+        int startY = (panelHeight - ((rows + 2) * gap)) / 2;
+
         for (int i = 2; i < rows + 2; i++) {
             int offsetX = startX - (i * gap / 2);
             for (int j = 0; j <= i; j++) {
