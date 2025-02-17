@@ -47,15 +47,15 @@ public class JPlinkoGUI extends JFrame {
         setRightPanel();
 
         addComponentListener(new ComponentAdapter() {
-        @Override
-        public void componentResized(ComponentEvent e) {
-            // Ridimensiona il pannello di sinistra in base alla nuova dimensione della finestra
-            int newWidth = getWidth();
-            int newHeight = getHeight();
-            menuPanel.setPreferredSize(new Dimension((int) (newWidth * 0.2), newHeight)); // 20% della larghezza
-            menuPanel.revalidate(); // Aggiorna il layout
-        }
-    });
+            @Override
+            public void componentResized(ComponentEvent e) {
+                // Ridimensiona il pannello di sinistra in base alla nuova dimensione della finestra
+                int newWidth = getWidth();
+                int newHeight = getHeight();
+                menuPanel.setPreferredSize(new Dimension((int) (newWidth * 0.2), newHeight)); // 20% della larghezza
+                menuPanel.revalidate(); // Aggiorna il layout
+            }
+        });
 
         setVisible(true);
 
@@ -98,14 +98,17 @@ public class JPlinkoGUI extends JFrame {
         RoundedToggleButton lowRisk = new RoundedToggleButton("Low", 30, false);
         RoundedToggleButton mediumRisk = new RoundedToggleButton("Medium", 30, true);
         RoundedToggleButton highRisk = new RoundedToggleButton("High", 30, false);
+        lowRisk.setPreferredSize(new Dimension((int) (width * 0.25), 30));
+        mediumRisk.setPreferredSize(new Dimension((int) (width * 0.25), 30));
+        highRisk.setPreferredSize(new Dimension((int) (width * 0.25), 30));
         riskGroup.add(lowRisk);
         riskGroup.add(mediumRisk);
         riskGroup.add(highRisk);
         riskPanel.add(lowRisk);
         riskPanel.add(mediumRisk);
         riskPanel.add(highRisk);
-        menuPanel.add(riskLabel);
-        menuPanel.add(riskPanel);
+        menuPanel.add(riskLabel, BorderLayout.NORTH);
+        menuPanel.add(riskPanel, BorderLayout.SOUTH);
 
         JPanel rowsPanel = new JPanel(new FlowLayout());
         rowsPanel.add(new JLabel("Rows: "));
@@ -114,11 +117,55 @@ public class JPlinkoGUI extends JFrame {
         rowsPanel.add(rowsCombo);
         menuPanel.add(rowsPanel);
 
-        JPanel betPanel = new JPanel(new FlowLayout());
-        betPanel.add(new JLabel("Bet Amount: "));
-        JTextField betAmountField = new JTextField("€2.00", 5);
-        betPanel.add(betAmountField);
-        menuPanel.add(betPanel);
+        // Bet Amount Panel in stile Plinko
+        JPanel betAmountPanel = new JPanel(new GridBagLayout());
+        betAmountPanel.setPreferredSize(new Dimension((int) (width * 0.9), 50));
+        betAmountPanel.setBackground(menuPanel.getBackground());
+        betAmountPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
+        GridBagConstraints gbcBet = new GridBagConstraints();
+        gbcBet.fill = GridBagConstraints.HORIZONTAL;
+        gbcBet.insets = new Insets(5, 5, 5, 5);
+        gbcBet.weightx = 1;
+
+        // Array di valori della puntata
+        double[] betValues = {0.10, 0.20, 0.50, 1.00, 2.00, 5.00, 10.00, 25.00, 50.00, 75.00, 100.00};
+        final int[] currentBetIndex = {4}; // Index iniziale per €2.00
+
+        JLabel betAmountLabel = new JLabel("€" + betValues[currentBetIndex[0]], SwingConstants.CENTER);
+        betAmountLabel.setForeground(Color.WHITE);
+        betAmountLabel.setPreferredSize(new Dimension((int) (width * 0.25), 30));
+        // Pulsante per diminuire la puntata
+        RoundedButton decreaseBet = new RoundedButton("-",30);
+        decreaseBet.setPreferredSize(new Dimension((int) (width * 0.25), 30));
+        decreaseBet.addActionListener(e -> {
+            if (currentBetIndex[0] > 0) {
+                currentBetIndex[0]--;
+                betAmountLabel.setText("€" + betValues[currentBetIndex[0]]);
+            }
+        });
+
+        // Pulsante per aumentare la puntata
+        RoundedButton increaseBet = new RoundedButton("+",30);
+        increaseBet.setPreferredSize(new Dimension((int) (width * 0.25), 30));
+        increaseBet.addActionListener(e -> {
+            if (currentBetIndex[0] < betValues.length - 1) {
+                currentBetIndex[0]++;
+                betAmountLabel.setText("€" + betValues[currentBetIndex[0]]);
+            }
+        });
+
+        // Aggiunta dei componenti al pannello
+        gbcBet.gridx = 0;
+        betAmountPanel.add(decreaseBet, gbcBet);
+
+        gbcBet.gridx = 1;
+        betAmountPanel.add(betAmountLabel, gbcBet);
+
+        gbcBet.gridx = 2;
+        betAmountPanel.add(increaseBet, gbcBet);
+
+        // Aggiungi il pannello del Bet Amount al menuPanel
+        menuPanel.add(betAmountPanel);
 
         RoundedButton betButton = new RoundedButton("BET", 50);
         betButton.setPreferredSize(new Dimension((int) (width * 0.9), 50));
@@ -129,23 +176,23 @@ public class JPlinkoGUI extends JFrame {
         JLabel balanceLabel = new JLabel("Demo Balance: €5000.00", SwingConstants.CENTER);
         balanceLabel.setForeground(Color.WHITE);
         menuPanel.add(balanceLabel);
-        
-        menuPanel.addComponentListener(new ComponentAdapter() {
-        @Override
-        public void componentResized(ComponentEvent e) {
-            // Ricalcola le dimensioni dei componenti in base alla nuova dimensione del pannello
-            int newWidth = menuPanel.getWidth();
-            int newHeight = menuPanel.getHeight();
 
-            // Ridimensiona i pulsanti
-            manualToggle.setPreferredSize(new Dimension((int) (newWidth * 0.45), 50));
-            autoToggle.setPreferredSize(new Dimension((int) (newWidth * 0.45), 50));
-            betButton.setPreferredSize(new Dimension((int) (newWidth * 0.9), 50));
-            // Ridisegna il pannello
-            menuPanel.revalidate();
-            menuPanel.repaint();
-        }
-    });
+        menuPanel.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                // Ricalcola le dimensioni dei componenti in base alla nuova dimensione del pannello
+                int newWidth = menuPanel.getWidth();
+                int newHeight = menuPanel.getHeight();
+
+                // Ridimensiona i pulsanti
+                manualToggle.setPreferredSize(new Dimension((int) (newWidth * 0.45), 50));
+                autoToggle.setPreferredSize(new Dimension((int) (newWidth * 0.45), 50));
+                betButton.setPreferredSize(new Dimension((int) (newWidth * 0.9), 50));
+                // Ridisegna il pannello
+                menuPanel.revalidate();
+                menuPanel.repaint();
+            }
+        });
 
         add(menuPanel, BorderLayout.WEST);
 
