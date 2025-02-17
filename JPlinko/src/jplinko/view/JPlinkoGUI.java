@@ -285,13 +285,18 @@ public class JPlinkoGUI extends JFrame {
     public static void main(String args[]) throws Exception {
 
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int screenHeight = screenSize.height;
+
+// Regola la dimensione del font in base all'altezza dello schermo
+        int fontSize = screenHeight / 70; // Formula scalabile
 
         try {
             InputStream fontStream = JPlinkoGUI.class.getResourceAsStream("../utils/Orbitron-VariableFont_wght.ttf");
             if (fontStream == null) {
                 throw new RuntimeException("Font file not found!");
             }
-            Font globalFont = Font.createFont(Font.TRUETYPE_FONT, fontStream).deriveFont(Font.PLAIN, 15);
+            Font globalFont = Font.createFont(Font.TRUETYPE_FONT, fontStream).deriveFont(Font.PLAIN, fontSize);
             GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(globalFont);
             UIManager.put("Label.font", globalFont);
             UIManager.put("Button.font", globalFont);
