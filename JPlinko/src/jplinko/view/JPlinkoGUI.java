@@ -71,29 +71,45 @@ public class JPlinkoGUI extends JFrame {
         menuPanel.setPreferredSize(new Dimension(width, height));
         menuPanel.setBackground(new Color(1, 56, 156));
 
+        JPanel versionPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbcVersion = new GridBagConstraints();
+        gbcVersion.fill = GridBagConstraints.HORIZONTAL;
+        gbcVersion.insets = new Insets(5, 5, 5, 5);
+        gbcVersion.weightx = 1;
+        versionPanel.setBackground(menuPanel.getBackground());
+        versionPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
+        versionPanel.setPreferredSize(new Dimension((int) (width * 0.9), 50));
         ButtonGroup version = new ButtonGroup();
-        RoundedToggleButton manualToggle = new RoundedToggleButton("Manual", 50, true);
+        RoundedToggleButton manualToggle = new RoundedToggleButton("Manual", (int) (height*0.05), true);
         manualToggle.setIcon(new BallIcon(15, Color.LIGHT_GRAY));
         manualToggle.setSelectedIcon(new BallIcon(15, Color.GREEN));
-        manualToggle.setPreferredSize(new Dimension((int) (width * 0.45), 50));
+        manualToggle.setPreferredSize(new Dimension((int) (width * 0.4), (int) (height*0.05)));
 
-        RoundedToggleButton autoToggle = new RoundedToggleButton("Auto", 50, false);
+        RoundedToggleButton autoToggle = new RoundedToggleButton("Auto", (int) (height*0.05), false);
         autoToggle.setIcon(new BallIcon(15, Color.LIGHT_GRAY));
         autoToggle.setSelectedIcon(new BallIcon(15, Color.GREEN));
-        autoToggle.setPreferredSize(new Dimension((int) (width * 0.45), 50));
+        autoToggle.setPreferredSize(new Dimension((int) (width * 0.4), (int) (height*0.05)));
         autoToggle.addItemListener(e -> handleAuto(e));
         manualToggle.addItemListener(e -> handleManual(e));
         version.add(manualToggle);
         version.add(autoToggle);
-        menuPanel.add(manualToggle);
-        menuPanel.add(autoToggle);
+        versionPanel.add(manualToggle, gbcVersion);
+        gbcVersion.weightx++;
+        versionPanel.add(autoToggle, gbcVersion);
+        menuPanel.add(versionPanel, BorderLayout.CENTER);
+        
 
-        JPanel riskPanel = new JPanel(new FlowLayout());
+        JPanel riskPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbcRisk = new GridBagConstraints();
+        gbcRisk.fill = GridBagConstraints.HORIZONTAL;
+        gbcRisk.insets = new Insets(5, 5, 5, 5);
+        gbcRisk.weightx = 1;
         JLabel riskLabel = new JLabel("Risk: ");
         riskLabel.setForeground(Color.WHITE);
         riskPanel.add(riskLabel);
         riskPanel.setBackground(menuPanel.getBackground());
         riskPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
+        riskPanel.setPreferredSize(new Dimension((int) (width * 0.9), 50));
         ButtonGroup riskGroup = new ButtonGroup();
         RoundedToggleButton lowRisk = new RoundedToggleButton("Low", 30, false);
         RoundedToggleButton mediumRisk = new RoundedToggleButton("Medium", 30, true);
@@ -104,9 +120,11 @@ public class JPlinkoGUI extends JFrame {
         riskGroup.add(lowRisk);
         riskGroup.add(mediumRisk);
         riskGroup.add(highRisk);
-        riskPanel.add(lowRisk);
-        riskPanel.add(mediumRisk);
-        riskPanel.add(highRisk);
+        riskPanel.add(lowRisk, gbcRisk);
+        gbcRisk.weightx++;
+        riskPanel.add(mediumRisk, gbcRisk);
+        gbcRisk.weightx++;
+        riskPanel.add(highRisk, gbcRisk);
         menuPanel.add(riskLabel, BorderLayout.NORTH);
         menuPanel.add(riskPanel, BorderLayout.SOUTH);
 
@@ -207,9 +225,12 @@ public class JPlinkoGUI extends JFrame {
                 int newHeight = menuPanel.getHeight();
 
                 // Ridimensiona i pulsanti
-                manualToggle.setPreferredSize(new Dimension((int) (newWidth * 0.45), 50));
-                autoToggle.setPreferredSize(new Dimension((int) (newWidth * 0.45), 50));
+                manualToggle.setPreferredSize(new Dimension((int) (newWidth * 0.4), 50));
+                autoToggle.setPreferredSize(new Dimension((int) (newWidth * 0.4), 50));
                 betButton.setPreferredSize(new Dimension((int) (newWidth * 0.9), 50));
+                versionPanel.setPreferredSize(new Dimension((int) (newWidth * 0.9), 50));
+                manualToggle.setPreferredSize(new Dimension((int) (width * 0.4), (int) (newHeight*0.05)));
+                autoToggle.setPreferredSize(new Dimension((int) (width * 0.4), (int) (newHeight*0.05)));
                 // Ridisegna il pannello
                 menuPanel.revalidate();
                 menuPanel.repaint();
@@ -236,7 +257,7 @@ public class JPlinkoGUI extends JFrame {
 
             }
         };
-        pyramidPanel.setPreferredSize(new Dimension((int) (screenSize.width), screenSize.height));
+        pyramidPanel.setPreferredSize(new Dimension(screenSize.width, screenSize.height));
         pyramidPanel.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
