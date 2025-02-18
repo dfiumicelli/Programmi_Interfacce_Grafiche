@@ -75,10 +75,11 @@ public class JPlinkoGUI extends JFrame {
         GridBagConstraints gbcVersion = new GridBagConstraints();
         gbcVersion.fill = GridBagConstraints.HORIZONTAL;
         gbcVersion.insets = new Insets(5, 5, 5, 5);
-        gbcVersion.weightx = 1;
+        gbcVersion.gridx = 1;
+        versionPanel.setPreferredSize(new Dimension((int) (width * 0.9), (int) (height * 0.1)));
         versionPanel.setBackground(menuPanel.getBackground());
         versionPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
-        versionPanel.setPreferredSize(new Dimension((int) (width * 0.9), 50));
+        
         ButtonGroup version = new ButtonGroup();
         RoundedToggleButton manualToggle = new RoundedToggleButton("Manual", (int) (height*0.05), true);
         manualToggle.setIcon(new BallIcon(15, Color.LIGHT_GRAY));
@@ -94,7 +95,7 @@ public class JPlinkoGUI extends JFrame {
         version.add(manualToggle);
         version.add(autoToggle);
         versionPanel.add(manualToggle, gbcVersion);
-        gbcVersion.weightx++;
+        gbcVersion.gridx++;
         versionPanel.add(autoToggle, gbcVersion);
         menuPanel.add(versionPanel, BorderLayout.CENTER);
         
@@ -102,30 +103,34 @@ public class JPlinkoGUI extends JFrame {
         JPanel riskPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbcRisk = new GridBagConstraints();
         gbcRisk.fill = GridBagConstraints.HORIZONTAL;
-        gbcRisk.insets = new Insets(5, 5, 5, 5);
+        gbcRisk.insets = new Insets(5, 2, 5, 2);
         gbcRisk.weightx = 1;
+        gbcRisk.gridy =0;
         JLabel riskLabel = new JLabel("Risk: ");
         riskLabel.setForeground(Color.WHITE);
-        riskPanel.add(riskLabel);
+        riskPanel.add(riskLabel,gbcRisk);
+        gbcRisk.gridy++;
         riskPanel.setBackground(menuPanel.getBackground());
         riskPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
-        riskPanel.setPreferredSize(new Dimension((int) (width * 0.9), 50));
+        riskPanel.setPreferredSize(new Dimension((int) (width * 0.9), (int) (height * 0.08)));
         ButtonGroup riskGroup = new ButtonGroup();
-        RoundedToggleButton lowRisk = new RoundedToggleButton("Low", 30, false);
-        RoundedToggleButton mediumRisk = new RoundedToggleButton("Medium", 30, true);
-        RoundedToggleButton highRisk = new RoundedToggleButton("High", 30, false);
-        lowRisk.setPreferredSize(new Dimension((int) (width * 0.25), 30));
-        mediumRisk.setPreferredSize(new Dimension((int) (width * 0.25), 30));
-        highRisk.setPreferredSize(new Dimension((int) (width * 0.25), 30));
+        RoundedToggleButton lowRisk = new RoundedToggleButton("Low", (int) (height * 0.05), false);
+        RoundedToggleButton mediumRisk = new RoundedToggleButton("Medium", (int) (height * 0.05), true);
+        RoundedToggleButton highRisk = new RoundedToggleButton("High", (int)(height * 0.05), false);
+        lowRisk.setPreferredSize(new Dimension((int) (width * 0.25), (int) (height * 0.05)));
+        mediumRisk.setPreferredSize(new Dimension((int) (width * 0.25), (int) (height * 0.05)));
+        highRisk.setPreferredSize(new Dimension((int) (width * 0.25), (int) (height * 0.05)));
         riskGroup.add(lowRisk);
         riskGroup.add(mediumRisk);
         riskGroup.add(highRisk);
+        gbcRisk.gridx=0;
         riskPanel.add(lowRisk, gbcRisk);
-        gbcRisk.weightx++;
+        gbcRisk.gridx++;
         riskPanel.add(mediumRisk, gbcRisk);
-        gbcRisk.weightx++;
+        gbcRisk.gridx++;
         riskPanel.add(highRisk, gbcRisk);
-        menuPanel.add(riskLabel, BorderLayout.NORTH);
+        gbcRisk.gridx++;
+        
         menuPanel.add(riskPanel, BorderLayout.SOUTH);
 
         // Pannello per la selezione delle Rows
@@ -228,7 +233,7 @@ public class JPlinkoGUI extends JFrame {
                 manualToggle.setPreferredSize(new Dimension((int) (newWidth * 0.4), 50));
                 autoToggle.setPreferredSize(new Dimension((int) (newWidth * 0.4), 50));
                 betButton.setPreferredSize(new Dimension((int) (newWidth * 0.9), 50));
-                versionPanel.setPreferredSize(new Dimension((int) (newWidth * 0.9), 50));
+                versionPanel.setPreferredSize(new Dimension((int) (newWidth * 0.9), (int) (newHeight * 0.08)));
                 manualToggle.setPreferredSize(new Dimension((int) (width * 0.4), (int) (newHeight*0.05)));
                 autoToggle.setPreferredSize(new Dimension((int) (width * 0.4), (int) (newHeight*0.05)));
                 // Ridisegna il pannello
