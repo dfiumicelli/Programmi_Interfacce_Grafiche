@@ -152,9 +152,9 @@ public class JPlinkoGUI extends JFrame {
             if (rowValue == 16) {
                 rowButton.setSelected(true);
             }
-            rowButton.setPreferredSize(new Dimension((int) (width * 0.15), 30));
+            rowButton.setPreferredSize(new Dimension((int) (width * 0.2), 30));
             rowButton.setBackground(Color.DARK_GRAY);
-            rowButton.setFont(UIManager.getFont("Button.font").deriveFont(10f));
+            //rowButton.setFont(UIManager.getFont("Button.font").deriveFont(10f));
             rowsGroup.add(rowButton);
             rowsPanel.add(rowButton);
         }
