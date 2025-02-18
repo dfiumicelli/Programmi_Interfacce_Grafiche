@@ -112,7 +112,7 @@ public class JPlinkoGUI extends JFrame {
         gbcRisk.gridy++;
         riskPanel.setBackground(menuPanel.getBackground());
         riskPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
-        riskPanel.setPreferredSize(new Dimension((int) (width * 0.9), (int) (height * 0.08)));
+        riskPanel.setPreferredSize(new Dimension((int) (width * 0.9), (int) (height * 0.1)));
         ButtonGroup riskGroup = new ButtonGroup();
         RoundedToggleButton lowRisk = new RoundedToggleButton("Low", (int) (height * 0.05), false);
         RoundedToggleButton mediumRisk = new RoundedToggleButton("Medium", (int) (height * 0.05), true);
