@@ -39,7 +39,7 @@ public class JPlinkoGUI extends JFrame {
         super("JPlinkoGUI");
         this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.createGUI();
-
+        
     }
 
     private void createGUI() {
