@@ -18,6 +18,8 @@ import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.InputStream;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  *
@@ -27,10 +29,11 @@ public class JPlinkoGUI extends JFrame {
 
     private BufferedImage backgroundImage;
     private final Dimension screenSize;
-    private JPanel menuPanel, versionPanel, riskPanel;
+    private JPanel menuPanel, versionPanel, riskPanel, rowPanel;
     private RoundedButton betButton;
     private RoundedToggleButton manualToggle, autoToggle, lowRisk, mediumRisk, highRisk;
-    private JLabel riskLabel;
+    private JLabel riskLabel, rowLabel;
+    private JSlider rowSlider;
 
     public JPlinkoGUI() {
         super("JPlinkoGUI");
@@ -73,38 +76,40 @@ public class JPlinkoGUI extends JFrame {
         menuPanel.setPreferredSize(new Dimension(width, height));
         menuPanel.setBackground(new Color(1, 56, 156));
 
-        createVersionPanel(menuPanel, width, height);
+        createVersionPanel(width, height);
 
-        createRiskPanel(menuPanel, width, height);
+        createRiskPanel(width, height);
+        
+        createRowSlider(width, height);
 
         // Pannello per la selezione delle Rows
-        JPanel rowsPanel = new JPanel(new FlowLayout());
-        rowsPanel.setBackground(menuPanel.getBackground());
-        rowsPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
-        rowsPanel.setPreferredSize(new Dimension((int) (width * 0.9), 80));
-        JLabel rowsLabel = new JLabel("Rows: ");
-        rowsLabel.setForeground(Color.WHITE);
-        rowsPanel.add(rowsLabel);
-
-// ButtonGroup per assicurare che solo un pulsante sia selezionato alla volta
-        ButtonGroup rowsGroup = new ButtonGroup();
-        int[] rowValues = {8, 9, 10, 11, 12, 13, 14, 15, 16};
-
-// Creazione degli 9 RoundedToggleButton
-        for (int rowValue : rowValues) {
-            RoundedToggleButton rowButton = new RoundedToggleButton(String.valueOf(rowValue), 30, rowValue == 16);
-            if (rowValue == 16) {
-                rowButton.setSelected(true);
-            }
-            rowButton.setPreferredSize(new Dimension((int) (width * 0.2), 30));
-            rowButton.setBackground(Color.DARK_GRAY);
-            //rowButton.setFont(UIManager.getFont("Button.font").deriveFont(10f));
-            rowsGroup.add(rowButton);
-            rowsPanel.add(rowButton);
-        }
-
-// Aggiungi il pannello delle rows al menu
-        menuPanel.add(rowsPanel);
+//        JPanel rowsPanel = new JPanel(new FlowLayout());
+//        rowsPanel.setBackground(menuPanel.getBackground());
+//        rowsPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
+//        rowsPanel.setPreferredSize(new Dimension((int) (width * 0.9), 80));
+//        JLabel rowsLabel = new JLabel("Rows: ");
+//        rowsLabel.setForeground(Color.WHITE);
+//        rowsPanel.add(rowsLabel);
+//
+//// ButtonGroup per assicurare che solo un pulsante sia selezionato alla volta
+//        ButtonGroup rowsGroup = new ButtonGroup();
+//        int[] rowValues = {8, 9, 10, 11, 12, 13, 14, 15, 16};
+//
+//// Creazione degli 9 RoundedToggleButton
+//        for (int rowValue : rowValues) {
+//            RoundedToggleButton rowButton = new RoundedToggleButton(String.valueOf(rowValue), 30, rowValue == 16);
+//            if (rowValue == 16) {
+//                rowButton.setSelected(true);
+//            }
+//            rowButton.setPreferredSize(new Dimension((int) (width * 0.2), 30));
+//            rowButton.setBackground(Color.DARK_GRAY);
+//            //rowButton.setFont(UIManager.getFont("Button.font").deriveFont(10f));
+//            rowsGroup.add(rowButton);
+//            rowsPanel.add(rowButton);
+//        }
+//
+//// Aggiungi il pannello delle rows al menu
+//        menuPanel.add(rowsPanel);
 
         // Bet Amount Panel in stile Plinko
         JPanel betAmountPanel = new JPanel(new GridBagLayout());
@@ -182,6 +187,7 @@ public class JPlinkoGUI extends JFrame {
                 mediumRisk.setPreferredSize(new Dimension((int) (newWidth * 0.25), (int) (newHeight * 0.05)));
                 highRisk.setPreferredSize(new Dimension((int) (newWidth * 0.25), (int) (newHeight * 0.05)));
                 riskPanel.setPreferredSize(new Dimension((int) (newWidth * 0.9), (int) (newHeight * 0.1)));
+                rowPanel.setPreferredSize(new Dimension((int) (newWidth * 0.9), (int) (newHeight * 0.1)));
                 // Ridisegna il pannello
                 menuPanel.revalidate();
                 menuPanel.repaint();
@@ -192,7 +198,7 @@ public class JPlinkoGUI extends JFrame {
 
     }
 
-    private void createRiskPanel(JPanel menuPanel, int width, int height) {
+    private void createRiskPanel(int width, int height) {
         riskPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbcRisk = new GridBagConstraints();
         gbcRisk.fill = GridBagConstraints.HORIZONTAL;
@@ -226,6 +232,39 @@ public class JPlinkoGUI extends JFrame {
 
         menuPanel.add(riskPanel, BorderLayout.SOUTH);
     }
+
+    private void createRowSlider(int width, int height) {
+        rowPanel = new JPanel();
+        rowPanel.setLayout(new BorderLayout());
+        rowPanel.setPreferredSize(new Dimension((int) (width * 0.9), (int) (height * 0.1)));
+        // Creiamo lo slider (da 8 a 16 righe)
+        rowSlider = new JSlider(JSlider.HORIZONTAL, 8, 16, 16);
+        rowSlider.setMajorTickSpacing(1);
+        rowSlider.setPaintTicks(true);
+        rowSlider.setPaintLabels(true);
+        rowSlider.setBackground(menuPanel.getBackground());
+        rowSlider.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
+        rowSlider.setForeground(Color.WHITE);
+        
+
+        // Etichetta per mostrare il valore selezionato
+        rowLabel = new JLabel("Rows: " + rowSlider.getValue(), SwingConstants.CENTER);
+
+        // Aggiungiamo un listener per aggiornare l'etichetta
+        rowSlider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                rowLabel.setText("Rows: " + rowSlider.getValue());
+            }
+        });
+        // Aggiungiamo i componenti al pannello
+        rowPanel.add(rowLabel, BorderLayout.NORTH);
+        rowPanel.add(rowSlider, BorderLayout.CENTER);
+
+        // Aggiungiamo il pannello al menu principale
+        menuPanel.add(rowPanel, BorderLayout.SOUTH);
+    }
+    
 
     private void setRightPanel() {
 
@@ -272,7 +311,7 @@ public class JPlinkoGUI extends JFrame {
         }
     }
 
-    private void createVersionPanel(JPanel menuPanel, int width, int height) {
+    private void createVersionPanel(int width, int height) {
         versionPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbcVersion = new GridBagConstraints();
         gbcVersion.fill = GridBagConstraints.HORIZONTAL;
@@ -322,6 +361,7 @@ public class JPlinkoGUI extends JFrame {
     public static void main(String args[]) throws Exception {
 
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int screenHeight = screenSize.height;
 
@@ -342,6 +382,7 @@ public class JPlinkoGUI extends JFrame {
             UIManager.put("ComboBox.font", globalFont);
             UIManager.put("TextField.font", globalFont);
             UIManager.put("Panel.font", globalFont);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
