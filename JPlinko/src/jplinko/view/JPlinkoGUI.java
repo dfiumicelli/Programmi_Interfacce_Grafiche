@@ -230,7 +230,7 @@ public class JPlinkoGUI extends JFrame {
         rowSlider.setForeground(Color.WHITE);
 
         // Etichetta per mostrare il valore selezionato
-        rowLabel = new JLabel("Rows: " + rowSlider.getValue(), SwingConstants.CENTER);
+        rowLabel = new JLabel("  Rows: " + rowSlider.getValue());
 
         // Aggiungiamo un listener per aggiornare l'etichetta
         rowSlider.addChangeListener(new ChangeListener() {
