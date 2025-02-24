@@ -39,7 +39,7 @@ public class JPlinkoGUI extends JFrame {
         super("JPlinkoGUI");
         this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.createGUI();
-        
+
     }
 
     private void createGUI() {
@@ -85,39 +85,6 @@ public class JPlinkoGUI extends JFrame {
         createBetPanel(width, height);
 
         createBetButton(width, height);
-
-        // Pannello per la selezione delle Rows
-//        JPanel rowsPanel = new JPanel(new FlowLayout());
-//        rowsPanel.setBackground(menuPanel.getBackground());
-//        rowsPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
-//        rowsPanel.setPreferredSize(new Dimension((int) (width * 0.9), 80));
-//        JLabel rowsLabel = new JLabel("Rows: ");
-//        rowsLabel.setForeground(Color.WHITE);
-//        rowsPanel.add(rowsLabel);
-//
-        //// ButtonGroup per assicurare che solo un pulsante sia selezionato alla volta
-//        ButtonGroup rowsGroup = new ButtonGroup();
-//        int[] rowValues = {8, 9, 10, 11, 12, 13, 14, 15, 16};
-//
-//// Creazione degli 9 RoundedToggleButton
-//        for (int rowValue : rowValues) {
-//            RoundedToggleButton rowButton = new RoundedToggleButton(String.valueOf(rowValue), 30, rowValue == 16);
-//            if (rowValue == 16) {
-//                rowButton.setSelected(true);
-//            }
-//            rowButton.setPreferredSize(new Dimension((int) (width * 0.2), 30));
-//            rowButton.setBackground(Color.DARK_GRAY);
-//            //rowButton.setFont(UIManager.getFont("Button.font").deriveFont(10f));
-//            rowsGroup.add(rowButton);
-//            rowsPanel.add(rowButton);
-//        }
-//
-//// Aggiungi il pannello delle rows al menu
-//        menuPanel.add(rowsPanel);
-
-        
-
-        
 
         menuPanel.addComponentListener(new ComponentAdapter() {
             @Override
