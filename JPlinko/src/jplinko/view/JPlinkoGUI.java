@@ -18,6 +18,7 @@ import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.InputStream;
+import java.util.ArrayList;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -34,6 +35,7 @@ public class JPlinkoGUI extends JFrame {
     private RoundedToggleButton manualToggle, autoToggle, lowRisk, mediumRisk, highRisk;
     private JLabel riskLabel, rowLabel, betAmountLabel, balanceLabel;
     private JSlider rowSlider;
+
 
     public JPlinkoGUI() {
         super("JPlinkoGUI");
@@ -279,80 +281,85 @@ public class JPlinkoGUI extends JFrame {
     }
 
     private void setRightPanel() {
-    loadBackgroundImage();
-    JPanel pyramidPanel = new JPanel() {
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            Graphics2D g2d = (Graphics2D) g;
+        loadBackgroundImage();
+        JPanel pyramidPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g;
 
-            if (backgroundImage != null) {
-                g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+                if (backgroundImage != null) {
+                    g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+                }
+
+                int rows = 16;
+                int panelWidth = getWidth();
+                int panelHeight = getHeight();
+                int startX = panelWidth / 2;
+                int gap = panelWidth / 35;
+                int startY = (panelHeight - ((rows + 2) * gap)) / 2;
+
+                createPyramid(this, g2d, rows);
+                createContainers(this, startX - (rows * gap / 2), startY + (rows * gap) + 15, gap, rows);
+
             }
+        };
 
-            int rows = 16;
-            int panelWidth = getWidth();
-            int panelHeight = getHeight();
-            int startX = panelWidth / 2;
-            int gap = panelWidth / 35;
-            int startY = (panelHeight - ((rows + 2) * gap)) / 2;
+        pyramidPanel.setPreferredSize(new Dimension(screenSize.width, screenSize.height));
+        pyramidPanel.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                pyramidPanel.repaint();
+            }
+        });
 
-            createPyramid(this, g2d, rows);
-            createContainers(g2d, startX - (rows * gap / 2), startY + (rows * gap) + 15, gap, rows);
+        add(pyramidPanel, BorderLayout.CENTER);
+    }
 
-        }
-    };
+    private void createPyramid(JPanel pyramidPanel, Graphics2D g2d, int rows) {
+        int panelWidth = pyramidPanel.getWidth();
+        int panelHeight = pyramidPanel.getHeight();
+        int startX = panelWidth / 2;
+        int gap = panelWidth / 35;
+        int startY = (panelHeight - ((rows + 2) * gap)) / 2;
 
-    pyramidPanel.setPreferredSize(new Dimension(screenSize.width, screenSize.height));
-    pyramidPanel.addComponentListener(new ComponentAdapter() {
-        @Override
-        public void componentResized(ComponentEvent e) {
-            pyramidPanel.repaint(); 
-        }
-    });
-
-    add(pyramidPanel, BorderLayout.CENTER);
-}
-
-private void createPyramid(JPanel pyramidPanel, Graphics2D g2d, int rows) {
-    int panelWidth = pyramidPanel.getWidth();
-    int panelHeight = pyramidPanel.getHeight();
-    int startX = panelWidth / 2;
-    int gap = panelWidth / 35;
-    int startY = (panelHeight - ((rows + 2) * gap)) / 2;
-
-    for (int i = 2; i < rows + 2; i++) {
-        int offsetX = startX - (i * gap / 2);
-        for (int j = 0; j <= i; j++) {
-            BallIcon nail = new BallIcon(8, Color.YELLOW);
-            nail.paintIcon(this, g2d, offsetX + j * gap, startY + i * gap);
+        for (int i = 2; i < rows + 2; i++) {
+            int offsetX = startX - (i * gap / 2);
+            for (int j = 0; j <= i; j++) {
+                BallIcon nail = new BallIcon(8, Color.YELLOW);
+                nail.paintIcon(this, g2d, offsetX + j * gap, startY + i * gap);
+            }
         }
     }
-}
 
-private void createContainers(Graphics2D g2d, int startX, int startY, int gap, int rows) {
-    int containerWidth = gap; // Stessa larghezza del gap tra i pioli
-    int containerHeight = 25; // Altezza del contenitore
-    int numContainers = rows + 1; // Numero di contenitori = numero di pioli dell'ultima riga + 1
+   private void createContainers(JPanel pyramidPanel, int startX, int startY, int gap, int rows) {
+    // Rimuovi tutte le JLabel esistenti
+    pyramidPanel.removeAll();
 
-    // 🔹 Calcoliamo il punto iniziale correggendo la posizione
-    int containerStartX = startX - ((numContainers * containerWidth) / 2) + (containerWidth / 2)+220;
-    int containerStartY = startY + 30; // 🔥 Abbassiamo ancora un po'
+    int containerWidth = gap;
+    int containerHeight = 25;
+    int numContainers = rows + 1;
 
-    g2d.setColor(Color.GRAY);
+    int containerStartX = startX - ((numContainers * containerWidth) / 2) + (containerWidth / 2) + 220;
+    int containerStartY = startY + 30;
+
     for (int i = 0; i < numContainers; i++) {
-        int containerX = containerStartX + i * containerWidth;
-        g2d.fillRect(containerX, containerStartY, containerWidth, containerHeight);
+        JLabel containerLabel = new JLabel("x" + (i + 1), SwingConstants.CENTER); // Esempio di moltiplicatore
+        containerLabel.setOpaque(true);
+        containerLabel.setBackground(Color.GRAY);
+        containerLabel.setForeground(Color.WHITE);
+        containerLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        containerLabel.setPreferredSize(new Dimension(containerWidth, containerHeight));
 
-        g2d.setColor(Color.BLACK);
-        g2d.drawRect(containerX, containerStartY, containerWidth, containerHeight);
-        g2d.setColor(Color.GRAY);
+        containerLabel.setBounds(containerStartX + i * containerWidth, containerStartY, containerWidth, containerHeight);
+
+        pyramidPanel.add(containerLabel);
     }
+
+    // Rivalida e ridisegna il pannello
+    pyramidPanel.revalidate();
+    pyramidPanel.repaint();
 }
-
-
-
-
 
     public void handleManual(ItemEvent e) {
         //to do
