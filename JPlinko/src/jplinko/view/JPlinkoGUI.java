@@ -279,49 +279,80 @@ public class JPlinkoGUI extends JFrame {
     }
 
     private void setRightPanel() {
+    loadBackgroundImage();
+    JPanel pyramidPanel = new JPanel() {
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2d = (Graphics2D) g;
 
-        loadBackgroundImage();
-        JPanel pyramidPanel = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                Graphics2D g2d = (Graphics2D) g;
-
-                if (backgroundImage != null) {
-                    g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
-                }
-                createPyramid(this, g2d, 16);
-
+            if (backgroundImage != null) {
+                g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
             }
-        };
-        pyramidPanel.setPreferredSize(new Dimension(screenSize.width, screenSize.height));
-        pyramidPanel.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                pyramidPanel.repaint(); // Ridisegna la piramide
-            }
-        });
 
-        add(pyramidPanel, BorderLayout.CENTER);
+            int rows = 16;
+            int panelWidth = getWidth();
+            int panelHeight = getHeight();
+            int startX = panelWidth / 2;
+            int gap = panelWidth / 35;
+            int startY = (panelHeight - ((rows + 2) * gap)) / 2;
 
-    }
+            createPyramid(this, g2d, rows);
+            createContainers(g2d, startX - (rows * gap / 2), startY + (rows * gap) + 15, gap, rows);
 
-    private void createPyramid(JPanel pyramidPanel, Graphics2D g2d, int rows) {
+        }
+    };
 
-        int panelWidth = pyramidPanel.getWidth();
-        int panelHeight = pyramidPanel.getHeight();
-        int startX = panelWidth / 2;
-        int gap = panelWidth / 40; // Gap proporzionale alla larghezza del pannello
-        int startY = (panelHeight - ((rows + 2) * gap)) / 2;
+    pyramidPanel.setPreferredSize(new Dimension(screenSize.width, screenSize.height));
+    pyramidPanel.addComponentListener(new ComponentAdapter() {
+        @Override
+        public void componentResized(ComponentEvent e) {
+            pyramidPanel.repaint(); 
+        }
+    });
 
-        for (int i = 2; i < rows + 2; i++) {
-            int offsetX = startX - (i * gap / 2);
-            for (int j = 0; j <= i; j++) {
-                BallIcon nail = new BallIcon(8, Color.YELLOW);
-                nail.paintIcon(this, g2d, offsetX + j * gap, startY + i * gap);
-            }
+    add(pyramidPanel, BorderLayout.CENTER);
+}
+
+private void createPyramid(JPanel pyramidPanel, Graphics2D g2d, int rows) {
+    int panelWidth = pyramidPanel.getWidth();
+    int panelHeight = pyramidPanel.getHeight();
+    int startX = panelWidth / 2;
+    int gap = panelWidth / 35;
+    int startY = (panelHeight - ((rows + 2) * gap)) / 2;
+
+    for (int i = 2; i < rows + 2; i++) {
+        int offsetX = startX - (i * gap / 2);
+        for (int j = 0; j <= i; j++) {
+            BallIcon nail = new BallIcon(8, Color.YELLOW);
+            nail.paintIcon(this, g2d, offsetX + j * gap, startY + i * gap);
         }
     }
+}
+
+private void createContainers(Graphics2D g2d, int startX, int startY, int gap, int rows) {
+    int containerWidth = gap; // Stessa larghezza del gap tra i pioli
+    int containerHeight = 25; // Altezza del contenitore
+    int numContainers = rows + 1; // Numero di contenitori = numero di pioli dell'ultima riga + 1
+
+    // 🔹 Calcoliamo il punto iniziale correggendo la posizione
+    int containerStartX = startX - ((numContainers * containerWidth) / 2) + (containerWidth / 2)+220;
+    int containerStartY = startY + 30; // 🔥 Abbassiamo ancora un po'
+
+    g2d.setColor(Color.GRAY);
+    for (int i = 0; i < numContainers; i++) {
+        int containerX = containerStartX + i * containerWidth;
+        g2d.fillRect(containerX, containerStartY, containerWidth, containerHeight);
+
+        g2d.setColor(Color.BLACK);
+        g2d.drawRect(containerX, containerStartY, containerWidth, containerHeight);
+        g2d.setColor(Color.GRAY);
+    }
+}
+
+
+
+
 
     public void handleManual(ItemEvent e) {
         //to do
