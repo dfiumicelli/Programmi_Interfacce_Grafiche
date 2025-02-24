@@ -24,7 +24,7 @@ public class RoundedToggleButton extends JToggleButton {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     
         Color defaultBg = UIManager.getColor("ToggleButton.background");
-        Color selectedBg = new Color(215,215,215);
+        Color selectedBg = new Color(155,161,157);
         Color borderColor = UIManager.getColor("ToggleButton.border");
 
         // Cambia colore se è premuto
