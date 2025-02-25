@@ -36,7 +36,6 @@ public class JPlinkoGUI extends JFrame {
     private JLabel riskLabel, rowLabel, betAmountLabel, balanceLabel;
     private JSlider rowSlider;
 
-
     public JPlinkoGUI() {
         super("JPlinkoGUI");
         this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -292,7 +291,7 @@ public class JPlinkoGUI extends JFrame {
                     g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
                 }
 
-                int rows = 16;
+                int rows = 12;
                 int panelWidth = getWidth();
                 int panelHeight = getHeight();
                 int startX = panelWidth / 2;
@@ -300,7 +299,7 @@ public class JPlinkoGUI extends JFrame {
                 int startY = (panelHeight - ((rows + 2) * gap)) / 2;
 
                 createPyramid(this, g2d, rows);
-                createContainers(this, startX - (rows * gap / 2), startY + (rows * gap) + 15, gap, rows);
+                createContainers(this, startX, startY, gap, rows); // Disegna i contenitori
 
             }
         };
@@ -332,28 +331,33 @@ public class JPlinkoGUI extends JFrame {
         }
     }
 
-   private void createContainers(JPanel pyramidPanel, int startX, int startY, int gap, int rows) {
+    private void createContainers(JPanel pyramidPanel, int startX, int startY, int gap, int rows) {
     // Rimuovi tutte le JLabel esistenti
     pyramidPanel.removeAll();
-    
+
     int width = (int) (screenSize.width * 0.8);
-    int height = (screenSize.height);
-    
+    int height = screenSize.height;
+
     int containerWidth = gap;
-    int containerHeight = (int)(height*0.03);
+    int containerHeight = (int) (height * 0.03);
     int numContainers = rows + 1;
 
-    int containerStartX = startX - ((numContainers * containerWidth) / 2) + (containerWidth / 2) + (int)(width*0.216);
-    int containerStartY = startY + (int)(height*0.04);
+    // Calcola la posizione del primo piolo dell'ultima riga
+    int firstPegX = startX - (rows * gap / 2)+4; // Posizione X del primo piolo dell'ultima riga
+
+    // Calcola la posizione di partenza dei contenitori
+    int containerStartX = firstPegX - (containerWidth / 2); // Allinea i contenitori al centro del primo piolo
+    int containerStartY = startY + (rows * gap) + (int)(height*0.06);
 
     for (int i = 0; i < numContainers; i++) {
         JLabel containerLabel = new JLabel("x" + (i + 1), SwingConstants.CENTER);
         containerLabel.setOpaque(true);
-        containerLabel.setBackground(Color.GRAY);
+        containerLabel.setBackground(menuPanel.getBackground());
         containerLabel.setForeground(Color.WHITE);
-        containerLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        containerLabel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
         containerLabel.setPreferredSize(new Dimension(containerWidth, containerHeight));
 
+        // Posiziona i contenitori in base al primo piolo
         containerLabel.setBounds(containerStartX + i * containerWidth, containerStartY, containerWidth, containerHeight);
 
         pyramidPanel.add(containerLabel);
