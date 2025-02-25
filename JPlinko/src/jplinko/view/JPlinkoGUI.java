@@ -291,7 +291,7 @@ public class JPlinkoGUI extends JFrame {
                     g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
                 }
 
-                int rows = 12;
+                int rows = 16;
                 int panelWidth = getWidth();
                 int panelHeight = getHeight();
                 int startX = panelWidth / 2;
