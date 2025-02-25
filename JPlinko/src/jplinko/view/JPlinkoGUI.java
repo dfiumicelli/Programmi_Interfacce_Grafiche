@@ -335,16 +335,19 @@ public class JPlinkoGUI extends JFrame {
    private void createContainers(JPanel pyramidPanel, int startX, int startY, int gap, int rows) {
     // Rimuovi tutte le JLabel esistenti
     pyramidPanel.removeAll();
-
+    
+    int width = (int) (screenSize.width * 0.8);
+    int height = (screenSize.height);
+    
     int containerWidth = gap;
-    int containerHeight = 25;
+    int containerHeight = (int)(height*0.03);
     int numContainers = rows + 1;
 
-    int containerStartX = startX - ((numContainers * containerWidth) / 2) + (containerWidth / 2) + 220;
-    int containerStartY = startY + 30;
+    int containerStartX = startX - ((numContainers * containerWidth) / 2) + (containerWidth / 2) + (int)(width*0.216);
+    int containerStartY = startY + (int)(height*0.04);
 
     for (int i = 0; i < numContainers; i++) {
-        JLabel containerLabel = new JLabel("x" + (i + 1), SwingConstants.CENTER); // Esempio di moltiplicatore
+        JLabel containerLabel = new JLabel("x" + (i + 1), SwingConstants.CENTER);
         containerLabel.setOpaque(true);
         containerLabel.setBackground(Color.GRAY);
         containerLabel.setForeground(Color.WHITE);
