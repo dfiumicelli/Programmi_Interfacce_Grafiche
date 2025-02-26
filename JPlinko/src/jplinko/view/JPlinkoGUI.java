@@ -71,24 +71,27 @@ public class JPlinkoGUI extends JFrame {
 
     private void setLeftPanel() {
 
-        menuPanel = new JPanel();
-        menuPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 40));
+        menuPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10); // Margini tra i componenti
+        gbc.fill = GridBagConstraints.HORIZONTAL; // Riempi orizzontalmente
+        gbc.weightx = 1.0; // Espandi i componenti orizzontalmente
         int width = (int) (screenSize.width * 0.2);
         int height = (screenSize.height);
         menuPanel.setPreferredSize(new Dimension(width, height));
         menuPanel.setBackground(new Color(1, 56, 156));
 
-        createVersionPanel(width, height);
+        createVersionPanel(width, height, gbc);
 
-        createRiskPanel(width, height);
+        createRiskPanel(width, height, gbc);
 
-        createRowSlider(width, height);
+        createRowSlider(width, height, gbc);
 
-        createBetSlider(width, height);
+        createBetSlider(width, height, gbc);
 
-        createBetPanel(width, height);
+        createBetPanel(width, height, gbc);
 
-        createBetButton(width, height);
+        createBetButton(width, height, gbc);
 
         menuPanel.addComponentListener(new ComponentAdapter() {
             @Override
@@ -123,7 +126,7 @@ public class JPlinkoGUI extends JFrame {
 
     }
 
-    private void createVersionPanel(int width, int height) {
+    private void createVersionPanel(int width, int height, GridBagConstraints gbc) {
         versionPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbcVersion = new GridBagConstraints();
         gbcVersion.fill = GridBagConstraints.HORIZONTAL;
@@ -150,10 +153,11 @@ public class JPlinkoGUI extends JFrame {
         versionPanel.add(manualToggle, gbcVersion);
         gbcVersion.gridx++;
         versionPanel.add(autoToggle, gbcVersion);
-        menuPanel.add(versionPanel, BorderLayout.CENTER);
+        gbc.gridy = 0; // Posizione nella griglia
+        menuPanel.add(versionPanel, gbc);
     }
 
-    private void createRiskPanel(int width, int height) {
+    private void createRiskPanel(int width, int height, GridBagConstraints gbc) {
         riskPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbcRisk = new GridBagConstraints();
         gbcRisk.fill = GridBagConstraints.HORIZONTAL;
@@ -184,11 +188,12 @@ public class JPlinkoGUI extends JFrame {
         gbcRisk.gridx++;
         riskPanel.add(highRisk, gbcRisk);
         gbcRisk.gridx++;
-
-        menuPanel.add(riskPanel, BorderLayout.SOUTH);
+        gbc.gridy++; // Posizione nella griglia
+        menuPanel.add(riskPanel, gbc);
+        
     }
 
-    private void createRowSlider(int width, int height) {
+    private void createRowSlider(int width, int height, GridBagConstraints gbc) {
         rowPanel = new JPanel();
         rowPanel.setLayout(new BorderLayout());
         rowPanel.setPreferredSize(new Dimension((int) (width * 0.9), (int) (height * 0.1)));
@@ -216,10 +221,11 @@ public class JPlinkoGUI extends JFrame {
         rowPanel.add(rowSlider, BorderLayout.CENTER);
 
         // Aggiungiamo il pannello al menu principale
-        menuPanel.add(rowPanel, BorderLayout.SOUTH);
+        gbc.gridy++; // Posizione nella griglia
+        menuPanel.add(rowPanel, gbc);
     }
 
-    private void createBetSlider(int width, int height) {
+    private void createBetSlider(int width, int height, GridBagConstraints gbc) {
 
         betSliderPanel = new JPanel();
         betSliderPanel.setLayout(new BorderLayout());
@@ -248,10 +254,11 @@ public class JPlinkoGUI extends JFrame {
         betSliderPanel.add(betSlider, BorderLayout.CENTER);
         betSliderPanel.setVisible(false);
         // Aggiungiamo il pannello al menu principale
-        menuPanel.add(betSliderPanel, BorderLayout.SOUTH);
+        gbc.gridy++; // Posizione nella griglia
+        menuPanel.add(betSliderPanel, gbc);
     }
 
-    public void createBetPanel(int width, int height) {
+    public void createBetPanel(int width, int height, GridBagConstraints gbc) {
         // Bet Amount Panel in stile Plinko
         betAmountPanel = new JPanel(new GridBagLayout());
         betAmountPanel.setPreferredSize(new Dimension((int) (width * 0.9), (int) (height * 0.08)));
@@ -300,19 +307,22 @@ public class JPlinkoGUI extends JFrame {
         betAmountPanel.add(increaseBet, gbcBet);
 
         // Aggiungi il pannello del Bet Amount al menuPanel
-        menuPanel.add(betAmountPanel);
+        gbc.gridy++; // Posizione nella griglia
+        menuPanel.add(betAmountPanel, gbc);
 
     }
 
-    public void createBetButton(int width, int height) {
+    public void createBetButton(int width, int height, GridBagConstraints gbc) {
         betButton = new RoundedButton("BET", (int) (height * 0.08));
         betButton.setPreferredSize(new Dimension((int) (width * 0.9), (int) (height * 0.08)));
         betButton.setForeground(Color.BLUE);
-        menuPanel.add(betButton);
+        gbc.gridy++; // Posizione nella griglia
+        menuPanel.add(betButton, gbc);
         balanceLabel = new JLabel("Demo Balance: €5000.00", SwingConstants.CENTER);
         balanceLabel.setForeground(Color.WHITE);
         balanceLabel.setPreferredSize(new Dimension((int) (width * 0.9), (int) (height * 0.05)));
-        menuPanel.add(balanceLabel);
+        gbc.gridy++; // Posizione nella griglia
+        menuPanel.add(balanceLabel, gbc);
     }
 
     private void setRightPanel() {
