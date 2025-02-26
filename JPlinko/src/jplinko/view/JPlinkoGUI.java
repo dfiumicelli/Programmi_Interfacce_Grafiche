@@ -31,11 +31,11 @@ public class JPlinkoGUI extends JFrame {
     private BufferedImage backgroundImage;
     private BufferedImage logoImage;
     private final Dimension screenSize;
-    private JPanel menuPanel, versionPanel, riskPanel, rowPanel, betAmountPanel;
+    private JPanel menuPanel, versionPanel, riskPanel, rowPanel, betAmountPanel, betSliderPanel;
     private RoundedButton betButton, increaseBet, decreaseBet;
     private RoundedToggleButton manualToggle, autoToggle, lowRisk, mediumRisk, highRisk;
-    private JLabel riskLabel, rowLabel, betAmountLabel, balanceLabel;
-    private JSlider rowSlider;
+    private JLabel riskLabel, rowLabel, betAmountLabel, balanceLabel, betLabel;
+    private JSlider rowSlider, betSlider;
 
     public JPlinkoGUI() {
         super("JPlinkoGUI");
@@ -84,6 +84,8 @@ public class JPlinkoGUI extends JFrame {
 
         createRowSlider(width, height);
 
+        createBetSlider(width, height);
+
         createBetPanel(width, height);
 
         createBetButton(width, height);
@@ -105,6 +107,7 @@ public class JPlinkoGUI extends JFrame {
                 highRisk.setPreferredSize(new Dimension((int) (newWidth * 0.25), (int) (newHeight * 0.05)));
                 riskPanel.setPreferredSize(new Dimension((int) (newWidth * 0.9), (int) (newHeight * 0.1)));
                 rowPanel.setPreferredSize(new Dimension((int) (newWidth * 0.9), (int) (newHeight * 0.1)));
+                betSliderPanel.setPreferredSize(new Dimension((int) (newWidth * 0.9), (int) (newHeight * 0.1)));
                 betAmountPanel.setPreferredSize(new Dimension((int) (newWidth * 0.9), (int) (newHeight * 0.08)));
                 decreaseBet.setPreferredSize(new Dimension((int) (newWidth * 0.25), (int) (newHeight * 0.05)));
                 increaseBet.setPreferredSize(new Dimension((int) (newWidth * 0.25), (int) (newHeight * 0.05)));
@@ -205,7 +208,7 @@ public class JPlinkoGUI extends JFrame {
         rowSlider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                rowLabel.setText("Rows: " + rowSlider.getValue());
+                rowLabel.setText("  Rows: " + rowSlider.getValue());
             }
         });
         // Aggiungiamo i componenti al pannello
@@ -214,6 +217,38 @@ public class JPlinkoGUI extends JFrame {
 
         // Aggiungiamo il pannello al menu principale
         menuPanel.add(rowPanel, BorderLayout.SOUTH);
+    }
+
+    private void createBetSlider(int width, int height) {
+
+        betSliderPanel = new JPanel();
+        betSliderPanel.setLayout(new BorderLayout());
+        betSliderPanel.setPreferredSize(new Dimension((int) (width * 0.9), (int) (height * 0.1)));
+        // Creiamo lo slider 
+        betSlider = new JSlider(JSlider.HORIZONTAL, 5, 30, 5);
+        betSlider.setMajorTickSpacing(5);
+        betSlider.setPaintTicks(true);
+        betSlider.setPaintLabels(true);
+        betSlider.setBackground(menuPanel.getBackground());
+        betSlider.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
+        betSlider.setForeground(Color.WHITE);
+
+        // Etichetta per mostrare il valore selezionato
+        betLabel = new JLabel("  Number of balls: " + rowSlider.getValue());
+
+        // Aggiungiamo un listener per aggiornare l'etichetta
+        betSlider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                betLabel.setText("  Number of balls: " + betSlider.getValue());
+            }
+        });
+        // Aggiungiamo i componenti al pannello
+        betSliderPanel.add(betLabel, BorderLayout.NORTH);
+        betSliderPanel.add(betSlider, BorderLayout.CENTER);
+        betSliderPanel.setVisible(false);
+        // Aggiungiamo il pannello al menu principale
+        menuPanel.add(betSliderPanel, BorderLayout.SOUTH);
     }
 
     public void createBetPanel(int width, int height) {
@@ -282,7 +317,7 @@ public class JPlinkoGUI extends JFrame {
 
     private void setRightPanel() {
         loadBackgroundImage();
-        
+
         JPanel pyramidPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -309,7 +344,7 @@ public class JPlinkoGUI extends JFrame {
 
                     // Calcola la posizione X e Y per centrare l'immagine sopra la piramide
                     int imageX = (panelWidth - imageWidth) / 2;
-                    int imageY = -(int)(panelHeight*0.04); // 10 è un offset per distanziare l'immagine dalla piramide
+                    int imageY = -(int) (panelHeight * 0.04); // 10 è un offset per distanziare l'immagine dalla piramide
 
                     // Disegna l'immagine
                     g2d.drawImage(logoImage, imageX, imageY, null);
@@ -382,11 +417,11 @@ public class JPlinkoGUI extends JFrame {
     }
 
     public void handleManual(ItemEvent e) {
-        //to do
+        betSliderPanel.setVisible(false);
     }
 
     public void handleAuto(ItemEvent e) {
-        //to do
+        betSliderPanel.setVisible(true);
     }
 
     public void loadLogoImage(int panelHeigth) {
