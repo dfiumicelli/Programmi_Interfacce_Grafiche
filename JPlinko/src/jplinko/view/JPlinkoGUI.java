@@ -190,7 +190,7 @@ public class JPlinkoGUI extends JFrame {
         gbcRisk.gridx++;
         gbc.gridy++; // Posizione nella griglia
         menuPanel.add(riskPanel, gbc);
-        
+
     }
 
     private void createRowSlider(int width, int height, GridBagConstraints gbc) {
@@ -316,12 +316,16 @@ public class JPlinkoGUI extends JFrame {
         betButton = new RoundedButton("BET", (int) (height * 0.08));
         betButton.setPreferredSize(new Dimension((int) (width * 0.9), (int) (height * 0.08)));
         betButton.setForeground(Color.BLUE);
-        gbc.gridy++; // Posizione nella griglia
+        gbc.gridy = 7; // Ultima riga disponibile
+        gbc.weighty = 1.0; // Espandi lo spazio verticale sopra i componenti
+        gbc.anchor = GridBagConstraints.PAGE_END; // Ancora i componenti in basso
         menuPanel.add(betButton, gbc);
+
         balanceLabel = new JLabel("Demo Balance: €5000.00", SwingConstants.CENTER);
         balanceLabel.setForeground(Color.WHITE);
         balanceLabel.setPreferredSize(new Dimension((int) (width * 0.9), (int) (height * 0.05)));
-        gbc.gridy++; // Posizione nella griglia
+        gbc.gridy = 8; // Riga successiva
+        gbc.weighty = 0.0; // Non espandere ulteriormente lo spazio verticale
         menuPanel.add(balanceLabel, gbc);
     }
 
