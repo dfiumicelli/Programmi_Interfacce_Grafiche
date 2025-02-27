@@ -54,17 +54,6 @@ public class JPlinkoGUI extends JFrame {
         setLeftPanel();
         setRightPanel();
 
-        addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                // Ridimensiona il pannello di sinistra in base alla nuova dimensione della finestra
-                int newWidth = getWidth();
-                int newHeight = getHeight();
-                menuPanel.setPreferredSize(new Dimension((int) (newWidth * 0.2), newHeight)); // 20% della larghezza
-                menuPanel.revalidate(); // Aggiorna il layout
-            }
-        });
-
         setVisible(true);
 
     }
@@ -98,29 +87,11 @@ public class JPlinkoGUI extends JFrame {
         menuPanel.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
-                // Ricalcola le dimensioni dei componenti in base alla nuova dimensione del pannello
-                int newWidth = menuPanel.getWidth();
-                int newHeight = menuPanel.getHeight();
-
-                // Ridimensiona i pulsanti
-                betButton.setPreferredSize(new Dimension((int) (newWidth * 0.9), (int) (newHeight * 0.07)));
-                versionPanel.setPreferredSize(new Dimension((int) (newWidth * 0.9), (int) (newHeight * 0.08)));
-                manualToggle.setPreferredSize(new Dimension((int) (newWidth * 0.4), (int) (newHeight * 0.05)));
-                autoToggle.setPreferredSize(new Dimension((int) (newWidth * 0.4), (int) (newHeight * 0.05)));
-                lowRisk.setPreferredSize(new Dimension((int) (newWidth * 0.25), (int) (newHeight * 0.05)));
-                mediumRisk.setPreferredSize(new Dimension((int) (newWidth * 0.25), (int) (newHeight * 0.05)));
-                highRisk.setPreferredSize(new Dimension((int) (newWidth * 0.25), (int) (newHeight * 0.05)));
-                riskPanel.setPreferredSize(new Dimension((int) (newWidth * 0.9), (int) (newHeight * 0.1)));
-                rowPanel.setPreferredSize(new Dimension((int) (newWidth * 0.9), (int) (newHeight * 0.1)));
-                betSliderPanel.setPreferredSize(new Dimension((int) (newWidth * 0.9), (int) (newHeight * 0.1)));
-                betAmountPanel.setPreferredSize(new Dimension((int) (newWidth * 0.9), (int) (newHeight * 0.08)));
-                decreaseBet.setPreferredSize(new Dimension((int) (newWidth * 0.25), (int) (newHeight * 0.05)));
-                increaseBet.setPreferredSize(new Dimension((int) (newWidth * 0.25), (int) (newHeight * 0.05)));
-                betAmountLabel.setPreferredSize(new Dimension((int) (newWidth * 0.25), (int) (newHeight * 0.05)));
-                balanceLabel.setPreferredSize(new Dimension((int) (newWidth * 0.9), (int) (newHeight * 0.05)));
-                // Ridisegna il pannello
-                menuPanel.revalidate();
-                menuPanel.repaint();
+                // Ridimensiona il pannello di sinistra in base alla nuova dimensione della finestra
+                int newWidth = getWidth();
+                int newHeight = getHeight();
+                menuPanel.setPreferredSize(new Dimension((int) (newWidth * 0.2), newHeight)); // 20% della larghezza
+                menuPanel.revalidate(); // Aggiorna il layout
             }
         });
 
@@ -156,6 +127,25 @@ public class JPlinkoGUI extends JFrame {
         gbcVersion.gridx++;
         versionPanel.add(autoToggle, gbcVersion);
         gbc.gridy = 0; // Posizione nella griglia
+
+        versionPanel.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                // Ricalcola le dimensioni dei componenti in base alla nuova dimensione del pannello
+                int newWidth = menuPanel.getWidth();
+                int newHeight = menuPanel.getHeight();
+
+                // Ridimensiona i pulsanti
+                versionPanel.setPreferredSize(new Dimension((int) (newWidth * 0.9), (int) (newHeight * 0.08)));
+                manualToggle.setPreferredSize(new Dimension((int) (newWidth * 0.4), (int) (newHeight * 0.05)));
+                autoToggle.setPreferredSize(new Dimension((int) (newWidth * 0.4), (int) (newHeight * 0.05)));
+
+                // Ridisegna il pannello
+                versionPanel.revalidate();
+                versionPanel.repaint();
+            }
+        });
+
         menuPanel.add(versionPanel, gbc);
     }
 
@@ -191,6 +181,26 @@ public class JPlinkoGUI extends JFrame {
         riskPanel.add(highRisk, gbcRisk);
         gbcRisk.gridx++;
         gbc.gridy++; // Posizione nella griglia
+
+        riskPanel.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                // Ricalcola le dimensioni dei componenti in base alla nuova dimensione del pannello
+                int newWidth = menuPanel.getWidth();
+                int newHeight = menuPanel.getHeight();
+
+                // Ridimensiona i pulsanti
+                lowRisk.setPreferredSize(new Dimension((int) (newWidth * 0.25), (int) (newHeight * 0.05)));
+                mediumRisk.setPreferredSize(new Dimension((int) (newWidth * 0.25), (int) (newHeight * 0.05)));
+                highRisk.setPreferredSize(new Dimension((int) (newWidth * 0.25), (int) (newHeight * 0.05)));
+                riskPanel.setPreferredSize(new Dimension((int) (newWidth * 0.9), (int) (newHeight * 0.1)));
+
+                // Ridisegna il pannello
+                riskPanel.revalidate();
+                riskPanel.repaint();
+            }
+        });
+
         menuPanel.add(riskPanel, gbc);
 
     }
@@ -224,6 +234,23 @@ public class JPlinkoGUI extends JFrame {
 
         // Aggiungiamo il pannello al menu principale
         gbc.gridy++; // Posizione nella griglia
+
+        rowPanel.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                // Ricalcola le dimensioni dei componenti in base alla nuova dimensione del pannello
+                int newWidth = menuPanel.getWidth();
+                int newHeight = menuPanel.getHeight();
+
+                // Ridimensiona i pulsanti
+                rowPanel.setPreferredSize(new Dimension((int) (newWidth * 0.9), (int) (newHeight * 0.1)));
+
+                // Ridisegna il pannello
+                rowPanel.revalidate();
+                rowPanel.repaint();
+            }
+        });
+
         menuPanel.add(rowPanel, gbc);
     }
 
@@ -257,6 +284,23 @@ public class JPlinkoGUI extends JFrame {
         betSliderPanel.setVisible(false);
         // Aggiungiamo il pannello al menu principale
         gbc.gridy++; // Posizione nella griglia
+
+        betSliderPanel.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                // Ricalcola le dimensioni dei componenti in base alla nuova dimensione del pannello
+                int newWidth = menuPanel.getWidth();
+                int newHeight = menuPanel.getHeight();
+
+                // Ridimensiona i pulsanti
+                betSliderPanel.setPreferredSize(new Dimension((int) (newWidth * 0.9), (int) (newHeight * 0.1)));
+
+                // Ridisegna il pannello
+                betSliderPanel.revalidate();
+                betSliderPanel.repaint();
+            }
+        });
+
         menuPanel.add(betSliderPanel, gbc);
     }
 
@@ -316,6 +360,26 @@ public class JPlinkoGUI extends JFrame {
 
         // Aggiungi il pannello del Bet Amount al menuPanel
         gbc.gridy++; // Posizione nella griglia
+
+        betAmountPanel.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                // Ricalcola le dimensioni dei componenti in base alla nuova dimensione del pannello
+                int newWidth = menuPanel.getWidth();
+                int newHeight = menuPanel.getHeight();
+
+                // Ridimensiona i pulsanti
+                betAmountPanel.setPreferredSize(new Dimension((int) (newWidth * 0.9), (int) (newHeight * 0.08)));
+                decreaseBet.setPreferredSize(new Dimension((int) (newWidth * 0.25), (int) (newHeight * 0.05)));
+                increaseBet.setPreferredSize(new Dimension((int) (newWidth * 0.25), (int) (newHeight * 0.05)));
+                betAmountLabel.setPreferredSize(new Dimension((int) (newWidth * 0.25), (int) (newHeight * 0.05)));
+
+                // Ridisegna il pannello
+                betAmountPanel.revalidate();
+                betAmountPanel.repaint();
+            }
+        });
+
         menuPanel.add(betAmountPanel, gbc);
 
     }
@@ -334,6 +398,23 @@ public class JPlinkoGUI extends JFrame {
         balanceLabel.setPreferredSize(new Dimension((int) (width * 0.9), (int) (height * 0.05)));
         gbc.gridy = 8; // Riga successiva
         gbc.weighty = 0.0; // Non espandere ulteriormente lo spazio verticale
+
+        menuPanel.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                // Ricalcola le dimensioni dei componenti in base alla nuova dimensione del pannello
+                int newWidth = menuPanel.getWidth();
+                int newHeight = menuPanel.getHeight();
+
+                // Ridimensiona i pulsanti
+                betButton.setPreferredSize(new Dimension((int) (newWidth * 0.9), (int) (newHeight * 0.07)));
+                balanceLabel.setPreferredSize(new Dimension((int) (newWidth * 0.9), (int) (newHeight * 0.05)));
+                // Ridisegna il pannello
+                menuPanel.revalidate();
+                menuPanel.repaint();
+            }
+        });
+
         menuPanel.add(balanceLabel, gbc);
     }
 
