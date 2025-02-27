@@ -79,7 +79,9 @@ public class JPlinkoGUI extends JFrame {
         int width = (int) (screenSize.width * 0.2);
         int height = (screenSize.height);
         menuPanel.setPreferredSize(new Dimension(width, height));
-        menuPanel.setBackground(new Color(1, 56, 156));
+        //menuPanel.setBackground(new Color(1, 56, 156));
+
+        menuPanel.setBackground(new Color(1, 38, 126));
 
         createVersionPanel(width, height, gbc);
 
@@ -87,9 +89,9 @@ public class JPlinkoGUI extends JFrame {
 
         createRowSlider(width, height, gbc);
 
-        createBetSlider(width, height, gbc);
-
         createBetPanel(width, height, gbc);
+
+        createBetSlider(width, height, gbc);
 
         createBetButton(width, height, gbc);
 
@@ -101,7 +103,7 @@ public class JPlinkoGUI extends JFrame {
                 int newHeight = menuPanel.getHeight();
 
                 // Ridimensiona i pulsanti
-                betButton.setPreferredSize(new Dimension((int) (newWidth * 0.9), (int) (newHeight * 0.08)));
+                betButton.setPreferredSize(new Dimension((int) (newWidth * 0.9), (int) (newHeight * 0.07)));
                 versionPanel.setPreferredSize(new Dimension((int) (newWidth * 0.9), (int) (newHeight * 0.08)));
                 manualToggle.setPreferredSize(new Dimension((int) (newWidth * 0.4), (int) (newHeight * 0.05)));
                 autoToggle.setPreferredSize(new Dimension((int) (newWidth * 0.4), (int) (newHeight * 0.05)));
@@ -276,8 +278,12 @@ public class JPlinkoGUI extends JFrame {
         betAmountLabel = new JLabel("€" + betValues[currentBetIndex[0]], SwingConstants.CENTER);
         betAmountLabel.setForeground(Color.WHITE);
         betAmountLabel.setPreferredSize(new Dimension((int) (width * 0.25), (int) (height * 0.05)));
+        Font font = new Font("Arial", Font.PLAIN, 20); // Aumenta la dimensione del font
+
         // Pulsante per diminuire la puntata
-        decreaseBet = new RoundedButton("-", (int) (height * 0.05));
+        decreaseBet = new RoundedButton("\u25BC", (int) (height * 0.05));
+        decreaseBet.setFont(font);
+        decreaseBet.setForeground(menuPanel.getBackground());
         decreaseBet.setPreferredSize(new Dimension((int) (width * 0.25), (int) (height * 0.05)));
         decreaseBet.addActionListener(e -> {
             if (currentBetIndex[0] > 0) {
@@ -287,7 +293,9 @@ public class JPlinkoGUI extends JFrame {
         });
 
         // Pulsante per aumentare la puntata
-        increaseBet = new RoundedButton("+", (int) (height * 0.05));
+        increaseBet = new RoundedButton("\u25B2", (int) (height * 0.05));
+        increaseBet.setFont(font);
+        increaseBet.setForeground(menuPanel.getBackground());
         increaseBet.setPreferredSize(new Dimension((int) (width * 0.25), (int) (height * 0.05)));
         increaseBet.addActionListener(e -> {
             if (currentBetIndex[0] < betValues.length - 1) {
@@ -313,8 +321,8 @@ public class JPlinkoGUI extends JFrame {
     }
 
     public void createBetButton(int width, int height, GridBagConstraints gbc) {
-        betButton = new RoundedButton("BET", (int) (height * 0.08));
-        betButton.setPreferredSize(new Dimension((int) (width * 0.9), (int) (height * 0.08)));
+        betButton = new RoundedButton("BET", (int) (height * 0.07));
+        betButton.setPreferredSize(new Dimension((int) (width * 0.9), (int) (height * 0.07)));
         betButton.setForeground(Color.BLUE);
         gbc.gridy = 7; // Ultima riga disponibile
         gbc.weighty = 1.0; // Espandi lo spazio verticale sopra i componenti
@@ -358,7 +366,7 @@ public class JPlinkoGUI extends JFrame {
 
                     // Calcola la posizione X e Y per centrare l'immagine sopra la piramide
                     int imageX = (panelWidth - imageWidth) / 2;
-                    int imageY = -(int) (panelHeight * 0.04); // 10 è un offset per distanziare l'immagine dalla piramide
+                    int imageY = -(int) (panelHeight * 0.04);
 
                     // Disegna l'immagine
                     g2d.drawImage(logoImage, imageX, imageY, null);
