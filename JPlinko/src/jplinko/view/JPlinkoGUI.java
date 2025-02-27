@@ -40,6 +40,16 @@ public class JPlinkoGUI extends JFrame {
     public JPlinkoGUI() {
         super("JPlinkoGUI");
         this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        
+        Image logo = loadImage("../utils/logo.png"); // Percorso relativo alla cartella delle risorse
+
+        // Imposta l'icona della finestra
+        if (logo != null) {
+            setIconImage(logo);
+        } else {
+            System.err.println("Logo non trovato!");
+        }
+        
         this.createGUI();
 
     }
@@ -552,6 +562,15 @@ public class JPlinkoGUI extends JFrame {
             e.printStackTrace();
         }
 
+    }
+    
+    private Image loadImage(String path) {
+        try {
+            return new ImageIcon(getClass().getResource(path)).getImage();
+        } catch (Exception e) {
+            System.err.println("Errore durante il caricamento dell'immagine: " + path);
+            return null;
+        }
     }
 
     public static void main(String args[]) throws Exception {
