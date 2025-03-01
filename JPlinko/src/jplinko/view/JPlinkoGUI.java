@@ -34,7 +34,7 @@ public class JPlinkoGUI extends JFrame {
     private JPanel menuPanel, versionPanel, riskPanel, rowPanel, betAmountPanel, betSliderPanel;
     private RoundedButton betButton, increaseBet, decreaseBet;
     private RoundedToggleButton manualToggle, autoToggle, lowRisk, mediumRisk, highRisk;
-    private JLabel riskLabel, rowLabel, betAmountLabel, balanceLabel, betLabel;
+    private JLabel riskLabel, rowLabel, betAmountLabel, balanceLabel, betLabel, betIndicatorLabel;
     private JSlider rowSlider, betSlider;
 
     public JPlinkoGUI() {
@@ -169,7 +169,9 @@ public class JPlinkoGUI extends JFrame {
         gbcRisk.gridy = 0;
         riskLabel = new JLabel("Risk: ");
         riskLabel.setForeground(Color.WHITE);
-        riskPanel.add(riskLabel, gbcRisk);
+        gbc.gridy++;
+        menuPanel.add(riskLabel, gbc);
+        
         gbcRisk.gridy++;
         riskPanel.setBackground(menuPanel.getBackground());
         riskPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
@@ -226,21 +228,24 @@ public class JPlinkoGUI extends JFrame {
         rowSlider.setPaintTicks(true);
         rowSlider.setPaintLabels(true);
         rowSlider.setBackground(menuPanel.getBackground());
-        rowSlider.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
+        rowPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
         rowSlider.setForeground(Color.WHITE);
 
         // Etichetta per mostrare il valore selezionato
-        rowLabel = new JLabel("  Rows: " + rowSlider.getValue());
-
+        rowLabel = new JLabel("Rows: " + rowSlider.getValue());
+        rowLabel.setOpaque(true);
+        rowLabel.setBackground(menuPanel.getBackground());
+        rowLabel.setForeground(Color.WHITE);
         // Aggiungiamo un listener per aggiornare l'etichetta
         rowSlider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                rowLabel.setText("  Rows: " + rowSlider.getValue());
+                rowLabel.setText("Rows: " + rowSlider.getValue());
             }
         });
         // Aggiungiamo i componenti al pannello
-        rowPanel.add(rowLabel, BorderLayout.NORTH);
+        gbc.gridy++;
+        menuPanel.add(rowLabel, gbc);
         rowPanel.add(rowSlider, BorderLayout.CENTER);
 
         // Aggiungiamo il pannello al menu principale
@@ -276,23 +281,27 @@ public class JPlinkoGUI extends JFrame {
         betSlider.setPaintTicks(true);
         betSlider.setPaintLabels(true);
         betSlider.setBackground(menuPanel.getBackground());
-        betSlider.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
+        betSliderPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
         betSlider.setForeground(Color.WHITE);
 
         // Etichetta per mostrare il valore selezionato
-        betLabel = new JLabel("  Number of balls: " + rowSlider.getValue());
-
+        betLabel = new JLabel("Number of balls: " + rowSlider.getValue());
+        betLabel.setOpaque(true);
+        betLabel.setBackground(menuPanel.getBackground());
+        betLabel.setForeground(Color.WHITE);
         // Aggiungiamo un listener per aggiornare l'etichetta
         betSlider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                betLabel.setText("  Number of balls: " + betSlider.getValue());
+                betLabel.setText("Number of balls: " + betSlider.getValue());
             }
         });
         // Aggiungiamo i componenti al pannello
-        betSliderPanel.add(betLabel, BorderLayout.NORTH);
+        gbc.gridy++;
+        menuPanel.add(betLabel, gbc);
         betSliderPanel.add(betSlider, BorderLayout.CENTER);
         betSliderPanel.setVisible(false);
+        betLabel.setVisible(false);
         // Aggiungiamo il pannello al menu principale
         gbc.gridy++; // Posizione nella griglia
 
@@ -325,6 +334,13 @@ public class JPlinkoGUI extends JFrame {
         gbcBet.fill = GridBagConstraints.HORIZONTAL;
         gbcBet.insets = new Insets(5, 5, 5, 5);
         gbcBet.weightx = 1;
+        
+        betIndicatorLabel = new JLabel("Bet Amount:");
+        betIndicatorLabel.setOpaque(true);
+        betIndicatorLabel.setBackground(menuPanel.getBackground());
+        betIndicatorLabel.setForeground(Color.WHITE);
+        gbc.gridy++;
+        menuPanel.add(betIndicatorLabel, gbc);
 
         // Array di valori della puntata
         double[] betValues = {0.10, 0.20, 0.50, 1.00, 2.00, 3.00, 4.00, 5.00, 10.00, 15.00, 25.00, 50.00, 75.00, 100.00};
@@ -399,7 +415,7 @@ public class JPlinkoGUI extends JFrame {
         betButton = new RoundedButton("BET", (int) (height * 0.07));
         betButton.setPreferredSize(new Dimension((int) (width * 0.9), (int) (height * 0.07)));
         betButton.setForeground(Color.BLUE);
-        gbc.gridy = 7; // Ultima riga disponibile
+        gbc.gridy = 9; // Ultima riga disponibile
         gbc.weighty = 1.0; // Espandi lo spazio verticale sopra i componenti
         gbc.anchor = GridBagConstraints.PAGE_END; // Ancora i componenti in basso
         menuPanel.add(betButton, gbc);
@@ -407,7 +423,7 @@ public class JPlinkoGUI extends JFrame {
         balanceLabel = new JLabel("Demo Balance: €5000.00", SwingConstants.CENTER);
         balanceLabel.setForeground(Color.WHITE);
         balanceLabel.setPreferredSize(new Dimension((int) (width * 0.9), (int) (height * 0.05)));
-        gbc.gridy = 8; // Riga successiva
+        gbc.gridy = 10; // Riga successiva
         gbc.weighty = 0.0; // Non espandere ulteriormente lo spazio verticale
 
         menuPanel.addComponentListener(new ComponentAdapter() {
@@ -532,10 +548,12 @@ public class JPlinkoGUI extends JFrame {
 
     public void handleManual(ItemEvent e) {
         betSliderPanel.setVisible(false);
+        betLabel.setVisible(false);
     }
 
     public void handleAuto(ItemEvent e) {
         betSliderPanel.setVisible(true);
+        betLabel.setVisible(true);
     }
 
     public void loadLogoImage(int panelHeigth) {
