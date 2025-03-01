@@ -39,7 +39,7 @@ public class JPlinkoGUI extends JFrame {
     public JPlinkoGUI() {
         super("JPlinkoGUI");
         this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        SoundPlayer.loadSound("double_click.wav");
+        SoundPlayer.loadSound("click.wav");
         Image logo = loadImage("../utils/logo.png"); // Percorso relativo alla cartella delle risorse
 
         // Imposta l'icona della finestra
