@@ -41,17 +41,7 @@ public class SoundPlayer {
         }
     }
 
-    public static void wakeUpAudioSystem() {
-        try {
-            Clip silentClip = AudioSystem.getClip();
-            silentClip.open(new AudioFormat(44100, 16, 1, true, false), new byte[2], 0, 2);
-            silentClip.start();
-            silentClip.drain();
-            silentClip.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    
 }
 
 
