@@ -4,11 +4,12 @@
  */
 package jplinko.utils;
 
+import java.io.ByteArrayInputStream;
 import javax.sound.sampled.*;
-import java.io.IOException;
 import java.io.InputStream;
 
 public class SoundPlayer {
+
     private static Clip clip;
 
     // Metodo per caricare il suono all'avvio
@@ -39,7 +40,18 @@ public class SoundPlayer {
             System.out.println("Errore: Clip non inizializzato!");
         }
     }
-}
 
+    public static void wakeUpAudioSystem() {
+        try {
+            Clip silentClip = AudioSystem.getClip();
+            silentClip.open(new AudioFormat(44100, 16, 1, true, false), new byte[2], 0, 2);
+            silentClip.start();
+            silentClip.drain();
+            silentClip.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
 
 
