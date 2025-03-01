@@ -18,7 +18,6 @@ import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.InputStream;
-import java.util.ArrayList;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -40,7 +39,7 @@ public class JPlinkoGUI extends JFrame {
     public JPlinkoGUI() {
         super("JPlinkoGUI");
         this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        
+
         Image logo = loadImage("../utils/logo.png"); // Percorso relativo alla cartella delle risorse
 
         // Imposta l'icona della finestra
@@ -49,7 +48,7 @@ public class JPlinkoGUI extends JFrame {
         } else {
             System.err.println("Logo non trovato!");
         }
-        
+
         this.createGUI();
 
     }
@@ -171,7 +170,7 @@ public class JPlinkoGUI extends JFrame {
         riskLabel.setForeground(Color.WHITE);
         gbc.gridy++;
         menuPanel.add(riskLabel, gbc);
-        
+
         gbcRisk.gridy++;
         riskPanel.setBackground(menuPanel.getBackground());
         riskPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
@@ -237,19 +236,15 @@ public class JPlinkoGUI extends JFrame {
         rowLabel.setBackground(menuPanel.getBackground());
         rowLabel.setForeground(Color.WHITE);
         // Aggiungiamo un listener per aggiornare l'etichetta
-        rowSlider.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                rowLabel.setText("Rows: " + rowSlider.getValue());
-            }
+        rowSlider.addChangeListener((ChangeEvent e) -> {
+            rowLabel.setText("Rows: " + rowSlider.getValue());
         });
         // Aggiungiamo i componenti al pannello
         gbc.gridy++;
         menuPanel.add(rowLabel, gbc);
         rowPanel.add(rowSlider, BorderLayout.CENTER);
 
-        // Aggiungiamo il pannello al menu principale
-        gbc.gridy++; // Posizione nella griglia
+        gbc.gridy++;
 
         rowPanel.addComponentListener(new ComponentAdapter() {
             @Override
@@ -290,21 +285,18 @@ public class JPlinkoGUI extends JFrame {
         betLabel.setBackground(menuPanel.getBackground());
         betLabel.setForeground(Color.WHITE);
         // Aggiungiamo un listener per aggiornare l'etichetta
-        betSlider.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                betLabel.setText("Number of balls: " + betSlider.getValue());
-            }
+        betSlider.addChangeListener((ChangeEvent e) -> {
+            betLabel.setText("Number of balls: " + betSlider.getValue());
         });
         // Aggiungiamo i componenti al pannello
-        gbc.gridy=7;
+        gbc.gridy = 7;
         gbc.weighty = 0.0;
         menuPanel.add(betLabel, gbc);
         betSliderPanel.add(betSlider, BorderLayout.CENTER);
         betSliderPanel.setVisible(false);
         betLabel.setVisible(false);
         // Aggiungiamo il pannello al menu principale
-        gbc.gridy=8;
+        gbc.gridy = 8;
         gbc.weighty = 0.0; // Posizione nella griglia
 
         betSliderPanel.addComponentListener(new ComponentAdapter() {
@@ -336,7 +328,7 @@ public class JPlinkoGUI extends JFrame {
         gbcBet.fill = GridBagConstraints.HORIZONTAL;
         gbcBet.insets = new Insets(5, 5, 5, 5);
         gbcBet.weightx = 1;
-        
+
         betIndicatorLabel = new JLabel("Bet Amount:");
         betIndicatorLabel.setOpaque(true);
         betIndicatorLabel.setBackground(menuPanel.getBackground());
@@ -472,7 +464,6 @@ public class JPlinkoGUI extends JFrame {
                 loadLogoImage(panelHeight);
                 if (logoImage != null) {
                     int imageWidth = logoImage.getWidth();
-                    int imageHeight = logoImage.getHeight();
 
                     // Calcola la posizione X e Y per centrare l'immagine sopra la piramide
                     int imageX = (panelWidth - imageWidth) / 2;
@@ -515,7 +506,6 @@ public class JPlinkoGUI extends JFrame {
         // Rimuovi tutte le JLabel esistenti
         pyramidPanel.removeAll();
 
-        int width = (int) (screenSize.width * 0.8);
         int height = screenSize.height;
 
         int containerWidth = gap;
@@ -583,7 +573,7 @@ public class JPlinkoGUI extends JFrame {
         }
 
     }
-    
+
     private Image loadImage(String path) {
         try {
             return new ImageIcon(getClass().getResource(path)).getImage();
