@@ -19,7 +19,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.InputStream;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import jplinko.utils.SoundPlayer;
 
 /**
  *
@@ -39,7 +39,7 @@ public class JPlinkoGUI extends JFrame {
     public JPlinkoGUI() {
         super("JPlinkoGUI");
         this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
+        SoundPlayer.loadSound("double_click.wav");
         Image logo = loadImage("../utils/logo.png"); // Percorso relativo alla cartella delle risorse
 
         // Imposta l'icona della finestra
@@ -110,6 +110,7 @@ public class JPlinkoGUI extends JFrame {
     }
 
     private void createVersionPanel(int width, int height, GridBagConstraints gbc) {
+
         versionPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbcVersion = new GridBagConstraints();
         gbcVersion.fill = GridBagConstraints.HORIZONTAL;
@@ -436,6 +437,11 @@ public class JPlinkoGUI extends JFrame {
             }
         });
 
+        betButton.addActionListener(e -> {
+            SoundPlayer.playSound(); // Riproduci l'effetto sonoro
+            System.out.println("Pulsante BET cliccato!");
+        });
+
         menuPanel.add(balanceLabel, gbc);
     }
 
@@ -539,11 +545,14 @@ public class JPlinkoGUI extends JFrame {
     }
 
     public void handleManual(ItemEvent e) {
+        //buttonSound.play();
         betSliderPanel.setVisible(false);
         betLabel.setVisible(false);
     }
 
     public void handleAuto(ItemEvent e) {
+        //buttonSound = new SoundPlayer("../utils/double_click.wav");
+        //buttonSound.play();
         betSliderPanel.setVisible(true);
         betLabel.setVisible(true);
     }
@@ -585,6 +594,7 @@ public class JPlinkoGUI extends JFrame {
 
     public static void main(String args[]) throws Exception {
 
+        
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
