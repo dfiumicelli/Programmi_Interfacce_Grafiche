@@ -297,13 +297,15 @@ public class JPlinkoGUI extends JFrame {
             }
         });
         // Aggiungiamo i componenti al pannello
-        gbc.gridy++;
+        gbc.gridy=7;
+        gbc.weighty = 0.0;
         menuPanel.add(betLabel, gbc);
         betSliderPanel.add(betSlider, BorderLayout.CENTER);
         betSliderPanel.setVisible(false);
         betLabel.setVisible(false);
         // Aggiungiamo il pannello al menu principale
-        gbc.gridy++; // Posizione nella griglia
+        gbc.gridy=8;
+        gbc.weighty = 0.0; // Posizione nella griglia
 
         betSliderPanel.addComponentListener(new ComponentAdapter() {
             @Override
