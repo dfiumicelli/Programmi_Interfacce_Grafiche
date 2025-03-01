@@ -9,7 +9,7 @@ import java.io.InputStream;
 
 public class SoundPlayer {
 
-    private static Clip clip;
+    private Clip clip;
 
     // Metodo per caricare il suono all'avvio
     public SoundPlayer(String fileName) {

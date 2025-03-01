@@ -15,6 +15,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.UIManager;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.InputStream;
@@ -35,12 +36,16 @@ public class JPlinkoGUI extends JFrame {
     private RoundedToggleButton manualToggle, autoToggle, lowRisk, mediumRisk, highRisk;
     private JLabel riskLabel, rowLabel, betAmountLabel, balanceLabel, betLabel, betIndicatorLabel;
     private JSlider rowSlider, betSlider;
-    private SoundPlayer click;
+    private SoundPlayer click, betClick;
+    private int currentBetIndex; // Dichiarazione come variabile di istanza
+    private double[] betValues = {0.10, 0.20, 0.50, 1.00, 2.00, 3.00, 4.00, 5.00, 10.00, 15.00, 25.00, 50.00, 75.00, 100.00};
 
     public JPlinkoGUI() {
         super("JPlinkoGUI");
         this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.click = new SoundPlayer("click.wav");
+        this.betClick = new SoundPlayer("bet_click.wav");
+        this.currentBetIndex = 4;
         Image logo = loadImage("../utils/logo.png"); // Percorso relativo alla cartella delle risorse
 
         // Imposta l'icona della finestra
@@ -184,6 +189,11 @@ public class JPlinkoGUI extends JFrame {
         lowRisk.setPreferredSize(new Dimension((int) (width * 0.25), (int) (height * 0.05)));
         mediumRisk.setPreferredSize(new Dimension((int) (width * 0.25), (int) (height * 0.05)));
         highRisk.setPreferredSize(new Dimension((int) (width * 0.25), (int) (height * 0.05)));
+        
+        lowRisk.addItemListener(e -> handleLow(e));
+        mediumRisk.addItemListener(e -> handleMedium(e));
+        highRisk.addItemListener(e -> handleHigh(e));
+        
         riskGroup.add(lowRisk);
         riskGroup.add(mediumRisk);
         riskGroup.add(highRisk);
@@ -338,11 +348,7 @@ public class JPlinkoGUI extends JFrame {
         gbc.gridy++;
         menuPanel.add(betIndicatorLabel, gbc);
 
-        // Array di valori della puntata
-        double[] betValues = {0.10, 0.20, 0.50, 1.00, 2.00, 3.00, 4.00, 5.00, 10.00, 15.00, 25.00, 50.00, 75.00, 100.00};
-        final int[] currentBetIndex = {4}; // Index iniziale per €2.00
-
-        betAmountLabel = new JLabel("€" + betValues[currentBetIndex[0]], SwingConstants.CENTER);
+        betAmountLabel = new JLabel("€" + betValues[currentBetIndex], SwingConstants.CENTER);
         betAmountLabel.setForeground(Color.WHITE);
         betAmountLabel.setPreferredSize(new Dimension((int) (width * 0.25), (int) (height * 0.05)));
         Font font = new Font("Arial", Font.PLAIN, 20); // Aumenta la dimensione del font
@@ -352,24 +358,14 @@ public class JPlinkoGUI extends JFrame {
         decreaseBet.setFont(font);
         decreaseBet.setForeground(menuPanel.getBackground());
         decreaseBet.setPreferredSize(new Dimension((int) (width * 0.25), (int) (height * 0.05)));
-        decreaseBet.addActionListener(e -> {
-            if (currentBetIndex[0] > 0) {
-                currentBetIndex[0]--;
-                betAmountLabel.setText("€" + betValues[currentBetIndex[0]]);
-            }
-        });
+        decreaseBet.addActionListener(e -> handleDecrese(e));
 
         // Pulsante per aumentare la puntata
         increaseBet = new RoundedButton("\u25B2", (int) (height * 0.05));
         increaseBet.setFont(font);
         increaseBet.setForeground(menuPanel.getBackground());
         increaseBet.setPreferredSize(new Dimension((int) (width * 0.25), (int) (height * 0.05)));
-        increaseBet.addActionListener(e -> {
-            if (currentBetIndex[0] < betValues.length - 1) {
-                currentBetIndex[0]++;
-                betAmountLabel.setText("€" + betValues[currentBetIndex[0]]);
-            }
-        });
+        increaseBet.addActionListener(e -> handleIncrease(e));
 
         // Aggiunta dei componenti al pannello
         gbcBet.gridx = 0;
@@ -438,11 +434,7 @@ public class JPlinkoGUI extends JFrame {
             }
         });
 
-        betButton.addActionListener(e -> {
-            click.playSound(); // Riproduci l'effetto sonoro
-            System.out.println("Pulsante BET cliccato!");
-        });
-
+        betButton.addActionListener(e -> handleBet(e));
         menuPanel.add(balanceLabel, gbc);
     }
 
@@ -552,9 +544,41 @@ public class JPlinkoGUI extends JFrame {
     }
 
     public void handleAuto(ItemEvent e) {
-        
+
         betSliderPanel.setVisible(true);
         betLabel.setVisible(true);
+    }
+
+    public void handleBet(ActionEvent e) {
+        betClick.playSound(); // Riproduci l'effetto sonoro
+    }
+
+    public void handleIncrease(ActionEvent e) {
+        click.playSound(); // Riproduci l'effetto sonoro
+        if (currentBetIndex < betValues.length - 1) {
+            currentBetIndex++;
+            betAmountLabel.setText("€" + betValues[currentBetIndex]);
+        }
+    }
+
+    public void handleDecrese(ActionEvent e) {
+        click.playSound(); // Riproduci l'effetto sonoro
+        if (currentBetIndex > 0) {
+            currentBetIndex--;
+            betAmountLabel.setText("€" + betValues[currentBetIndex]);
+        }
+    }
+    
+    public void handleLow(ItemEvent e){
+        click.playSound();
+    }
+    
+    public void handleMedium(ItemEvent e){
+        click.playSound();
+    }
+    
+    public void handleHigh(ItemEvent e){
+        click.playSound();
     }
 
     public void loadLogoImage(int panelHeigth) {
@@ -594,13 +618,11 @@ public class JPlinkoGUI extends JFrame {
 
     public static void main(String args[]) throws Exception {
 
-        
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int screenHeight = screenSize.height;
 
-// Regola la dimensione del font in base all'altezza dello schermo
         int fontSize = screenHeight / 70; // Formula scalabile
 
         try {
