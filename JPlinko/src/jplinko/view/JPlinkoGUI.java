@@ -35,11 +35,12 @@ public class JPlinkoGUI extends JFrame {
     private RoundedToggleButton manualToggle, autoToggle, lowRisk, mediumRisk, highRisk;
     private JLabel riskLabel, rowLabel, betAmountLabel, balanceLabel, betLabel, betIndicatorLabel;
     private JSlider rowSlider, betSlider;
+    private SoundPlayer click;
 
     public JPlinkoGUI() {
         super("JPlinkoGUI");
         this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        SoundPlayer.loadSound("click.wav");
+        this.click = new SoundPlayer("click.wav");
         Image logo = loadImage("../utils/logo.png"); // Percorso relativo alla cartella delle risorse
 
         // Imposta l'icona della finestra
@@ -438,7 +439,7 @@ public class JPlinkoGUI extends JFrame {
         });
 
         betButton.addActionListener(e -> {
-            SoundPlayer.playSound(); // Riproduci l'effetto sonoro
+            click.playSound(); // Riproduci l'effetto sonoro
             System.out.println("Pulsante BET cliccato!");
         });
 
@@ -545,14 +546,13 @@ public class JPlinkoGUI extends JFrame {
     }
 
     public void handleManual(ItemEvent e) {
-        //buttonSound.play();
+        click.playSound();
         betSliderPanel.setVisible(false);
         betLabel.setVisible(false);
     }
 
     public void handleAuto(ItemEvent e) {
-        //buttonSound = new SoundPlayer("../utils/double_click.wav");
-        //buttonSound.play();
+        
         betSliderPanel.setVisible(true);
         betLabel.setVisible(true);
     }

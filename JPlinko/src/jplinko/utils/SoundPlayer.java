@@ -4,7 +4,6 @@
  */
 package jplinko.utils;
 
-import java.io.ByteArrayInputStream;
 import javax.sound.sampled.*;
 import java.io.InputStream;
 
@@ -13,7 +12,7 @@ public class SoundPlayer {
     private static Clip clip;
 
     // Metodo per caricare il suono all'avvio
-    public static void loadSound(String fileName) {
+    public SoundPlayer(String fileName) {
         try {
             InputStream audioSrc = SoundPlayer.class.getResourceAsStream("../utils/" + fileName);
             if (audioSrc == null) {
@@ -29,7 +28,7 @@ public class SoundPlayer {
     }
 
     // Metodo per riprodurre il suono
-    public static void playSound() {
+    public void playSound() {
         if (clip != null) {
             if (clip.isRunning()) {
                 clip.stop(); // Ferma eventuale suono in corso
