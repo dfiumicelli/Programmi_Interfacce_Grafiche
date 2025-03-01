@@ -281,7 +281,7 @@ public class JPlinkoGUI extends JFrame {
         betSlider.setForeground(Color.WHITE);
 
         // Etichetta per mostrare il valore selezionato
-        betLabel = new JLabel("Number of balls: " + betSlider.getValue());
+        betLabel = new JLabel("Number of rounds: " + betSlider.getValue());
         betLabel.setOpaque(true);
         betLabel.setBackground(menuPanel.getBackground());
         betLabel.setForeground(Color.WHITE);
