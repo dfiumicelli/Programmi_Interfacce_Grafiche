@@ -73,7 +73,7 @@ public class JPlinkoGUI extends JFrame {
 
         menuPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10); // Margini tra i componenti
+        gbc.insets = new Insets(8, 10, 8, 10); // Margini tra i componenti
         gbc.fill = GridBagConstraints.HORIZONTAL; // Riempi orizzontalmente
         gbc.weightx = 1.0; // Espandi i componenti orizzontalmente
         int width = (int) (screenSize.width * 0.2);
@@ -285,7 +285,7 @@ public class JPlinkoGUI extends JFrame {
         betSlider.setForeground(Color.WHITE);
 
         // Etichetta per mostrare il valore selezionato
-        betLabel = new JLabel("Number of balls: " + rowSlider.getValue());
+        betLabel = new JLabel("Number of balls: " + betSlider.getValue());
         betLabel.setOpaque(true);
         betLabel.setBackground(menuPanel.getBackground());
         betLabel.setForeground(Color.WHITE);
