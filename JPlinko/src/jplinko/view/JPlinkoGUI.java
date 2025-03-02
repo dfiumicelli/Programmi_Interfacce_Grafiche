@@ -19,6 +19,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.event.ChangeEvent;
 import jplinko.utils.SoundPlayer;
 
@@ -37,10 +39,10 @@ public class JPlinkoGUI extends JFrame {
     private JLabel riskLabel, rowLabel, betAmountLabel, balanceLabel, betLabel, betIndicatorLabel;
     private JSlider rowSlider, betSlider;
     private SoundPlayer click, betClick;
-    private int currentBetIndex; // Dichiarazione come variabile di istanza
+    private int currentBetIndex; 
     private double[] betValues = {0.10, 0.20, 0.50, 1.00, 2.00, 3.00, 4.00, 5.00, 10.00, 15.00, 25.00, 50.00, 75.00, 100.00};
 
-    public JPlinkoGUI() {
+    public JPlinkoGUI() throws Exception {
         super("JPlinkoGUI");
         this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.click = new SoundPlayer("click.wav");
@@ -54,7 +56,7 @@ public class JPlinkoGUI extends JFrame {
         } else {
             System.err.println("Logo non trovato!");
         }
-
+        this.setFont();
         this.createGUI();
 
     }
@@ -615,12 +617,11 @@ public class JPlinkoGUI extends JFrame {
             return null;
         }
     }
-
-    public static void main(String args[]) throws Exception {
-
+    
+    private void setFont() throws Exception{
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int screenHeight = screenSize.height;
 
         int fontSize = screenHeight / 70; // Formula scalabile
@@ -643,12 +644,21 @@ public class JPlinkoGUI extends JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new JPlinkoGUI().setVisible(true);
-            }
-        });
     }
+
+//    public static void main(String args[]) throws Exception {
+//
+//        
+//
+//        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    new JPlinkoGUI().setVisible(true);
+//                } catch (Exception ex) {
+//                    Logger.getLogger(JPlinkoGUI.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//        });
+//    }
 }

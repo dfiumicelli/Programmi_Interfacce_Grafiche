@@ -2,14 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
-package jplinko.view;
+package jplinko.controller;
 
 /**
  *
- * @author mfiumicelli
+ * @author dfiumicelli
  */
-public interface IView {
-    
+public interface IControllerForView {
+
     public void openJPlinkoGUI();
-            
 }
