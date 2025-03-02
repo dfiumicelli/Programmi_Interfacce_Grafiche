@@ -19,8 +19,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.event.ChangeEvent;
 import jplinko.utils.SoundPlayer;
 
@@ -39,7 +37,7 @@ public class JPlinkoGUI extends JFrame {
     private JLabel riskLabel, rowLabel, betAmountLabel, balanceLabel, betLabel, betIndicatorLabel;
     private JSlider rowSlider, betSlider;
     private SoundPlayer click, betClick;
-    private int currentBetIndex; 
+    private int currentBetIndex;
     private double[] betValues = {0.10, 0.20, 0.50, 1.00, 2.00, 3.00, 4.00, 5.00, 10.00, 15.00, 25.00, 50.00, 75.00, 100.00};
 
     public JPlinkoGUI() throws Exception {
@@ -191,11 +189,11 @@ public class JPlinkoGUI extends JFrame {
         lowRisk.setPreferredSize(new Dimension((int) (width * 0.25), (int) (height * 0.05)));
         mediumRisk.setPreferredSize(new Dimension((int) (width * 0.25), (int) (height * 0.05)));
         highRisk.setPreferredSize(new Dimension((int) (width * 0.25), (int) (height * 0.05)));
-        
+
         lowRisk.addItemListener(e -> handleLow(e));
         mediumRisk.addItemListener(e -> handleMedium(e));
         highRisk.addItemListener(e -> handleHigh(e));
-        
+
         riskGroup.add(lowRisk);
         riskGroup.add(mediumRisk);
         riskGroup.add(highRisk);
@@ -570,16 +568,16 @@ public class JPlinkoGUI extends JFrame {
             betAmountLabel.setText("€" + betValues[currentBetIndex]);
         }
     }
-    
-    public void handleLow(ItemEvent e){
+
+    public void handleLow(ItemEvent e) {
         click.playSound();
     }
-    
-    public void handleMedium(ItemEvent e){
+
+    public void handleMedium(ItemEvent e) {
         click.playSound();
     }
-    
-    public void handleHigh(ItemEvent e){
+
+    public void handleHigh(ItemEvent e) {
         click.playSound();
     }
 
@@ -617,8 +615,8 @@ public class JPlinkoGUI extends JFrame {
             return null;
         }
     }
-    
-    private void setFont() throws Exception{
+
+    private void setFont() throws Exception {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
         //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -646,19 +644,4 @@ public class JPlinkoGUI extends JFrame {
         }
     }
 
-//    public static void main(String args[]) throws Exception {
-//
-//        
-//
-//        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    new JPlinkoGUI().setVisible(true);
-//                } catch (Exception ex) {
-//                    Logger.getLogger(JPlinkoGUI.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//            }
-//        });
-//    }
 }
