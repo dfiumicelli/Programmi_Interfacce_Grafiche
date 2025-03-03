@@ -12,4 +12,5 @@ public interface IView {
     
     public void openJPlinkoGUI();
             
+    public int getRows();
 }

@@ -21,6 +21,13 @@ public class ControllerForView implements IControllerForView {
         View.getInstance().openJPlinkoGUI();
     }
 
+    @Override
+    public int getRows() {
+        return View.getInstance().getRows();
+    }
+    
+    
+
     public static IControllerForView getInstance() {
         if (instance == null) {
             instance = new ControllerForView();

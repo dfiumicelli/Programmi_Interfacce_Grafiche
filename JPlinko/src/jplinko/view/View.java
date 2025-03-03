@@ -36,6 +36,11 @@ public class View implements IView {
         });
     }
 
+    @Override
+    public int getRows() {
+        return jplinkoGUI.getRows();
+    }
+
     public static IView getInstance() {
         if (instance == null) {
             instance = new View();

@@ -4,6 +4,8 @@
  */
 package jplinko.model;
 
+import jplinko.controller.ControllerForView;
+
 /**
  *
  * @author dfiumicelli
@@ -11,9 +13,10 @@ package jplinko.model;
 public class Model implements IModel {
 
     private static Model instance = null;
+    private int rows;
 
     private Model() {
-        //to do
+       this.rows = 16;
     }
 
     public static IModel getInstance() {
@@ -21,6 +24,15 @@ public class Model implements IModel {
             instance = new Model();
         }
         return instance;
+    }
+
+    @Override
+    public void setRows(int rows) {
+        this.rows = rows;
+    }
+    
+    public int getRows() {
+        return rows;
     }
 
 }

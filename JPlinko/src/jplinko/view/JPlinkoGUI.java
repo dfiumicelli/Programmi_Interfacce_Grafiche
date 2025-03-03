@@ -643,5 +643,9 @@ public class JPlinkoGUI extends JFrame {
             e.printStackTrace();
         }
     }
+    
+    public int getRows(){
+        return rowSlider.getValue();
+    }
 
 }

@@ -11,4 +11,6 @@ package jplinko.controller;
 public interface IControllerForView {
 
     public void openJPlinkoGUI();
+    
+    public int getRows();
 }

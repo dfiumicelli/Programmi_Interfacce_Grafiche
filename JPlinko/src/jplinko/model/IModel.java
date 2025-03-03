@@ -9,5 +9,6 @@ package jplinko.model;
  * @author dfiumicelli
  */
 public interface IModel {
-    
+    public void setRows(int rows);
+    public int getRows();
 }
