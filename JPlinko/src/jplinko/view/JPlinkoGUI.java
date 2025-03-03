@@ -20,6 +20,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.InputStream;
 import javax.swing.event.ChangeEvent;
+import jplinko.model.Model;
 import jplinko.utils.SoundPlayer;
 
 /**
@@ -248,9 +249,7 @@ public class JPlinkoGUI extends JFrame {
         rowLabel.setBackground(menuPanel.getBackground());
         rowLabel.setForeground(Color.WHITE);
         // Aggiungiamo un listener per aggiornare l'etichetta
-        rowSlider.addChangeListener((ChangeEvent e) -> {
-            rowLabel.setText("Rows: " + rowSlider.getValue());
-        });
+        rowSlider.addChangeListener((ChangeEvent e) -> handleRowSlider(e));
         // Aggiungiamo i componenti al pannello
         gbc.gridy++;
         menuPanel.add(rowLabel, gbc);
@@ -451,7 +450,7 @@ public class JPlinkoGUI extends JFrame {
                     g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
                 }
 
-                int rows = rowSlider.getValue();
+                int rows = View.getInstance().getRows();
                 int panelWidth = getWidth();
                 int panelHeight = getHeight();
                 int startX = panelWidth / 2;
@@ -581,6 +580,14 @@ public class JPlinkoGUI extends JFrame {
         click.playSound();
     }
 
+    private void handleRowSlider(ChangeEvent e) {
+        rowLabel.setText("Rows: " + rowSlider.getValue());
+        //if (!rowSlider.getValueIsAdjusting()) { // Reagisci solo quando l'utente rilascia lo slider
+        View.getInstance().handleRowChanges(rowSlider.getValue());
+        //}
+
+    }
+
     public void loadLogoImage(int panelHeigth) {
         try {
             BufferedImage originalImage = ImageIO.read(getClass().getResource("../utils/logo1.png"));
@@ -643,8 +650,8 @@ public class JPlinkoGUI extends JFrame {
             e.printStackTrace();
         }
     }
-    
-    public int getRows(){
+
+    public int getRows() {
         return rowSlider.getValue();
     }
 

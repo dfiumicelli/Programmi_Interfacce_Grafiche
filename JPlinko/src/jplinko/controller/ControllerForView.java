@@ -4,6 +4,7 @@
  */
 package jplinko.controller;
 import jplinko.view.View;
+import jplinko.model.Model;
 /**
  *
  * @author dfiumicelli
@@ -23,7 +24,12 @@ public class ControllerForView implements IControllerForView {
 
     @Override
     public int getRows() {
-        return View.getInstance().getRows();
+        return Model.getInstance().getRows();
+    }
+
+    @Override
+    public void handleRowChange(int rows) {
+        Model.getInstance().setRows(rows);
     }
     
     

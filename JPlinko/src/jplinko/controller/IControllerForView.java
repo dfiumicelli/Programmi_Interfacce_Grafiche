@@ -13,4 +13,6 @@ public interface IControllerForView {
     public void openJPlinkoGUI();
     
     public int getRows();
+    
+    public void handleRowChange(int rows);
 }

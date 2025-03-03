@@ -6,6 +6,7 @@ package jplinko.view;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import jplinko.controller.ControllerForView;
 
 /**
  *
@@ -38,8 +39,15 @@ public class View implements IView {
 
     @Override
     public int getRows() {
-        return jplinkoGUI.getRows();
+        return ControllerForView.getInstance().getRows();
     }
+
+    @Override
+    public void handleRowChanges(int rows) {
+        ControllerForView.getInstance().handleRowChange(rows);
+    }
+    
+    
 
     public static IView getInstance() {
         if (instance == null) {
