@@ -31,6 +31,17 @@ public class ControllerForView implements IControllerForView {
     public void handleRowChange(int rows) {
         Model.getInstance().setRows(rows);
     }
+
+    @Override
+    public int getCurrentBetIndex() {
+        return Model.getInstance().getCurrentBetIndex();
+    }
+
+    @Override
+    public void setCurrentBetIndex(int CurrentBetIndex) {
+        Model.getInstance().setCurrentBetIndex(CurrentBetIndex);
+    }
+    
     
     
 

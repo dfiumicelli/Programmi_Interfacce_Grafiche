@@ -15,4 +15,8 @@ public interface IControllerForView {
     public int getRows();
     
     public void handleRowChange(int rows);
+    
+    public int getCurrentBetIndex();
+    
+    public void setCurrentBetIndex(int CurrentBetIndex);
 }

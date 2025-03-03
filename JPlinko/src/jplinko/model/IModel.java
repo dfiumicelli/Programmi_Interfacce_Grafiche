@@ -11,4 +11,6 @@ package jplinko.model;
 public interface IModel {
     public void setRows(int rows);
     public int getRows();
+    public void setCurrentBetIndex(int CurrentBetIndex);
+    public int getCurrentBetIndex();
 }

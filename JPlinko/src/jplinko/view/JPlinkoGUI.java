@@ -19,6 +19,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.event.ChangeEvent;
 import jplinko.model.Model;
 import jplinko.utils.SoundPlayer;
@@ -36,6 +38,7 @@ public class JPlinkoGUI extends JFrame {
     private RoundedButton betButton, increaseBet, decreaseBet;
     private RoundedToggleButton manualToggle, autoToggle, lowRisk, mediumRisk, highRisk;
     private JLabel riskLabel, rowLabel, betAmountLabel, balanceLabel, betLabel, betIndicatorLabel;
+    private List<JLabel> containerLabels = new ArrayList<>();
     private JSlider rowSlider, betSlider;
     private SoundPlayer click, betClick;
     private int currentBetIndex;
@@ -46,7 +49,7 @@ public class JPlinkoGUI extends JFrame {
         this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.click = new SoundPlayer("click.wav");
         this.betClick = new SoundPlayer("bet_click.wav");
-        this.currentBetIndex = 4;
+        this.currentBetIndex = View.getInstance().getCurrentBetIndex();
         Image logo = loadImage("../utils/logo.png"); // Percorso relativo alla cartella delle risorse
 
         // Imposta l'icona della finestra
@@ -528,6 +531,8 @@ public class JPlinkoGUI extends JFrame {
             // Posiziona i contenitori in base al primo piolo
             containerLabel.setBounds(containerStartX + i * containerWidth, containerStartY, containerWidth, containerHeight);
 
+            containerLabels.add(containerLabel);
+            
             pyramidPanel.add(containerLabel);
         }
 

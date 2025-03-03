@@ -14,9 +14,11 @@ public class Model implements IModel {
 
     private static Model instance = null;
     private int rows;
+    private int currentBetIndex;
 
     private Model() {
        this.rows = 16;
+       this.currentBetIndex = 4;
     }
 
     public static IModel getInstance() {
@@ -31,8 +33,20 @@ public class Model implements IModel {
         this.rows = rows;
     }
     
+    @Override
     public int getRows() {
         return rows;
     }
 
+    @Override
+    public int getCurrentBetIndex() {
+        return currentBetIndex;
+    }
+
+    @Override
+    public void setCurrentBetIndex(int currentBetIndex) {
+        this.currentBetIndex = currentBetIndex;
+    }
+
+    
 }

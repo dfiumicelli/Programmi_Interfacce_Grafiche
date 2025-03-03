@@ -15,4 +15,8 @@ public interface IView {
     public int getRows();
     
     public void handleRowChanges(int rows);
+    
+    public int getCurrentBetIndex();
+    
+    public void setCurrentBetIndex(int CurrentBetIndex);
 }
