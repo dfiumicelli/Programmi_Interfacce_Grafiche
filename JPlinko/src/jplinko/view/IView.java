@@ -6,7 +6,7 @@ package jplinko.view;
 
 /**
  *
- * @author mfiumicelli
+ * @author dfiumicelli
  */
 public interface IView {
     
