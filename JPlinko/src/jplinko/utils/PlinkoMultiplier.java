@@ -15,11 +15,11 @@ public class PlinkoMultiplier {
         int exp;
 
         // Valori base per il rischio
-        switch (riskLevel) {
+        switch (riskLevel.toLowerCase()) {
             case "low" -> {
-                baseMin = 1.0;
-                baseMax = 2.0;
-                exp = 4;
+                baseMin = 3.7;
+                baseMax = 180;
+                exp = 6;
             }
             case "medium" -> {
                 baseMin = 2.7;
@@ -54,7 +54,7 @@ public class PlinkoMultiplier {
     }
 
     public static void main(String[] args) {
-        double mult[] = generateMultipliers(16, "medium");
+        double mult[] = generateMultipliers(16, "low");
         for (int i = 0; i < mult.length; i++) {
             System.out.print(mult[i] + "  ");
         }
