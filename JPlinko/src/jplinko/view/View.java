@@ -37,30 +37,30 @@ public class View implements IView {
         });
     }
 
-    @Override
-    public int getRows() {
-        return ControllerForView.getInstance().getRows();
-    }
-
-    @Override
-    public void handleRowChanges(int rows) {
-        ControllerForView.getInstance().handleRowChange(rows);
-    }
-
-    @Override
-    public int getCurrentBetIndex() {
-        return ControllerForView.getInstance().getCurrentBetIndex();
-    }
-
-    @Override
-    public void setCurrentBetIndex(int CurrentBetIndex) {
-        ControllerForView.getInstance().setCurrentBetIndex(CurrentBetIndex);
-    }
-
-    @Override
-    public double[] getBetValues() {
-       return ControllerForView.getInstance().getBetValues();
-    }
+//    @Override
+//    public int getRows() {
+//        return ControllerForView.getInstance().getRows();
+//    }
+//
+//    @Override
+//    public void handleRowChanges(int rows) {
+//        ControllerForView.getInstance().handleRowChange(rows);
+//    }
+//
+//    @Override
+//    public int getCurrentBetIndex() {
+//        return ControllerForView.getInstance().getCurrentBetIndex();
+//    }
+//
+//    @Override
+//    public void setCurrentBetIndex(int CurrentBetIndex) {
+//        ControllerForView.getInstance().setCurrentBetIndex(CurrentBetIndex);
+//    }
+//
+//    @Override
+//    public double[] getBetValues() {
+//       return ControllerForView.getInstance().getBetValues();
+//    }
     
     
 

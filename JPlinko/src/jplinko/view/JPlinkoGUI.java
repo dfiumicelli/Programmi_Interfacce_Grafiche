@@ -22,7 +22,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.event.ChangeEvent;
-import jplinko.model.Model;
+import jplinko.controller.ControllerForView;
 import jplinko.utils.SoundPlayer;
 
 /**
@@ -49,8 +49,8 @@ public class JPlinkoGUI extends JFrame {
         this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.click = new SoundPlayer("click.wav");
         this.betClick = new SoundPlayer("bet_click.wav");
-        this.currentBetIndex = View.getInstance().getCurrentBetIndex();
-        this.betValues = View.getInstance().getBetValues();
+        this.currentBetIndex = ControllerForView.getInstance().getCurrentBetIndex();
+        this.betValues = ControllerForView.getInstance().getBetValues();
         Image logo = loadImage("../utils/logo.png"); // Percorso relativo alla cartella delle risorse
 
         // Imposta l'icona della finestra
@@ -454,7 +454,7 @@ public class JPlinkoGUI extends JFrame {
                     g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
                 }
 
-                int rows = View.getInstance().getRows();
+                int rows = ControllerForView.getInstance().getRows();
                 int panelWidth = getWidth();
                 int panelHeight = getHeight();
                 int startX = panelWidth / 2;
@@ -563,6 +563,7 @@ public class JPlinkoGUI extends JFrame {
         if (currentBetIndex < betValues.length - 1) {
             currentBetIndex++;
             betAmountLabel.setText("€" + betValues[currentBetIndex]);
+            ControllerForView.getInstance().setCurrentBetIndex(currentBetIndex);
         }
     }
 
@@ -571,6 +572,7 @@ public class JPlinkoGUI extends JFrame {
         if (currentBetIndex > 0) {
             currentBetIndex--;
             betAmountLabel.setText("€" + betValues[currentBetIndex]);
+            ControllerForView.getInstance().setCurrentBetIndex(currentBetIndex);
         }
     }
 
@@ -589,7 +591,7 @@ public class JPlinkoGUI extends JFrame {
     private void handleRowSlider(ChangeEvent e) {
         rowLabel.setText("Rows: " + rowSlider.getValue());
         //if (!rowSlider.getValueIsAdjusting()) { // Reagisci solo quando l'utente rilascia lo slider
-        View.getInstance().handleRowChanges(rowSlider.getValue());
+        ControllerForView.getInstance().handleRowChange(rowSlider.getValue());
         //}
 
     }
@@ -657,8 +659,5 @@ public class JPlinkoGUI extends JFrame {
         }
     }
 
-    public int getRows() {
-        return rowSlider.getValue();
-    }
 
 }

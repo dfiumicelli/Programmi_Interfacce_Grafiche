@@ -12,13 +12,13 @@ public interface IView {
     
     public void openJPlinkoGUI();
             
-    public int getRows();
-    
-    public void handleRowChanges(int rows);
-    
-    public int getCurrentBetIndex();
-    
-    public void setCurrentBetIndex(int CurrentBetIndex);
-    
-    public double[] getBetValues();
+//    public int getRows();
+//    
+//    public void handleRowChanges(int rows);
+//    
+//    public int getCurrentBetIndex();
+//    
+//    public void setCurrentBetIndex(int CurrentBetIndex);
+//    
+//    public double[] getBetValues();
 }
