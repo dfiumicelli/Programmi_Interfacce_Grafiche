@@ -19,4 +19,6 @@ public interface IControllerForView {
     public int getCurrentBetIndex();
     
     public void setCurrentBetIndex(int CurrentBetIndex);
+    
+    public double[] getBetValues();
 }

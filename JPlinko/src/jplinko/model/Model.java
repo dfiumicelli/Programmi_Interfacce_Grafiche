@@ -15,6 +15,7 @@ public class Model implements IModel {
     private static Model instance = null;
     private int rows;
     private int currentBetIndex;
+    private double[] betValues = {0.10, 0.20, 0.50, 1.00, 2.00, 3.00, 4.00, 5.00, 10.00, 15.00, 25.00, 50.00, 75.00, 100.00};
 
     private Model() {
        this.rows = 16;
@@ -46,6 +47,11 @@ public class Model implements IModel {
     @Override
     public void setCurrentBetIndex(int currentBetIndex) {
         this.currentBetIndex = currentBetIndex;
+    }
+
+    @Override
+    public double[] getBetValues() {
+        return betValues;
     }
 
     

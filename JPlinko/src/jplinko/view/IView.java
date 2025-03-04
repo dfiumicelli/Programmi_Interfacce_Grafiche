@@ -19,4 +19,6 @@ public interface IView {
     public int getCurrentBetIndex();
     
     public void setCurrentBetIndex(int CurrentBetIndex);
+    
+    public double[] getBetValues();
 }

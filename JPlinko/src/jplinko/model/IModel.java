@@ -13,4 +13,5 @@ public interface IModel {
     public int getRows();
     public void setCurrentBetIndex(int CurrentBetIndex);
     public int getCurrentBetIndex();
+    public double[] getBetValues();
 }

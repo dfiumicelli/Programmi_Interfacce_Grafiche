@@ -42,7 +42,7 @@ public class JPlinkoGUI extends JFrame {
     private JSlider rowSlider, betSlider;
     private SoundPlayer click, betClick;
     private int currentBetIndex;
-    private double[] betValues = {0.10, 0.20, 0.50, 1.00, 2.00, 3.00, 4.00, 5.00, 10.00, 15.00, 25.00, 50.00, 75.00, 100.00};
+    private double[] betValues;
 
     public JPlinkoGUI() throws Exception {
         super("JPlinkoGUI");
@@ -50,6 +50,7 @@ public class JPlinkoGUI extends JFrame {
         this.click = new SoundPlayer("click.wav");
         this.betClick = new SoundPlayer("bet_click.wav");
         this.currentBetIndex = View.getInstance().getCurrentBetIndex();
+        this.betValues = View.getInstance().getBetValues();
         Image logo = loadImage("../utils/logo.png"); // Percorso relativo alla cartella delle risorse
 
         // Imposta l'icona della finestra

@@ -56,6 +56,11 @@ public class View implements IView {
     public void setCurrentBetIndex(int CurrentBetIndex) {
         ControllerForView.getInstance().setCurrentBetIndex(CurrentBetIndex);
     }
+
+    @Override
+    public double[] getBetValues() {
+       return ControllerForView.getInstance().getBetValues();
+    }
     
     
 

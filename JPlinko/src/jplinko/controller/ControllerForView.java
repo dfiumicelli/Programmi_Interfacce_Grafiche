@@ -41,6 +41,11 @@ public class ControllerForView implements IControllerForView {
     public void setCurrentBetIndex(int CurrentBetIndex) {
         Model.getInstance().setCurrentBetIndex(CurrentBetIndex);
     }
+
+    @Override
+    public double[] getBetValues() {
+        return Model.getInstance().getBetValues();
+    }
     
     
     
