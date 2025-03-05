@@ -17,19 +17,19 @@ public class PlinkoMultiplier {
         // Valori base per il rischio
         switch (riskLevel.toLowerCase()) {
             case "low" -> {
-                baseMin = 3.7;
-                baseMax = 180;
+                baseMin = 2.8;
+                baseMax = 5.0;
                 exp = 6;
             }
             case "medium" -> {
                 baseMin = 2.7;
-                baseMax = 580.0;
-                exp = 8;
+                baseMax = 18.0;
+                exp = 10;
             }
             case "high" -> {
                 baseMin = 1.7;
-                baseMax = 1080.0;
-                exp = 10;
+                baseMax = 38.0;
+                exp = 12;
             }
             default -> {
                 baseMin = 1.0;
@@ -40,7 +40,7 @@ public class PlinkoMultiplier {
 
         // Adattiamo i valori min/max in base alle righe
         double minCenter = baseMin / Math.sqrt(rows + 1);
-        double maxEdge = baseMax * Math.log(rows + 1);
+        double maxEdge = baseMax * Math.pow(100,rows/10);
 
         double[] multipliers = new double[rows + 1];
         int mid = rows / 2;
@@ -54,10 +54,4 @@ public class PlinkoMultiplier {
         return multipliers;
     }
 
-    public static void main(String[] args) {
-        double mult[] = generateMultipliers(16, "low");
-        for (int i = 0; i < mult.length; i++) {
-            System.out.print(mult[i] + "  ");
-}
-    }
 }
