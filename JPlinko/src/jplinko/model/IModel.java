@@ -14,4 +14,8 @@ public interface IModel {
     public void setCurrentBetIndex(int CurrentBetIndex);
     public int getCurrentBetIndex();
     public double[] getBetValues();
+    public void setRisk(String risk);
+    public double[] getMultipliers();
+    public double getBalance();
+    public void setMode(String mode);
 }

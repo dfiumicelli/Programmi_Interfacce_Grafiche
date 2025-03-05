@@ -28,7 +28,7 @@ public class ControllerForView implements IControllerForView {
     }
 
     @Override
-    public void handleRowChange(int rows) {
+    public void setRows(int rows) {
         Model.getInstance().setRows(rows);
     }
 
@@ -46,8 +46,26 @@ public class ControllerForView implements IControllerForView {
     public double[] getBetValues() {
         return Model.getInstance().getBetValues();
     }
+
+    @Override
+    public void setRisk(String risk) {
+        Model.getInstance().setRisk(risk);
+    }
     
+    @Override
+    public double[] getMultipliers(){
+        return Model.getInstance().getMultipliers();
+    }
+
+    @Override
+    public double getBalance() {
+        return Model.getInstance().getBalance();
+    }
     
+    @Override
+    public void setMode(String mode){
+        Model.getInstance().setMode(mode);
+    }
     
 
     public static IControllerForView getInstance() {

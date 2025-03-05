@@ -30,7 +30,7 @@ import jplinko.utils.SoundPlayer;
  * @author dfiumicelli
  */
 public class JPlinkoGUI extends JFrame {
-
+    
     private BufferedImage backgroundImage;
     private BufferedImage logoImage;
     private final Dimension screenSize;
@@ -43,7 +43,7 @@ public class JPlinkoGUI extends JFrame {
     private SoundPlayer click, betClick;
     private int currentBetIndex;
     private double[] betValues;
-
+    
     public JPlinkoGUI() throws Exception {
         super("JPlinkoGUI");
         this.screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -61,26 +61,26 @@ public class JPlinkoGUI extends JFrame {
         }
         this.setFont();
         this.createGUI();
-
+        
     }
-
+    
     private void createGUI() {
-
+        
         setTitle("Plinko Game");
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setMinimumSize(new Dimension(800, 600));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
-
+        
         setLeftPanel();
         setRightPanel();
-
+        
         setVisible(true);
-
+        
     }
-
+    
     private void setLeftPanel() {
-
+        
         menuPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(8, 10, 8, 10); // Margini tra i componenti
@@ -92,19 +92,19 @@ public class JPlinkoGUI extends JFrame {
         //menuPanel.setBackground(new Color(1, 56, 156));
 
         menuPanel.setBackground(new Color(1, 38, 126));
-
+        
         createVersionPanel(width, height, gbc);
-
+        
         createRiskPanel(width, height, gbc);
-
+        
         createRowSlider(width, height, gbc);
-
+        
         createBetPanel(width, height, gbc);
-
+        
         createBetSlider(width, height, gbc);
-
+        
         createBetButton(width, height, gbc);
-
+        
         menuPanel.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -115,13 +115,13 @@ public class JPlinkoGUI extends JFrame {
                 menuPanel.revalidate(); // Aggiorna il layout
             }
         });
-
+        
         add(menuPanel, BorderLayout.WEST);
-
+        
     }
-
+    
     private void createVersionPanel(int width, int height, GridBagConstraints gbc) {
-
+        
         versionPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbcVersion = new GridBagConstraints();
         gbcVersion.fill = GridBagConstraints.HORIZONTAL;
@@ -130,13 +130,13 @@ public class JPlinkoGUI extends JFrame {
         versionPanel.setPreferredSize(new Dimension((int) (width * 0.9), (int) (height * 0.1)));
         versionPanel.setBackground(menuPanel.getBackground());
         versionPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
-
+        
         ButtonGroup version = new ButtonGroup();
         manualToggle = new RoundedToggleButton("Manual", (int) (height * 0.05), true);
         manualToggle.setIcon(new BallIcon(15, Color.LIGHT_GRAY));
         manualToggle.setSelectedIcon(new BallIcon(15, Color.GREEN));
         manualToggle.setPreferredSize(new Dimension((int) (width * 0.4), (int) (height * 0.05)));
-
+        
         autoToggle = new RoundedToggleButton("Auto", (int) (height * 0.05), false);
         autoToggle.setIcon(new BallIcon(15, Color.LIGHT_GRAY));
         autoToggle.setSelectedIcon(new BallIcon(15, Color.GREEN));
@@ -167,10 +167,10 @@ public class JPlinkoGUI extends JFrame {
                 versionPanel.repaint();
             }
         });
-
+        
         menuPanel.add(versionPanel, gbc);
     }
-
+    
     private void createRiskPanel(int width, int height, GridBagConstraints gbc) {
         riskPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbcRisk = new GridBagConstraints();
@@ -182,7 +182,7 @@ public class JPlinkoGUI extends JFrame {
         riskLabel.setForeground(Color.WHITE);
         gbc.gridy++;
         menuPanel.add(riskLabel, gbc);
-
+        
         gbcRisk.gridy++;
         riskPanel.setBackground(menuPanel.getBackground());
         riskPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
@@ -194,11 +194,11 @@ public class JPlinkoGUI extends JFrame {
         lowRisk.setPreferredSize(new Dimension((int) (width * 0.25), (int) (height * 0.05)));
         mediumRisk.setPreferredSize(new Dimension((int) (width * 0.25), (int) (height * 0.05)));
         highRisk.setPreferredSize(new Dimension((int) (width * 0.25), (int) (height * 0.05)));
-
+        
         lowRisk.addItemListener(e -> handleLow(e));
         mediumRisk.addItemListener(e -> handleMedium(e));
         highRisk.addItemListener(e -> handleHigh(e));
-
+        
         riskGroup.add(lowRisk);
         riskGroup.add(mediumRisk);
         riskGroup.add(highRisk);
@@ -229,11 +229,11 @@ public class JPlinkoGUI extends JFrame {
                 riskPanel.repaint();
             }
         });
-
+        
         menuPanel.add(riskPanel, gbc);
-
+        
     }
-
+    
     private void createRowSlider(int width, int height, GridBagConstraints gbc) {
         rowPanel = new JPanel();
         rowPanel.setLayout(new BorderLayout());
@@ -258,9 +258,9 @@ public class JPlinkoGUI extends JFrame {
         gbc.gridy++;
         menuPanel.add(rowLabel, gbc);
         rowPanel.add(rowSlider, BorderLayout.CENTER);
-
+        
         gbc.gridy++;
-
+        
         rowPanel.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -276,12 +276,12 @@ public class JPlinkoGUI extends JFrame {
                 rowPanel.repaint();
             }
         });
-
+        
         menuPanel.add(rowPanel, gbc);
     }
-
+    
     private void createBetSlider(int width, int height, GridBagConstraints gbc) {
-
+        
         betSliderPanel = new JPanel();
         betSliderPanel.setLayout(new BorderLayout());
         betSliderPanel.setPreferredSize(new Dimension((int) (width * 0.9), (int) (height * 0.1)));
@@ -329,10 +329,10 @@ public class JPlinkoGUI extends JFrame {
                 betSliderPanel.repaint();
             }
         });
-
+        
         menuPanel.add(betSliderPanel, gbc);
     }
-
+    
     public void createBetPanel(int width, int height, GridBagConstraints gbc) {
         // Bet Amount Panel in stile Plinko
         betAmountPanel = new JPanel(new GridBagLayout());
@@ -343,14 +343,14 @@ public class JPlinkoGUI extends JFrame {
         gbcBet.fill = GridBagConstraints.HORIZONTAL;
         gbcBet.insets = new Insets(5, 5, 5, 5);
         gbcBet.weightx = 1;
-
+        
         betIndicatorLabel = new JLabel("Bet Amount:");
         betIndicatorLabel.setOpaque(true);
         betIndicatorLabel.setBackground(menuPanel.getBackground());
         betIndicatorLabel.setForeground(Color.WHITE);
         gbc.gridy++;
         menuPanel.add(betIndicatorLabel, gbc);
-
+        
         betAmountLabel = new JLabel("€" + betValues[currentBetIndex], SwingConstants.CENTER);
         betAmountLabel.setForeground(Color.WHITE);
         betAmountLabel.setPreferredSize(new Dimension((int) (width * 0.25), (int) (height * 0.05)));
@@ -373,10 +373,10 @@ public class JPlinkoGUI extends JFrame {
         // Aggiunta dei componenti al pannello
         gbcBet.gridx = 0;
         betAmountPanel.add(decreaseBet, gbcBet);
-
+        
         gbcBet.gridx = 1;
         betAmountPanel.add(betAmountLabel, gbcBet);
-
+        
         gbcBet.gridx = 2;
         betAmountPanel.add(increaseBet, gbcBet);
 
@@ -401,11 +401,11 @@ public class JPlinkoGUI extends JFrame {
                 betAmountPanel.repaint();
             }
         });
-
+        
         menuPanel.add(betAmountPanel, gbc);
-
+        
     }
-
+    
     public void createBetButton(int width, int height, GridBagConstraints gbc) {
         betButton = new RoundedButton("BET", (int) (height * 0.07));
         betButton.setPreferredSize(new Dimension((int) (width * 0.9), (int) (height * 0.07)));
@@ -414,8 +414,9 @@ public class JPlinkoGUI extends JFrame {
         gbc.weighty = 1.0; // Espandi lo spazio verticale sopra i componenti
         gbc.anchor = GridBagConstraints.PAGE_END; // Ancora i componenti in basso
         menuPanel.add(betButton, gbc);
-
-        balanceLabel = new JLabel("Demo Balance: €5000.00", SwingConstants.CENTER);
+        
+        double balance = ControllerForView.getInstance().getBalance();
+        balanceLabel = new JLabel("Balance: €" + balance, SwingConstants.CENTER);
         balanceLabel.setForeground(Color.WHITE);
         balanceLabel.setPreferredSize(new Dimension((int) (width * 0.9), (int) (height * 0.05)));
         gbc.gridy = 10; // Riga successiva
@@ -436,32 +437,32 @@ public class JPlinkoGUI extends JFrame {
                 menuPanel.repaint();
             }
         });
-
+        
         betButton.addActionListener(e -> handleBet(e));
         menuPanel.add(balanceLabel, gbc);
     }
-
+    
     private void setRightPanel() {
         loadBackgroundImage();
-
+        
         JPanel pyramidPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 Graphics2D g2d = (Graphics2D) g;
-
+                
                 if (backgroundImage != null) {
                     g2d.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
                 }
-
+                
                 int rows = ControllerForView.getInstance().getRows();
                 int panelWidth = getWidth();
                 int panelHeight = getHeight();
                 int startX = panelWidth / 2;
-                int gap = panelWidth / 35;
+                int gap = panelWidth / 33;
                 int startY = (panelHeight - ((rows + 2) * gap)) / 2;
-
-                createPyramid(this, g2d, rows);
+                
+                createPyramid(this, g2d, rows, gap);
                 createContainers(this, startX, startY, gap, rows); // Disegna i contenitori
                 loadLogoImage(panelHeight);
                 if (logoImage != null) {
@@ -476,7 +477,7 @@ public class JPlinkoGUI extends JFrame {
                 }
             }
         };
-
+        
         pyramidPanel.setPreferredSize(new Dimension(screenSize.width, screenSize.height));
         pyramidPanel.addComponentListener(new ComponentAdapter() {
             @Override
@@ -484,17 +485,16 @@ public class JPlinkoGUI extends JFrame {
                 pyramidPanel.repaint();
             }
         });
-
+        
         add(pyramidPanel, BorderLayout.CENTER);
     }
-
-    private void createPyramid(JPanel pyramidPanel, Graphics2D g2d, int rows) {
+    
+    private void createPyramid(JPanel pyramidPanel, Graphics2D g2d, int rows, int gap) {
         int panelWidth = pyramidPanel.getWidth();
         int panelHeight = pyramidPanel.getHeight();
         int startX = panelWidth / 2;
-        int gap = panelWidth / 35;
         int startY = (panelHeight - ((rows + 2) * gap)) / 2;
-
+        
         for (int i = 2; i < rows + 2; i++) {
             int offsetX = startX - (i * gap / 2);
             for (int j = 0; j <= i; j++) {
@@ -503,13 +503,15 @@ public class JPlinkoGUI extends JFrame {
             }
         }
     }
-
+    
     private void createContainers(JPanel pyramidPanel, int startX, int startY, int gap, int rows) {
         // Rimuovi tutte le JLabel esistenti
         pyramidPanel.removeAll();
-
+        
+        Font globalFont = UIManager.getFont("Label.font");
+        Font smallerFont = globalFont.deriveFont(globalFont.getSize() * 0.6f); // 70% of the original size
         int height = screenSize.height;
-
+        double[] multipliers = ControllerForView.getInstance().getMultipliers();
         int containerWidth = gap;
         int containerHeight = (int) (height * 0.03);
         int numContainers = rows + 1;
@@ -520,18 +522,18 @@ public class JPlinkoGUI extends JFrame {
         // Calcola la posizione di partenza dei contenitori
         int containerStartX = firstPegX - (containerWidth / 2); // Allinea i contenitori al centro del primo piolo
         int containerStartY = startY + (rows * gap) + (int) (height * 0.06);
-
+        
         for (int i = 0; i < numContainers; i++) {
-            JLabel containerLabel = new JLabel("x" + (i + 1), SwingConstants.CENTER);
+            JLabel containerLabel = new JLabel(multipliers[i] + "x", SwingConstants.CENTER);
             containerLabel.setOpaque(true);
             containerLabel.setBackground(menuPanel.getBackground());
             containerLabel.setForeground(Color.WHITE);
             containerLabel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
             containerLabel.setPreferredSize(new Dimension(containerWidth, containerHeight));
-
+            containerLabel.setFont(smallerFont);
             // Posiziona i contenitori in base al primo piolo
             containerLabel.setBounds(containerStartX + i * containerWidth, containerStartY, containerWidth, containerHeight);
-
+            
             containerLabels.add(containerLabel);
             
             pyramidPanel.add(containerLabel);
@@ -541,23 +543,24 @@ public class JPlinkoGUI extends JFrame {
         pyramidPanel.revalidate();
         pyramidPanel.repaint();
     }
-
+    
     public void handleManual(ItemEvent e) {
         click.playSound();
         betSliderPanel.setVisible(false);
         betLabel.setVisible(false);
+        ControllerForView.getInstance().setMode("Manual");
     }
-
+    
     public void handleAuto(ItemEvent e) {
-
         betSliderPanel.setVisible(true);
         betLabel.setVisible(true);
+        ControllerForView.getInstance().setMode("Auto");
     }
-
+    
     public void handleBet(ActionEvent e) {
         betClick.playSound(); // Riproduci l'effetto sonoro
     }
-
+    
     public void handleIncrease(ActionEvent e) {
         click.playSound(); // Riproduci l'effetto sonoro
         if (currentBetIndex < betValues.length - 1) {
@@ -566,7 +569,7 @@ public class JPlinkoGUI extends JFrame {
             ControllerForView.getInstance().setCurrentBetIndex(currentBetIndex);
         }
     }
-
+    
     public void handleDecrese(ActionEvent e) {
         click.playSound(); // Riproduci l'effetto sonoro
         if (currentBetIndex > 0) {
@@ -575,27 +578,30 @@ public class JPlinkoGUI extends JFrame {
             ControllerForView.getInstance().setCurrentBetIndex(currentBetIndex);
         }
     }
-
+    
     public void handleLow(ItemEvent e) {
         click.playSound();
+        ControllerForView.getInstance().setRisk(lowRisk.getText());
     }
-
+    
     public void handleMedium(ItemEvent e) {
         click.playSound();
+        ControllerForView.getInstance().setRisk(mediumRisk.getText());
     }
-
+    
     public void handleHigh(ItemEvent e) {
         click.playSound();
+        ControllerForView.getInstance().setRisk(highRisk.getText());
     }
-
+    
     private void handleRowSlider(ChangeEvent e) {
         rowLabel.setText("Rows: " + rowSlider.getValue());
         //if (!rowSlider.getValueIsAdjusting()) { // Reagisci solo quando l'utente rilascia lo slider
-        ControllerForView.getInstance().handleRowChange(rowSlider.getValue());
+        ControllerForView.getInstance().setRows(rowSlider.getValue());
         //}
 
     }
-
+    
     public void loadLogoImage(int panelHeigth) {
         try {
             BufferedImage originalImage = ImageIO.read(getClass().getResource("../utils/logo1.png"));
@@ -610,18 +616,18 @@ public class JPlinkoGUI extends JFrame {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        
     }
-
+    
     public void loadBackgroundImage() {
         try {
             backgroundImage = ImageIO.read(getClass().getResource("../utils/background.jpg")); // Percorso relativo
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        
     }
-
+    
     private Image loadImage(String path) {
         try {
             return new ImageIcon(getClass().getResource(path)).getImage();
@@ -630,17 +636,17 @@ public class JPlinkoGUI extends JFrame {
             return null;
         }
     }
-
+    
     private void setFont() throws Exception {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
         //Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int screenHeight = screenSize.height;
-
-        int fontSize = screenHeight / 70; // Formula scalabile
+        
+        int fontSize = screenHeight / 60; // Formula scalabile
 
         try {
-            InputStream fontStream = JPlinkoGUI.class.getResourceAsStream("../utils/Orbitron-VariableFont_wght.ttf");
+            InputStream fontStream = JPlinkoGUI.class.getResourceAsStream("../utils/Exo2-VariableFont_wght.ttf");
             if (fontStream == null) {
                 throw new RuntimeException("Font file not found!");
             }
@@ -653,11 +659,10 @@ public class JPlinkoGUI extends JFrame {
             UIManager.put("ComboBox.font", globalFont);
             UIManager.put("TextField.font", globalFont);
             UIManager.put("Panel.font", globalFont);
-
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-
+    
 }

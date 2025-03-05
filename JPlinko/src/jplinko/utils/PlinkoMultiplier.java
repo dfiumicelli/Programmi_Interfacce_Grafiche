@@ -48,7 +48,7 @@ public class PlinkoMultiplier {
         for (int i = 0; i <= rows; i++) {
             double distanceFromCenter = Math.abs(mid - i) / (double) mid;
             double rawMultiplier = minCenter + (maxEdge - minCenter) * Math.pow(distanceFromCenter, exp);
-            multipliers[i] = Math.round(rawMultiplier * 100.0) / 100.0; //arrotondamento alla seconda cifra decimale
+            multipliers[i] = Math.round(rawMultiplier * 10.0) / 10.0; //arrotondamento alla prima cifra decimale
         }
 
         return multipliers;
@@ -58,6 +58,6 @@ public class PlinkoMultiplier {
         double mult[] = generateMultipliers(16, "low");
         for (int i = 0; i < mult.length; i++) {
             System.out.print(mult[i] + "  ");
-        }
+}
     }
 }

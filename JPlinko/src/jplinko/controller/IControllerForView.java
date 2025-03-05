@@ -14,11 +14,19 @@ public interface IControllerForView {
     
     public int getRows();
     
-    public void handleRowChange(int rows);
+    public void setRows(int rows);
     
     public int getCurrentBetIndex();
     
     public void setCurrentBetIndex(int CurrentBetIndex);
     
     public double[] getBetValues();
+    
+    public void setRisk(String risk);
+    
+    public double[] getMultipliers();
+    
+    public double getBalance();
+    
+    public void setMode(String mode);
 }
