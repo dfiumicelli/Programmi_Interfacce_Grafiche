@@ -18,17 +18,17 @@ public class PlinkoMultiplier {
         switch (riskLevel.toLowerCase()) {
             case "low" -> {
                 baseMin = 2.8;
-                baseMax = 5.0;
+                baseMax = 0.3;
                 exp = 6;
             }
             case "medium" -> {
                 baseMin = 2.7;
-                baseMax = 18.0;
+                baseMax = 0.9;
                 exp = 10;
             }
             case "high" -> {
                 baseMin = 1.7;
-                baseMax = 38.0;
+                baseMax = 2.1;
                 exp = 12;
             }
             default -> {
@@ -40,7 +40,7 @@ public class PlinkoMultiplier {
 
         // Adattiamo i valori min/max in base alle righe
         double minCenter = baseMin / Math.sqrt(rows + 1);
-        double maxEdge = baseMax * Math.pow(100,rows/10);
+        double maxEdge = baseMax * Math.pow(100,rows/10.00);
 
         double[] multipliers = new double[rows + 1];
         int mid = rows / 2;
