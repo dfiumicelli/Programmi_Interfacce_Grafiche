@@ -11,8 +11,6 @@ package jplinko.model;
 
 import java.util.Arrays;
 
-import java.util.Arrays;
-
 public class PlinkoMultiplierGenerator {
 
     // Enumerazione per i livelli di rischio
@@ -126,7 +124,7 @@ public class PlinkoMultiplierGenerator {
             // ma mantiene comunque i valori più alti agli estremi
             double factor;
             if (distance < 0.2) {
-                factor = 1.0 / Math.pow(2,rows); // Valori molto bassi nella zona centrale
+                factor = 1.0 + (8.0 / rows); // Valori più alti al centro per poche righe
             } else if (distance < 0.5) {
                 factor = 1.0 + distance * 2.0; // Valori bassi nella zona intermedia
             } else if (distance < 0.8) {
@@ -160,7 +158,7 @@ public class PlinkoMultiplierGenerator {
             // Per un rischio medio, i valori interni sono più bassi e quelli esterni più alti
             double factor;
             if (distance < 0.2) {
-                factor = 1.0 / Math.pow(2,rows); // Valori molto bassi nella zona centrale
+                factor = 1.0 + (6.0 / rows); // Valori più alti al centro per poche righe
             } else if (distance < 0.5) {
                 factor = 1.0 + distance * 3.0; // Valori bassi nella zona intermedia
             } else if (distance < 0.8) {
@@ -194,13 +192,13 @@ public class PlinkoMultiplierGenerator {
             // Per un rischio alto, estremo contrasto tra valori interni ed esterni
             double factor;
             if (distance < 0.2) {
-                factor = 50000.0 / Math.pow(2,rows); // Valori molto bassi nella zona centrale
+                factor = 1.0 + (2.0 / rows); // Valori più alti al centro per poche righe
             } else if (distance < 0.5) {
-                factor = 1.0 + distance * 4.0; // Valori bassi nella zona intermedia
+                factor = 1.0 + distance * 5.0; // Valori bassi nella zona intermedia
             } else if (distance < 0.8) {
-                factor = 1.0 + distance * 8.0; // Valori alti verso gli estremi
+                factor = 1.0 + distance * 10.0; // Valori alti verso gli estremi
             } else {
-                factor = 1.0 + distance * 16.0; // Valori molto alti agli estremi
+                factor = 1.0 + distance * 20.0; // Valori molto alti agli estremi
             }
 
             multipliers[i] = factor;
@@ -246,7 +244,7 @@ public class PlinkoMultiplierGenerator {
         System.out.println("=== Plinko Multiplier Generator ===");
 
         // Test con diverse configurazioni
-        int[] rowsToTest = {8, 12, 16};
+        int[] rowsToTest = {8, 16};
         RiskLevel[] riskLevelsToTest = {RiskLevel.LOW, RiskLevel.MEDIUM, RiskLevel.HIGH};
 
         for (int rows : rowsToTest) {
