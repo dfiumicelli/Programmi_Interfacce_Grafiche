@@ -21,9 +21,9 @@ public class test {
         // Valori base per il rischio
         switch (riskLevel.toLowerCase()) {
             case "low" -> {
-                baseMin = 2.8;
+                baseMin = 100.8;
                 baseMax = 0.3;
-                exp = 4;
+                exp = 3;
             }
             case "medium" -> {
                 baseMin = 18.7;
@@ -31,9 +31,9 @@ public class test {
                 exp = 6;
             }
             case "high" -> {
-                baseMin = 1.7;
-                baseMax = 2.1;
-                exp = 8;
+                baseMin = 60.7;
+                baseMax = 20.1;
+                exp = 6;
             }
             default -> {
                 baseMin = 1.0;
@@ -47,12 +47,12 @@ public class test {
         double maxEdge = baseMax * Math.pow(100, rows / 10.00);
 
         double[] multipliers = new double[rows + 1];
-        int mid = rows / 2;
+        double center = (rows) / 2.0; // Centro virtuale (può essere un numero frazionario per righe dispari)
 
         for (int i = 0; i <= rows; i++) {
-            double distanceFromCenter = Math.abs(mid - i) / (double) mid;
-            double rawMultiplier = minCenter + (maxEdge - minCenter) * Math.pow(distanceFromCenter, exp);
-            multipliers[i] = Math.round(rawMultiplier * 10.0) / 10.0; //arrotondamento alla prima cifra decimale
+            // Calcola la distanza normalizzata dal centro (tra 0 e 1)
+            double distanceFromCenter = Math.abs(center - i) / center;
+            multipliers[i] = minCenter + (maxEdge - minCenter) * Math.pow(distanceFromCenter, exp);
         }
 
         return multipliers;
@@ -72,12 +72,12 @@ public class test {
 
         // Arrotonda i moltiplicatori a 2 decimali
         for (int i = 0; i < multipliers.length; i++) {
-            multipliers[i] = Math.round(multipliers[i] * 100) / 100.0;
+            multipliers[i] = Math.round(multipliers[i] * 10) / 10.0;
         }
 
         return multipliers;
     }
-    
+
     private static double[] calculateBinomialProbabilities(int rows) {
         int bins = rows + 1;
         double[] probabilities = new double[bins];
@@ -111,7 +111,7 @@ public class test {
 
         return result;
     }
-    
+
     private static void adjustMultipliersForTargetPayout(double[] multipliers, double[] probabilities) {
         double currentPayout = calculateExpectedValue(probabilities, multipliers);
         double adjustmentFactor = TARGET_PAYOUT / currentPayout;
@@ -120,7 +120,7 @@ public class test {
             multipliers[i] *= adjustmentFactor;
         }
     }
-    
+
     private static double calculateExpectedValue(double[] probabilities, double[] multipliers) {
         double expectedValue = 0;
         for (int i = 0; i < probabilities.length; i++) {
@@ -128,13 +128,16 @@ public class test {
         }
         return expectedValue;
     }
-    
-    public static void main(String[] args){
-        double[] multi = generateMultipliersReal(8, "medium");
-        double[] probabilities = calculateBinomialProbabilities(8);
+
+    public static void main(String[] args) {
+        int rows = 16; // Numero di righe dispari
+        String riskLevel = "high";
+        double[] multi = generateMultipliersReal(rows, riskLevel);
+        double[] probabilities = calculateBinomialProbabilities(rows);
         double expectedPayout = calculateExpectedValue(probabilities, multi);
-        for (int i = 0; i< multi.length; i++){
-            System.out.println(multi[i]);
+
+        for (int i = 0; i < multi.length; i++) {
+            System.out.println("Bin " + i + ": Multiplier = " + multi[i]);
         }
         System.out.println("Expected Payout: " + Math.round(expectedPayout * 10000) / 100.0 + "%");
     }
