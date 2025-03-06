@@ -23,17 +23,17 @@ public class test {
             case "low" -> {
                 baseMin = 2.8;
                 baseMax = 0.3;
-                exp = 6;
+                exp = 4;
             }
             case "medium" -> {
-                baseMin = 2.7;
+                baseMin = 18.7;
                 baseMax = 0.9;
-                exp = 10;
+                exp = 6;
             }
             case "high" -> {
                 baseMin = 1.7;
                 baseMax = 2.1;
-                exp = 12;
+                exp = 8;
             }
             default -> {
                 baseMin = 1.0;
@@ -130,7 +130,7 @@ public class test {
     }
     
     public static void main(String[] args){
-        double[] multi = generateMultipliersReal(8, "high");
+        double[] multi = generateMultipliersReal(8, "medium");
         double[] probabilities = calculateBinomialProbabilities(8);
         double expectedPayout = calculateExpectedValue(probabilities, multi);
         for (int i = 0; i< multi.length; i++){
