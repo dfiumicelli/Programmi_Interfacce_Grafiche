@@ -20,4 +20,6 @@ public interface IModel {
     public void setMode(String mode);
     public String getMode();
     public String getRisk();
+    public int getRounds();
+    public void setRounds(int rounds);
 }

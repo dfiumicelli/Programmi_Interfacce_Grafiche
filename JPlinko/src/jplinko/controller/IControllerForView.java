@@ -33,5 +33,9 @@ public interface IControllerForView {
     public String getMode();
     
     public String getRisk();
+    
+    public int getRounds();
+    
+    public void setRounds(int rounds);
             
 }

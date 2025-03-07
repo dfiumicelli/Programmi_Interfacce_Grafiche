@@ -76,6 +76,17 @@ public class ControllerForView implements IControllerForView {
     public String getRisk() {
         return Model.getInstance().getRisk();
     }
+
+    @Override
+    public int getRounds() {
+        return Model.getInstance().getRounds();
+    }
+
+    @Override
+    public void setRounds(int rounds) {
+        Model.getInstance().setRounds(rounds);
+    }
+    
     
 
     public static IControllerForView getInstance() {

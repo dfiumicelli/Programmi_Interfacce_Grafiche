@@ -296,7 +296,7 @@ public class JPlinkoGUI extends JFrame {
         betSliderPanel.setLayout(new BorderLayout());
         betSliderPanel.setPreferredSize(new Dimension((int) (width * 0.9), (int) (height * 0.1)));
         // Creiamo lo slider 
-        betSlider = new JSlider(JSlider.HORIZONTAL, 5, 30, 5);
+        betSlider = new JSlider(JSlider.HORIZONTAL, 5, 30, ControllerForView.getInstance().getRounds());
         betSlider.setMajorTickSpacing(5);
         betSlider.setPaintTicks(true);
         betSlider.setPaintLabels(true);
@@ -609,6 +609,7 @@ public class JPlinkoGUI extends JFrame {
     
     private void handleBetSlider(ChangeEvent e){
         betLabel.setText("Number of rounds: " + betSlider.getValue());
+        ControllerForView.getInstance().setRounds(betSlider.getValue());
     }
     
     public void loadLogoImage(int panelHeigth) {
