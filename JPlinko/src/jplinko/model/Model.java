@@ -4,9 +4,6 @@
  */
 package jplinko.model;
 
-import jplinko.controller.ControllerForView;
-import jplinko.utils.PlinkoMultiplier;
-
 /**
  *
  * @author dfiumicelli
@@ -26,7 +23,7 @@ public class Model implements IModel {
        this.rows = 16;
        this.currentBetIndex = 4;
        this.risk = "Medium";
-       this.multipliers = PlinkoMultiplier.generateMultipliers(rows, risk);
+       this.multipliers = Multipliers.generate(rows, risk);
        this.balance = 5000.00;
        this.mode = "Manual";
     }
@@ -41,7 +38,7 @@ public class Model implements IModel {
     @Override
     public void setRows(int rows) {
         this.rows = rows;
-        this.multipliers = PlinkoMultiplier.generateMultipliers(rows, risk);
+        this.multipliers = Multipliers.generate(rows, risk);
     }
     
     @Override
@@ -67,7 +64,7 @@ public class Model implements IModel {
     @Override
     public void setRisk(String risk) {
         this.risk = risk;
-        this.multipliers = PlinkoMultiplier.generateMultipliers(rows, risk);
+        this.multipliers = Multipliers.generate(rows, risk);
     }
 
     @Override
@@ -83,6 +80,16 @@ public class Model implements IModel {
     @Override
     public void setMode(String mode) {
         this.mode = mode;
+    }
+
+    @Override
+    public String getRisk() {
+        return risk;
+    }
+
+    @Override
+    public String getMode() {
+        return mode;
     }
 
     

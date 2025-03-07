@@ -66,6 +66,16 @@ public class ControllerForView implements IControllerForView {
     public void setMode(String mode){
         Model.getInstance().setMode(mode);
     }
+
+    @Override
+    public String getMode() {
+        return Model.getInstance().getMode();
+    }
+
+    @Override
+    public String getRisk() {
+        return Model.getInstance().getRisk();
+    }
     
 
     public static IControllerForView getInstance() {

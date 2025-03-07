@@ -2,42 +2,42 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package jplinko.utils;
+package jplinko.model;
 
 /**
  *
  * @author dfium
  */
-public class test {
+public class Multipliers {
 
     private static final double TARGET_PAYOUT = 0.94;
 
-    public static double[] generateRawMultipliers(int rows, String riskLevel) {
-        double baseMin, baseMax;
+    private static double[] generateRawMultipliers(int rows, String riskLevel) {
+        double factorCenter, factorEdge;
 
-        // Valori base per il rischio
+        // Valori factor per il rischio
         switch (riskLevel.toLowerCase()) {
             case "low" -> {
-                baseMin = 100.0;
-                baseMax = 10.0;
+                factorCenter = 100.0;
+                factorEdge = 10.0;
             }
             case "medium" -> {
-                baseMin = 25.0;
-                baseMax = 5.0;
+                factorCenter = 25.0;
+                factorEdge = 5.0;
             }
             case "high" -> {
-                baseMin = 50.0;
-                baseMax = 20.0;
+                factorCenter = 5.0;
+                factorEdge = 2.0;
             }
             default -> {
-                baseMin = 1.0;
-                baseMax = 1.0;
+                factorCenter = 1.0;
+                factorEdge = 1.0;
             }
         }
 
         // Adattiamo i valori min/max in base alle righe
-        double minCenter = baseMin / (0.5 * Math.log(rows + 1));
-        double maxEdge = baseMax * Math.pow(100, rows / 10.00);
+        double minCenter = factorCenter / (0.5 * Math.log(rows + 1));
+        double maxEdge = factorEdge * Math.pow(100, rows / 10.00);
 
         double[] multipliers = new double[rows + 1];
         double center = (rows) / 2.0; // Centro virtuale (può essere un numero frazionario per righe dispari)
@@ -51,7 +51,7 @@ public class test {
         return multipliers;
     }
 
-    public static double[] generateMultipliersReal(int rows, String riskLevel) {
+    public static double[] generate(int rows, String riskLevel) {
         // Il numero di bin è rows + 1
 
         // Calcolo delle probabilità binomiali per ogni bin
@@ -85,13 +85,7 @@ public class test {
         return probabilities;
     }
 
-    /**
-     * Calcola il coefficiente binomiale C(n, k)
-     *
-     * @param n
-     * @param k
-     * @return Valore del coefficiente binomiale
-     */
+    //Calcola il coefficiente binomiale C(n, k)
     private static long binomialCoefficient(int n, int k) {
         if (k == 0 || k == n) {
             return 1;
@@ -122,16 +116,4 @@ public class test {
         return expectedValue;
     }
 
-    public static void main(String[] args) {
-        int rows = 8; // Numero di righe dispari
-        String riskLevel = "high";
-        double[] multi = generateMultipliersReal(rows, riskLevel);
-        double[] probabilities = calculateBinomialProbabilities(rows);
-        double expectedPayout = calculateExpectedValue(probabilities, multi);
-
-        for (int i = 0; i < multi.length; i++) {
-            System.out.println("Bin " + i + ": Multiplier = " + multi[i]);
-        }
-        System.out.println("Expected Payout: " + Math.round(expectedPayout * 10000) / 100.0 + "%");
-    }
 }

@@ -18,4 +18,6 @@ public interface IModel {
     public double[] getMultipliers();
     public double getBalance();
     public void setMode(String mode);
+    public String getMode();
+    public String getRisk();
 }
