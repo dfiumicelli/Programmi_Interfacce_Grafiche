@@ -4,8 +4,6 @@
  */
 package jplinko.utils;
 
-
-
 /**
  *
  * @author dfium
@@ -16,34 +14,29 @@ public class test {
 
     public static double[] generateRawMultipliers(int rows, String riskLevel) {
         double baseMin, baseMax;
-        int exp;
 
         // Valori base per il rischio
         switch (riskLevel.toLowerCase()) {
             case "low" -> {
                 baseMin = 100.0;
                 baseMax = 10.0;
-                exp = 5;
             }
             case "medium" -> {
                 baseMin = 25.0;
                 baseMax = 5.0;
-                exp = 5;
             }
             case "high" -> {
                 baseMin = 50.0;
                 baseMax = 20.0;
-                exp = 5;
             }
             default -> {
                 baseMin = 1.0;
                 baseMax = 1.0;
-                exp = 1;
             }
         }
 
         // Adattiamo i valori min/max in base alle righe
-        double minCenter = baseMin / (0.5*Math.log(rows + 1));
+        double minCenter = baseMin / (0.5 * Math.log(rows + 1));
         double maxEdge = baseMax * Math.pow(100, rows / 10.00);
 
         double[] multipliers = new double[rows + 1];
@@ -52,7 +45,7 @@ public class test {
         for (int i = 0; i <= rows; i++) {
             // Calcola la distanza normalizzata dal centro (tra 0 e 1)
             double distanceFromCenter = Math.abs(center - i) / center;
-            multipliers[i] = minCenter + (maxEdge - minCenter) * Math.pow(distanceFromCenter, exp);
+            multipliers[i] = minCenter + (maxEdge - minCenter) * Math.pow(distanceFromCenter, 5);
         }
 
         return multipliers;
