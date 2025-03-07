@@ -21,19 +21,19 @@ public class test {
         // Valori base per il rischio
         switch (riskLevel.toLowerCase()) {
             case "low" -> {
-                baseMin = 100.8;
-                baseMax = 0.3;
-                exp = 3;
+                baseMin = 100.0;
+                baseMax = 10.0;
+                exp = 5;
             }
             case "medium" -> {
-                baseMin = 18.7;
-                baseMax = 0.9;
-                exp = 6;
+                baseMin = 25.0;
+                baseMax = 5.0;
+                exp = 5;
             }
             case "high" -> {
-                baseMin = 60.7;
-                baseMax = 20.1;
-                exp = 6;
+                baseMin = 50.0;
+                baseMax = 20.0;
+                exp = 5;
             }
             default -> {
                 baseMin = 1.0;
@@ -43,7 +43,7 @@ public class test {
         }
 
         // Adattiamo i valori min/max in base alle righe
-        double minCenter = baseMin / Math.sqrt(rows + 1);
+        double minCenter = baseMin / (0.5*Math.log(rows + 1));
         double maxEdge = baseMax * Math.pow(100, rows / 10.00);
 
         double[] multipliers = new double[rows + 1];
@@ -130,7 +130,7 @@ public class test {
     }
 
     public static void main(String[] args) {
-        int rows = 16; // Numero di righe dispari
+        int rows = 8; // Numero di righe dispari
         String riskLevel = "high";
         double[] multi = generateMultipliersReal(rows, riskLevel);
         double[] probabilities = calculateBinomialProbabilities(rows);
