@@ -1,5 +1,7 @@
 package jplinko.model;
 
+import java.util.Random;
+
 public class Model implements IModel {
 
     private static Model instance = null;
@@ -96,4 +98,43 @@ public class Model implements IModel {
         this.rounds = rounds;
     }
 
+    public static int simulatePlinko(int rows, int numMultipliers) {
+        Random random = new Random();
+        int position = 0; // Posizione iniziale (centrale)
+        int[] positions = new int[rows];
+        // Simula il percorso della pallina
+        for (int i = 0; i < rows; i++) {
+            // La pallina si sposta a sinistra (-1) o a destra (+1)
+            position += random.nextBoolean() ? 1 : -1;
+            System.out.println(position);
+        }
+
+        // Mappa la posizione finale su uno dei moltiplicatori
+        // La posizione finale può variare tra -rows e +rows
+        // Normalizziamo la posizione nell'intervallo [0, numMultipliers - 1]
+        double minPosition = -rows;
+        double maxPosition = rows;
+        double normalizedPosition = (double) (position - minPosition) / (maxPosition - minPosition); // Normalizza tra 0 e 1
+        int finalPosition = (int) (normalizedPosition * (numMultipliers - 1));
+
+        return finalPosition;
+    }
+    
+    public static void main(String[] args) {
+        int rows = 16; // Numero di righe
+        double[] multipliers = Multipliers.generate(rows, "high"); // Esempio di moltiplicatori
+
+        // Simula il percorso della pallina
+        int finalPosition = simulatePlinko(rows, multipliers.length);
+        double multiplier = multipliers[finalPosition];
+
+        System.out.println("Posizione finale: " + finalPosition);
+        System.out.println("Moltiplicatore: " + multiplier);
+    }
+
+
+
+    
 }
+
+
