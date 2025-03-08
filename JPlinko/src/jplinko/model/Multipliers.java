@@ -7,7 +7,7 @@ public class Multipliers {
     private static double[] generateRawMultipliers(int rows, String riskLevel) {
         double factorCenter, factorEdge;
 
-        // Valori factor per il rischio
+        // Fattori per il rischio
         switch (riskLevel.toLowerCase()) {
             case "low" -> {
                 factorCenter = 100.0;
@@ -27,7 +27,7 @@ public class Multipliers {
             }
         }
 
-        // Adattiamo i valori min/max in base alle righe
+        // Adatto i valori min/max in base alle righe
         double minCenter = factorCenter / (0.5 * Math.log(rows + 1));
         double maxEdge = factorEdge * Math.pow(100, rows / 10.00);
 
@@ -44,9 +44,7 @@ public class Multipliers {
     }
 
     public static double[] generate(int rows, String riskLevel) {
-        // Il numero di bin è rows + 1
-
-        // Calcolo delle probabilità binomiali per ogni bin
+        // Calcolo delle probabilità binomiali per ogni contenitore
         double[] probabilities = calculateBinomialProbabilities(rows);
 
         // Genera i moltiplicatori in base al fattore di rischio
@@ -55,7 +53,7 @@ public class Multipliers {
         // Aggiusta i moltiplicatori per ottenere il payout target
         adjustMultipliersForTargetPayout(multipliers, probabilities);
 
-        // Arrotonda i moltiplicatori a 2 decimali
+        // Arrotonda i moltiplicatori a 1 decimale
         for (int i = 0; i < multipliers.length; i++) {
             multipliers[i] = Math.round(multipliers[i] * 10) / 10.0;
         }
