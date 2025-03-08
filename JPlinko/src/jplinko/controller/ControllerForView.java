@@ -1,14 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package jplinko.controller;
+
 import jplinko.view.View;
 import jplinko.model.Model;
-/**
- *
- * @author dfiumicelli
- */
+
 public class ControllerForView implements IControllerForView {
 
     private static ControllerForView instance = null;
@@ -16,9 +10,9 @@ public class ControllerForView implements IControllerForView {
     private ControllerForView() {
         //to do
     }
-    
+
     @Override
-    public void openJPlinkoGUI(){
+    public void openJPlinkoGUI() {
         View.getInstance().openJPlinkoGUI();
     }
 
@@ -51,9 +45,9 @@ public class ControllerForView implements IControllerForView {
     public void setRisk(String risk) {
         Model.getInstance().setRisk(risk);
     }
-    
+
     @Override
-    public double[] getMultipliers(){
+    public double[] getMultipliers() {
         return Model.getInstance().getMultipliers();
     }
 
@@ -61,9 +55,9 @@ public class ControllerForView implements IControllerForView {
     public double getBalance() {
         return Model.getInstance().getBalance();
     }
-    
+
     @Override
-    public void setMode(String mode){
+    public void setMode(String mode) {
         Model.getInstance().setMode(mode);
     }
 
@@ -86,8 +80,6 @@ public class ControllerForView implements IControllerForView {
     public void setRounds(int rounds) {
         Model.getInstance().setRounds(rounds);
     }
-    
-    
 
     public static IControllerForView getInstance() {
         if (instance == null) {

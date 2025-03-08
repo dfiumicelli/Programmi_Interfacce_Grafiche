@@ -1,13 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package jplinko.model;
 
-/**
- *
- * @author dfiumicelli
- */
 public class Model implements IModel {
 
     private static Model instance = null;
@@ -21,13 +13,13 @@ public class Model implements IModel {
     private String mode;
 
     private Model() {
-       this.rows = 16;
-       this.currentBetIndex = 4;
-       this.rounds = 5;
-       this.risk = "Medium";
-       this.multipliers = Multipliers.generate(rows, risk);
-       this.balance = 5000.00;
-       this.mode = "Manual";
+        this.rows = 16;
+        this.currentBetIndex = 4;
+        this.rounds = 5;
+        this.risk = "Medium";
+        this.multipliers = Multipliers.generate(rows, risk);
+        this.balance = 5000.00;
+        this.mode = "Manual";
     }
 
     public static IModel getInstance() {
@@ -42,7 +34,7 @@ public class Model implements IModel {
         this.rows = rows;
         this.multipliers = Multipliers.generate(rows, risk);
     }
-    
+
     @Override
     public int getRows() {
         return rows;
@@ -104,6 +96,4 @@ public class Model implements IModel {
         this.rounds = rounds;
     }
 
-    
-    
 }
