@@ -27,4 +27,9 @@ public interface IModel {
     public int getRounds();
 
     public void setRounds(int rounds);
+
+    public static int simulatePlinko(int rows, int numMultipliers) {
+        // Method body implementation
+        return 0; // Placeholder return value
+    }
 }

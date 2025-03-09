@@ -101,23 +101,23 @@ public class Model implements IModel {
     public static int simulatePlinko(int rows, int numMultipliers) {
         Random random = new Random();
         int position = 0; // Posizione iniziale (centrale)
-        int[] positions = new int[rows];
+        
         // Simula il percorso della pallina
         for (int i = 0; i < rows; i++) {
             // La pallina si sposta a sinistra (-1) o a destra (+1)
             position += random.nextBoolean() ? 1 : -1;
-            System.out.println(position);
         }
-
-        // Mappa la posizione finale su uno dei moltiplicatori
-        // La posizione finale può variare tra -rows e +rows
-        // Normalizziamo la posizione nell'intervallo [0, numMultipliers - 1]
-        double minPosition = -rows;
-        double maxPosition = rows;
-        double normalizedPosition = (double) (position - minPosition) / (maxPosition - minPosition); // Normalizza tra 0 e 1
-        int finalPosition = (int) (normalizedPosition * (numMultipliers - 1));
-
-        return finalPosition;
+        
+        // Normalizza la posizione per mappare al contenitore corretto
+        // In un gioco Plinko con rows righe, ci sono rows+1 contenitori
+        // La posizione finale dovrebbe essere nell'intervallo [0, rows]
+        position = (position + rows) / 2;
+        
+        // Assicurati che la posizione sia nell'intervallo valido
+        if (position < 0) position = 0;
+        if (position >= numMultipliers) position = numMultipliers - 1;
+        System.out.println("Posizione finale: " + position);
+        return position;
     }
     
     public static void main(String[] args) {

@@ -9,8 +9,7 @@ import java.awt.event.ItemEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-import javax.swing.UIManager;
-import java.awt.Toolkit;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -26,7 +25,7 @@ public class JPlinkoGUI extends JFrame {
     private BufferedImage backgroundImage;
     private BufferedImage logoImage;
     private final Dimension screenSize;
-    private JPanel menuPanel, modePanel, riskPanel, rowPanel, betAmountPanel, betSliderPanel;
+    private JPanel menuPanel, modePanel, riskPanel, rowPanel, betAmountPanel, betSliderPanel, pyramidPanel;
     private RoundedButton betButton, increaseBet, decreaseBet;
     private RoundedToggleButton manualToggle, autoToggle, lowRisk, mediumRisk, highRisk;
     private JLabel riskLabel, rowLabel, betAmountLabel, balanceLabel, betLabel, betIndicatorLabel;
@@ -35,6 +34,7 @@ public class JPlinkoGUI extends JFrame {
     private SoundPlayer click, betClick;
     private int currentBetIndex;
     private double[] betValues;
+    private PlinkoAnimation animation;
 
     public JPlinkoGUI() throws Exception {
         super("JPlinkoGUI");
@@ -43,6 +43,7 @@ public class JPlinkoGUI extends JFrame {
         this.betClick = new SoundPlayer("bet_click.wav");
         this.currentBetIndex = ControllerForView.getInstance().getCurrentBetIndex();
         this.betValues = ControllerForView.getInstance().getBetValues();
+        
         Image logo = loadImage("../utils/logo.png"); // Percorso relativo alla cartella delle risorse
 
         // Imposta l'icona della finestra
@@ -53,7 +54,7 @@ public class JPlinkoGUI extends JFrame {
         }
         this.setFont();
         this.createGUI();
-
+        this.animation = new PlinkoAnimation(pyramidPanel);
     }
 
     private void createGUI() {
@@ -440,7 +441,7 @@ public class JPlinkoGUI extends JFrame {
     private void setRightPanel() {
         loadBackgroundImage();
 
-        JPanel pyramidPanel = new JPanel() {
+        pyramidPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -459,6 +460,10 @@ public class JPlinkoGUI extends JFrame {
 
                 createPyramid(this, g2d, rows, gap);
                 createContainers(this, startX, startY, gap, rows); // Disegna i contenitori
+
+                if (animation != null) {
+                    animation.paintBall(g2d);
+                }
                 loadLogoImage(panelHeight);
                 if (logoImage != null) {
                     int imageWidth = logoImage.getWidth();
@@ -554,6 +559,26 @@ public class JPlinkoGUI extends JFrame {
 
     public void handleBet(ActionEvent e) {
         betClick.playSound(); // Riproduci l'effetto sonoro
+        
+        // Disabilita il pulsante durante l'animazione
+        betButton.setEnabled(false);
+        
+        // Ottieni i parametri dal modello
+        int rows = ControllerForView.getInstance().getRows();
+        
+        // Usa il metodo simulatePlinko dal Model per ottenere la posizione finale
+        //int finalPosition = jplinko.model.Model.simulatePlinko(rows, rows + 1);
+        //double finalMultiplier = ControllerForView.getInstance().getMultipliers()[finalPosition];
+        
+        // Avvia l'animazione
+        animation.startAnimation(rows);
+        
+        // Riabilita il pulsante dopo un breve ritardo
+        Timer enableTimer = new Timer(3000, event -> {
+            betButton.setEnabled(true);
+        });
+        enableTimer.setRepeats(false);
+        enableTimer.start();
     }
 
     public void handleIncrease(ActionEvent e) {
