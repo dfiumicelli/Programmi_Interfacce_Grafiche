@@ -2,7 +2,6 @@ package jplinko.view;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.awt.Color;
 import javax.swing.Timer;
 import java.awt.Point;
@@ -13,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import jplinko.controller.ControllerForView;
+import jplinko.model.Model;
 
 public class PlinkoAnimation {
     private JPanel pyramidPanel;
@@ -32,7 +32,7 @@ public class PlinkoAnimation {
     public void startAnimation(int rows) {
         // Calcola il percorso della pallina
 
-        this.ballPath = calculateBallPath(rows, finalPosition);
+        this.ballPath = calculateBallPath(rows);
         this.currentStep = 0;
 
         if (ballPath == null || ballPath.isEmpty()) {
@@ -55,9 +55,8 @@ public class PlinkoAnimation {
         animationTimer.start();
     }
     
-    private List<Point> calculateBallPath(int rows, int finalPosition) {
+    private List<Point> calculateBallPath(int rows) {
         List<Point> path = new ArrayList<>();
-        Random random = new Random();
         
         // Calcola le dimensioni del pannello per posizionare la pallina
         int panelWidth = pyramidPanel.getWidth();
@@ -70,30 +69,14 @@ public class PlinkoAnimation {
         path.add(new Point(startX, startY));
         
         // Simula il percorso della pallina attraverso i pioli
-        int position = 0;
-        for (int i = 1; i <= rows+1; i++) {
+        int[] positions = Model.getInstance().simulatePlinko(rows, rows+1);
+        for (int i = 0; i < positions.length-1; i++) {
             // Determina se la pallina va a sinistra o a destra ad ogni riga
-            boolean goRight;
             
-            // Se stiamo calcolando l'ultimo percorso, assicuriamoci di arrivare alla posizione finale
-            // if (i == rows+1) {
-            //     goRight = position < finalPosition;
-
-            // } else {
-            goRight = random.nextBoolean();
-            // }
-            
-            if (goRight) {
-                position++;
-            } else {
-                position--;
-            }
             // Calcola la nuova posizione sullo schermo
-            int newX = startX + (position * gap / 2);
+            int newX = startX + (positions[i] * gap / 2);
             int newY = startY + (i * gap);
-            if (i == rows+1) {
-                finalPosition = position;
-            }
+            
             // Aggiungi punti intermedi per un'animazione più fluida
             Point previousPoint = path.get(path.size() - 1);
             int steps = 10; // Numero di passi intermedi
@@ -122,7 +105,7 @@ public class PlinkoAnimation {
         
         // //Aggiungi il punto finale esplicito
         // path.add(new Point(containerX, containerY));
-        
+        this.finalPosition = positions[positions.length-1];
         return path;
     }
     

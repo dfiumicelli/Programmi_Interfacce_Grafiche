@@ -98,43 +98,70 @@ public class Model implements IModel {
         this.rounds = rounds;
     }
 
-    public static int simulatePlinko(int rows, int numMultipliers) {
+    @Override
+    public int[] simulatePlinko(int rows, int numMultipliers) {
         Random random = new Random();
+        int[] positions = new int[numMultipliers+2];
         int position = 0; // Posizione iniziale (centrale)
-        
+        positions[0] = position;
+        boolean goRight;
         // Simula il percorso della pallina
-        for (int i = 0; i < rows; i++) {
+        for (int i = 1; i < positions.length-1; i++) {
             // La pallina si sposta a sinistra (-1) o a destra (+1)
-            position += random.nextBoolean() ? 1 : -1;
+
+            // Se stiamo calcolando l'ultimo percorso, assicuriamoci di arrivare alla posizione finale
+            // if (i == rows+1) {
+            //     goRight = position < finalPosition;
+            // } else {
+            goRight = random.nextBoolean();
+            // }
+
+            if (goRight) {
+                position++;
+            } else {
+                position--;
+            }
+            positions[i] = position;
+            
         }
-        
+
         // Normalizza la posizione per mappare al contenitore corretto
         // In un gioco Plinko con rows righe, ci sono rows+1 contenitori
         // La posizione finale dovrebbe essere nell'intervallo [0, rows]
-        position = (position + rows) / 2;
-        
+        positions[positions.length-1] = (positions[positions.length-2] + rows) / 2;
+
         // Assicurati che la posizione sia nell'intervallo valido
-        if (position < 0) position = 0;
-        if (position >= numMultipliers) position = numMultipliers - 1;
-        System.out.println("Posizione finale: " + position);
-        return position;
+        if (positions[positions.length-1] < 0) {
+            positions[positions.length-1] = 0;
+        }
+        if (positions[positions.length-1] >= numMultipliers) {
+            positions[positions.length-1] = numMultipliers - 1;
+        }
+        for (int i = 0; i<positions.length; i++)
+            System.out.println(positions[i]);
+        return positions;
     }
     
-    public static void main(String[] args) {
-        int rows = 16; // Numero di righe
-        double[] multipliers = Multipliers.generate(rows, "high"); // Esempio di moltiplicatori
-
-        // Simula il percorso della pallina
-        int finalPosition = simulatePlinko(rows, multipliers.length);
-        double multiplier = multipliers[finalPosition];
-
-        System.out.println("Posizione finale: " + finalPosition);
-        System.out.println("Moltiplicatore: " + multiplier);
-    }
-
-
-
-    
+//    public static void main(String[] args) {
+//    int rows = 16; // Numero di righe
+//    double[] multipliers = Multipliers.generate(rows, "high"); // Esempio di moltiplicatori
+//    int[] positionCounts = new int[multipliers.length];
+//
+//    int numSimulations = 100000; // Numero di simulazioni
+//    for (int i = 0; i < numSimulations; i++) {
+//        int finalPosition = simulatePlinko(rows, multipliers.length);
+//        positionCounts[finalPosition]++;
+//    }
+//
+//    // Stampa i risultati
+//    for (int i = 0; i < multipliers.length; i++) {
+//        System.out.println("Posizione " + i + ": " + positionCounts[i] + " volte");
+//    }
 }
+
+
+
+    
+
 
 
