@@ -43,7 +43,7 @@ public class JPlinkoGUI extends JFrame {
         this.betClick = new SoundPlayer("bet_click.wav");
         this.currentBetIndex = ControllerForView.getInstance().getCurrentBetIndex();
         this.betValues = ControllerForView.getInstance().getBetValues();
-        
+
         Image logo = loadImage("../utils/logo.png"); // Percorso relativo alla cartella delle risorse
 
         // Imposta l'icona della finestra
@@ -559,20 +559,19 @@ public class JPlinkoGUI extends JFrame {
 
     public void handleBet(ActionEvent e) {
         betClick.playSound(); // Riproduci l'effetto sonoro
-        
+
         // Disabilita il pulsante durante l'animazione
         betButton.setEnabled(false);
-        
+
         // Ottieni i parametri dal modello
         int rows = ControllerForView.getInstance().getRows();
-        
+
         // Usa il metodo simulatePlinko dal Model per ottenere la posizione finale
         //int finalPosition = jplinko.model.Model.simulatePlinko(rows, rows + 1);
         //double finalMultiplier = ControllerForView.getInstance().getMultipliers()[finalPosition];
-        
         // Avvia l'animazione
         animation.startAnimation(rows);
-        
+
         // Riabilita il pulsante dopo un breve ritardo
         Timer enableTimer = new Timer(3000, event -> {
             betButton.setEnabled(true);
