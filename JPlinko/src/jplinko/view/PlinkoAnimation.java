@@ -57,61 +57,84 @@ public class PlinkoAnimation {
     }
 
     private List<Point> calculateBallPath(int rows) {
-    List<Point> path = new ArrayList<>();
+        List<Point> path = new ArrayList<>();
 
-    // Calcola le dimensioni del pannello per posizionare la pallina
-    int panelWidth = pyramidPanel.getWidth();
-    int panelHeight = pyramidPanel.getHeight();
-    int gap = panelWidth / 33;
-    int startX = panelWidth / 2;
-    int startY = (panelHeight - ((rows + 2) * gap)) / 2;
+        // Calcola le dimensioni del pannello per posizionare la pallina
+        int panelWidth = pyramidPanel.getWidth();
+        int panelHeight = pyramidPanel.getHeight();
+        int gap = panelWidth / 33;
+        int startX = panelWidth / 2;
+        int startY = (panelHeight - ((rows + 2) * gap)) / 2;
 
-    // Aggiungi la posizione iniziale (centro in alto)
-    path.add(new Point(startX, startY));
+        // Aggiungi la posizione iniziale (centro in alto)
+        path.add(new Point(startX, startY));
 
-    // Simula il percorso della pallina attraverso i pioli
-    int[] positions = Model.getInstance().simulatePlinko(rows, rows + 1);
-    for (int i = 0; i < positions.length - 1; i++) {
-        // Calcola la nuova posizione sullo schermo
-        int newX = startX + (positions[i] * gap / 2);
-        int newY = startY + ((i) * gap);
+        // Simula il percorso della pallina attraverso i pioli
+        int[] positions = Model.getInstance().simulatePlinko(rows, rows + 1);
+        int currentDirection = 0;
+        for (int i = 0; i < positions.length; i++) {
+            // Calcola la nuova posizione sullo schermo
+            int newX = startX + (positions[i] * gap / 2);
+            int newY = startY + ((i) * gap);
 
-        // Aggiungi punti intermedi per un'animazione più fluida
+            // Aggiungi punti intermedi per un'animazione più fluida
+            Point previousPoint = path.get(path.size() - 1);
+            int steps = 10; // Numero di passi intermedi per i segmenti normali
+
+            for (int step = 1; step <= steps; step++) {
+                int interpolatedX = previousPoint.x + ((newX - previousPoint.x) * step / steps);
+                int interpolatedY = previousPoint.y + ((newY - previousPoint.y) * step / steps);
+                path.add(new Point(interpolatedX, interpolatedY));
+            }
+
+            if (i > 0) {
+                if (positions[i] > positions[i - 1]) {
+                    currentDirection = 1; // Destra
+                } else if (positions[i] < positions[i - 1]) {
+                    currentDirection = -1; // Sinistra
+                }
+                // Se positions[i] == positions[i - 1], mantieni la direzione precedente
+            }
+        }
+
+        // Calcola la posizione finale
+        // Modifica nella funzione calculateBallPath()
+// Calcola la posizione finale
+        int finalX = startX + (positions[positions.length - 1] * gap / 2);
+        int finalY = startY + ((positions.length) * gap);
+
+// Determina la direzione finale basandoti sugli ultimi due movimenti
+//        if (positions.length > 1) {
+//            int lastPosition = positions[positions.length - 1];
+//            int previousPosition = positions[positions.length - 2];
+//
+//            if (lastPosition > previousPosition) {
+//                // La pallina stava andando a destra
+//                finalX = startX + 30 + (positions[positions.length - 1] * gap / 2); // Leggero offset a destra
+//            } else if (lastPosition < previousPosition) {
+//                // La pallina stava andando a sinistra
+//                finalX = startX - 30 + (positions[positions.length - 1] * gap / 2); // Leggero offset a sinistra
+//            }
+//            // Se uguali, resta al centro
+//        }
+
+// Aggiungi un offset alla coordinata Y per far "cadere" la pallina nel contenitore
+        int dropOffset = gap * 2; // Puoi regolare questo valore per aumentare o diminuire la caduta
+        int finalYWithOffset = finalY + dropOffset;
+
+        // Aggiungi punti intermedi per l'ultimo segmento (caduta nel contenitore)
         Point previousPoint = path.get(path.size() - 1);
-        int steps = 10; // Numero di passi intermedi per i segmenti normali
+        int steps = 10; // Numero di passi intermedi per l'ultimo segmento
 
         for (int step = 1; step <= steps; step++) {
-            int interpolatedX = previousPoint.x + ((newX - previousPoint.x) * step / steps);
-            int interpolatedY = previousPoint.y + ((newY - previousPoint.y) * step / steps);
+            int interpolatedX = previousPoint.x + ((finalX - previousPoint.x) * step / steps);
+            int interpolatedY = previousPoint.y + ((finalYWithOffset - previousPoint.y) * step / steps);
             path.add(new Point(interpolatedX, interpolatedY));
         }
+
+        this.finalPosition = Model.getInstance().getFinalPosition();
+        return path;
     }
-
-    // Calcola la posizione finale
-    int finalX;
-    if (positions[positions.length - 2]>positions[positions.length - 1])
-        finalX = startX+30 + (positions[positions.length - 2] * gap / 2);
-    else
-        finalX = startX-30 + (positions[positions.length - 2] * gap / 2);
-    int finalY = startY + ((positions.length - 2) * gap);
-
-    // Aggiungi un offset alla coordinata Y per far "cadere" la pallina nel contenitore
-    int dropOffset = gap*2; // Puoi regolare questo valore per aumentare o diminuire la caduta
-    int finalYWithOffset = finalY + dropOffset;
-
-    // Aggiungi punti intermedi per l'ultimo segmento (caduta nel contenitore)
-    Point previousPoint = path.get(path.size() - 1);
-    int steps = 10; // Numero di passi intermedi per l'ultimo segmento
-
-    for (int step = 1; step <= steps; step++) {
-        int interpolatedX = previousPoint.x + ((finalX - previousPoint.x) * step / steps);
-        int interpolatedY = previousPoint.y + ((finalYWithOffset - previousPoint.y) * step / steps);
-        path.add(new Point(interpolatedX, interpolatedY));
-    }
-
-    this.finalPosition = positions[positions.length - 1];
-    return path;
-}
 
     public void paintBall(Graphics2D g2d) {
         if (ballPath != null && currentStep < ballPath.size() && currentStep > 0) {

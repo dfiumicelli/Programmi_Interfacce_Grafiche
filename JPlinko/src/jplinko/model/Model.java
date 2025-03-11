@@ -109,12 +109,12 @@ public class Model implements IModel {
     @Override
     public int[] simulatePlinko(int rows, int numMultipliers) {
         Random random = new Random();
-        int[] positions = new int[numMultipliers + 2];
+        int[] positions = new int[numMultipliers + 1];
         int position = 0; // Posizione iniziale (centrale)
         positions[0] = position;
         boolean goRight;
         // Simula il percorso della pallina
-        for (int i = 1; i < positions.length - 1; i++) {
+        for (int i = 1; i < positions.length; i++) {
 
             goRight = random.nextBoolean();
 
@@ -130,18 +130,19 @@ public class Model implements IModel {
         // Normalizza la posizione per mappare al contenitore corretto
         // In un gioco Plinko con rows righe, ci sono rows+1 contenitori
         // La posizione finale dovrebbe essere nell'intervallo [0, rows]
-        positions[positions.length - 1] = (positions[positions.length - 2] + rows) / 2;
+        this.finalPosition = (positions[positions.length - 1] + rows) / 2;
 
         // Assicurati che la posizione sia nell'intervallo valido
-        if (positions[positions.length - 1] < 0) {
-            positions[positions.length - 1] = 0;
+        if (this.finalPosition < 0) {
+            this.finalPosition = 0;
         }
-        if (positions[positions.length - 1] >= numMultipliers) {
-            positions[positions.length - 1] = numMultipliers - 1;
+        if (this.finalPosition >= numMultipliers) {
+            this.finalPosition = numMultipliers - 1;
         }
         for (int i = 0; i < positions.length; i++) {
             System.out.println(positions[i]);
         }
+        System.out.println(this.finalPosition);
         return positions;
     }
 
