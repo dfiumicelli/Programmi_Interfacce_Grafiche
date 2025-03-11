@@ -88,7 +88,11 @@ public class PlinkoAnimation {
     }
 
     // Calcola la posizione finale
-    int finalX = startX + (positions[positions.length - 2] * gap / 2);
+    int finalX;
+    if (positions[positions.length - 2]>positions[positions.length - 1])
+        finalX = startX+30 + (positions[positions.length - 2] * gap / 2);
+    else
+        finalX = startX-30 + (positions[positions.length - 2] * gap / 2);
     int finalY = startY + ((positions.length - 2) * gap);
 
     // Aggiungi un offset alla coordinata Y per far "cadere" la pallina nel contenitore

@@ -13,6 +13,7 @@ public class Model implements IModel {
     private double[] multipliers;
     private double balance;
     private String mode;
+    private int finalPosition;
 
     private Model() {
         this.rows = 16;
@@ -97,6 +98,13 @@ public class Model implements IModel {
     public void setRounds(int rounds) {
         this.rounds = rounds;
     }
+
+    @Override
+    public int getFinalPosition() {
+        return finalPosition;
+    }
+    
+    
 
     @Override
     public int[] simulatePlinko(int rows, int numMultipliers) {

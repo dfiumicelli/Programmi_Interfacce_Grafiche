@@ -29,4 +29,6 @@ public interface IModel {
     public void setRounds(int rounds);
 
     public int[] simulatePlinko(int rows, int numMultipliers);
+    
+    public int getFinalPosition();
 }
