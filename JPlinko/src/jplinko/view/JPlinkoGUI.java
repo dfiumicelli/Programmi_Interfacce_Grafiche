@@ -509,7 +509,7 @@ public class JPlinkoGUI extends JFrame {
         pyramidPanel.removeAll();
 
         Font globalFont = UIManager.getFont("Label.font");
-        Font smallerFont = globalFont.deriveFont(globalFont.getSize() * 0.8f); // 80% of the original size
+        Font smallerFont = globalFont.deriveFont(globalFont.getSize() * 0.7f); // 70% of the original size
         int height = screenSize.height;
         double[] multipliers = ControllerForView.getInstance().getMultipliers();
         int containerWidth = gap;
