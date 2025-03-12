@@ -6,6 +6,7 @@ import java.awt.Color;
 import javax.swing.Timer;
 import java.awt.Point;
 import java.awt.Graphics2D;
+import javax.swing.JLabel;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -25,10 +26,12 @@ public class PlinkoAnimation {
     private int finalPosition;
     private double finalMultiplier;
     private boolean animationCompleted = false;
+    private JLabel balanceLabel;
 
-    public PlinkoAnimation(JPanel pyramidPanel) {
+    public PlinkoAnimation(JPanel pyramidPanel, JLabel balanceLabel) {
         this.pyramidPanel = pyramidPanel;
         this.currentStep = 0;
+        this.balanceLabel = balanceLabel;
     }
 
     public void startAnimation(int rows) {
@@ -40,7 +43,7 @@ public class PlinkoAnimation {
         if (ballPath == null || ballPath.isEmpty()) {
             throw new IllegalStateException("Il percorso della pallina non è stato calcolato correttamente.");
         }
-
+        
         // Crea il timer per l'animazione (15ms = circa 60fps)
         animationTimer = new Timer(15, e -> {
             if (currentStep < ballPath.size()) {
@@ -182,7 +185,7 @@ public class PlinkoAnimation {
                         "Risultato", JOptionPane.INFORMATION_MESSAGE);
 
             // Qui dovresti aggiornare il saldo mostrato nell'interfaccia
-            // balanceLabel.setText("Balance: €" + nuovoSaldo);
+            balanceLabel.setText("Balance: €" + ControllerForView.getInstance().getBalance());
         });
     }
 }

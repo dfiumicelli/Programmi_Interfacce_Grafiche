@@ -108,6 +108,7 @@ public class Model implements IModel {
 
     @Override
     public int[] simulatePlinko(int rows, int numMultipliers) {
+        this.balance -= this.betValues[this.currentBetIndex];
         Random random = new Random();
         int[] positions = new int[numMultipliers + 1];
         int position = 0; // Posizione iniziale (centrale)
@@ -143,6 +144,8 @@ public class Model implements IModel {
             System.out.println(positions[i]);
         }
         System.out.println(this.finalPosition);
+        this.balance += this.betValues[this.currentBetIndex]*this.multipliers[this.finalPosition];
+        this.balance = Math.round(balance * 10)/10.0;
         return positions;
     }
 

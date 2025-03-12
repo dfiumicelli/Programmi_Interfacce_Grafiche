@@ -55,7 +55,7 @@ public class JPlinkoGUI extends JFrame {
         }
         this.setFont();
         this.createGUI();
-        this.animation = new PlinkoAnimation(pyramidPanel);
+        this.animation = new PlinkoAnimation(pyramidPanel,balanceLabel);
     }
 
     private void createGUI() {
@@ -582,6 +582,7 @@ public class JPlinkoGUI extends JFrame {
         });
         enableTimer.setRepeats(false);
         enableTimer.start();
+        
     }
 
     public void handleIncrease(ActionEvent e) {
