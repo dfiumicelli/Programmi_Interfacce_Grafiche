@@ -133,6 +133,7 @@ public class PlinkoAnimation {
         }
 
         this.finalPosition = Model.getInstance().getFinalPosition();
+        this.finalMultiplier = ControllerForView.getInstance().getMultipliers()[finalPosition];
         return path;
     }
 
