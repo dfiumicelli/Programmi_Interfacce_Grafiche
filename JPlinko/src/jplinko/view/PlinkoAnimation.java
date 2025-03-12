@@ -75,7 +75,7 @@ public class PlinkoAnimation {
         path.add(new Point(startX, startY));
 
         // Simula il percorso della pallina attraverso i pioli
-        int[] positions = Model.getInstance().simulatePlinko(rows, rows + 1);
+        int[] positions = ControllerForView.getInstance().simulatePlinko(rows, rows + 1);
         int currentDirection = 0;
         for (int i = 0; i < positions.length; i++) {
             // Calcola la nuova posizione sullo schermo

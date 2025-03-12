@@ -81,6 +81,13 @@ public class ControllerForView implements IControllerForView {
         Model.getInstance().setRounds(rounds);
     }
 
+    @Override
+    public int[] simulatePlinko(int rows, int numMultipliers) {
+        return Model.getInstance().simulatePlinko(rows, numMultipliers);
+    }
+    
+    
+
     public static IControllerForView getInstance() {
         if (instance == null) {
             instance = new ControllerForView();

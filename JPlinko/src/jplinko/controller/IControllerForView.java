@@ -29,5 +29,7 @@ public interface IControllerForView {
     public int getRounds();
 
     public void setRounds(int rounds);
+    
+    public int[] simulatePlinko(int rows, int numMultipliers);
 
 }
