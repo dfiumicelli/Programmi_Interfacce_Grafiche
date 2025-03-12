@@ -119,10 +119,9 @@ public class PlinkoAnimation {
 //            }
 //            // Se uguali, resta al centro
 //        }
-
 // Aggiungi un offset alla coordinata Y per far "cadere" la pallina nel contenitore
         int dropOffset = 0; // Puoi regolare questo valore per aumentare o diminuire la caduta
-        int finalYWithOffset = finalY + dropOffset;
+        int finalYWithOffset = finalY + dropOffset-2;
 
         // Aggiungi punti intermedi per l'ultimo segmento (caduta nel contenitore)
         Point previousPoint = path.get(path.size() - 1);
@@ -140,22 +139,24 @@ public class PlinkoAnimation {
     }
 
     public void paintBall(Graphics2D g2d) {
-    if (ballPath != null && !ballPath.isEmpty()) {
-        Point ballPosition;
-        if (animationCompleted) {
-            // Se l'animazione è completata, usa l'ultima posizione della pallina
-            ballPosition = ballPath.get(ballPath.size() - 1);
-        } else if (currentStep < ballPath.size() && currentStep > 0) {
-            // Altrimenti, usa la posizione corrente della pallina
-            ballPosition = ballPath.get(currentStep);
-        } else {
-            return; // Non disegnare la pallina se non ci sono posizioni valide
-        }
+        if (ballPath != null && !ballPath.isEmpty()) {
+            Point ballPosition;
+            if (animationCompleted) {
+                // Se l'animazione è completata, usa l'ultima posizione della pallina
+                ballPosition = ballPath.get(ballPath.size() - 1);
+            } else if (currentStep < ballPath.size() && currentStep > 0) {
+                // Altrimenti, usa la posizione corrente della pallina
+                ballPosition = ballPath.get(currentStep);
+            } else {
+                return; // Non disegnare la pallina se non ci sono posizioni valide
+            }
 
-        g2d.setColor(ballColor);
-        g2d.fillOval(ballPosition.x - (ballSize / 2), ballPosition.y - (ballSize / 2), ballSize, ballSize);
+            g2d.setColor(ballColor);
+            g2d.fillOval(ballPosition.x - (ballSize / 2), ballPosition.y - (ballSize / 2), ballSize, ballSize);
+        }
     }
-}
+    
+    
 
     private void updateBalanceAfterBet() {
         // Aggiorna il saldo in base alla scommessa e al moltiplicatore
@@ -166,9 +167,19 @@ public class PlinkoAnimation {
         // Notifica la vincita e aggiorna l'interfaccia
         // Questo è un punto dove dovrai implementare la logica specifica del tuo gioco
         SwingUtilities.invokeLater(() -> {
-            JOptionPane.showMessageDialog(pyramidPanel,
-                    "Hai vinto €" + winAmount + " (moltiplicatore: " + finalMultiplier + "x)!",
-                    "Risultato", JOptionPane.INFORMATION_MESSAGE);
+            if (finalMultiplier < 1.00) {
+                JOptionPane.showMessageDialog(pyramidPanel,
+                        "Peccato! Hai ricevuto €" + winAmount + " (moltiplicatore: " + finalMultiplier + "x)!",
+                        "Risultato", JOptionPane.INFORMATION_MESSAGE);
+            }
+            else if (finalMultiplier == 1.00)
+                JOptionPane.showMessageDialog(pyramidPanel,
+                        "Bene! Sei andato in pari: €" + winAmount + " (moltiplicatore: " + finalMultiplier + "x)!",
+                        "Risultato", JOptionPane.INFORMATION_MESSAGE);
+            else
+                JOptionPane.showMessageDialog(pyramidPanel,
+                        "Hai vinto €" + winAmount + " (moltiplicatore: " + finalMultiplier + "x)!",
+                        "Risultato", JOptionPane.INFORMATION_MESSAGE);
 
             // Qui dovresti aggiornare il saldo mostrato nell'interfaccia
             // balanceLabel.setText("Balance: €" + nuovoSaldo);
