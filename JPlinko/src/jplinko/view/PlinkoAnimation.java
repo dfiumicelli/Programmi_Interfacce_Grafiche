@@ -24,6 +24,7 @@ public class PlinkoAnimation {
     private final int ballSize = 12;
     private int finalPosition;
     private double finalMultiplier;
+    private boolean animationCompleted = false;
 
     public PlinkoAnimation(JPanel pyramidPanel) {
         this.pyramidPanel = pyramidPanel;
@@ -32,7 +33,7 @@ public class PlinkoAnimation {
 
     public void startAnimation(int rows) {
         // Calcola il percorso della pallina
-
+        animationCompleted = false;
         this.ballPath = calculateBallPath(rows);
         this.currentStep = 30;
 
@@ -48,6 +49,7 @@ public class PlinkoAnimation {
             } else {
                 // Animazione completata
                 ((Timer) e.getSource()).stop();
+                animationCompleted = true;
                 // Qui puoi aggiungere il codice per aggiornare il saldo, mostrare un messaggio, ecc.
                 updateBalanceAfterBet();
             }
@@ -119,7 +121,7 @@ public class PlinkoAnimation {
 //        }
 
 // Aggiungi un offset alla coordinata Y per far "cadere" la pallina nel contenitore
-        int dropOffset = gap * 2; // Puoi regolare questo valore per aumentare o diminuire la caduta
+        int dropOffset = 0; // Puoi regolare questo valore per aumentare o diminuire la caduta
         int finalYWithOffset = finalY + dropOffset;
 
         // Aggiungi punti intermedi per l'ultimo segmento (caduta nel contenitore)
@@ -138,12 +140,22 @@ public class PlinkoAnimation {
     }
 
     public void paintBall(Graphics2D g2d) {
-        if (ballPath != null && currentStep < ballPath.size() && currentStep > 0) {
-            Point ballPosition = ballPath.get(currentStep);
-            g2d.setColor(ballColor);
-            g2d.fillOval(ballPosition.x - (ballSize / 2), ballPosition.y - (ballSize / 2), ballSize, ballSize);
+    if (ballPath != null && !ballPath.isEmpty()) {
+        Point ballPosition;
+        if (animationCompleted) {
+            // Se l'animazione è completata, usa l'ultima posizione della pallina
+            ballPosition = ballPath.get(ballPath.size() - 1);
+        } else if (currentStep < ballPath.size() && currentStep > 0) {
+            // Altrimenti, usa la posizione corrente della pallina
+            ballPosition = ballPath.get(currentStep);
+        } else {
+            return; // Non disegnare la pallina se non ci sono posizioni valide
         }
+
+        g2d.setColor(ballColor);
+        g2d.fillOval(ballPosition.x - (ballSize / 2), ballPosition.y - (ballSize / 2), ballSize, ballSize);
     }
+}
 
     private void updateBalanceAfterBet() {
         // Aggiorna il saldo in base alla scommessa e al moltiplicatore

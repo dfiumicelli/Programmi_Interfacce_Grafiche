@@ -475,9 +475,10 @@ public class JPlinkoGUI extends JFrame {
                     // Disegna l'immagine
                     g2d.drawImage(logoImage, imageX, imageY, null);
                 }
+                
             }
         };
-
+        
         pyramidPanel.setPreferredSize(new Dimension(screenSize.width, screenSize.height));
         pyramidPanel.addComponentListener(new ComponentAdapter() {
             @Override
@@ -525,7 +526,7 @@ public class JPlinkoGUI extends JFrame {
 
         for (int i = 0; i < numContainers; i++) {
             JLabel containerLabel = new JLabel(multipliers[i] + "x", SwingConstants.CENTER);
-            containerLabel.setOpaque(true);
+            containerLabel.setOpaque(false);
             containerLabel.setBackground(menuPanel.getBackground());
             containerLabel.setForeground(Color.WHITE);
             containerLabel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
@@ -535,9 +536,11 @@ public class JPlinkoGUI extends JFrame {
             containerLabel.setBounds(containerStartX + i * containerWidth, containerStartY, containerWidth, containerHeight);
 
             containerLabels.add(containerLabel);
-
+            
             pyramidPanel.add(containerLabel);
         }
+        
+        
 
         // Rivalida e ridisegna il pannello
         pyramidPanel.revalidate();
