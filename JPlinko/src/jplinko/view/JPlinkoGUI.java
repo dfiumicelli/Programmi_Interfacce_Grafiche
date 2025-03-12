@@ -35,6 +35,7 @@ public class JPlinkoGUI extends JFrame {
     private int currentBetIndex;
     private double[] betValues;
     private PlinkoAnimation animation;
+    
 
     public JPlinkoGUI() throws Exception {
         super("JPlinkoGUI");
