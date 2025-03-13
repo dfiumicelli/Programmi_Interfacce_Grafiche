@@ -27,11 +27,13 @@ public class PlinkoAnimation {
     private double finalMultiplier;
     private boolean animationCompleted = false;
     private JLabel balanceLabel;
+    private List<JLabel> containers;
 
-    public PlinkoAnimation(JPanel pyramidPanel, JLabel balanceLabel) {
+    public PlinkoAnimation(JPanel pyramidPanel, JLabel balanceLabel, List<JLabel> containers) {
         this.pyramidPanel = pyramidPanel;
         this.currentStep = 0;
         this.balanceLabel = balanceLabel;
+        this.containers = containers;
     }
 
     public void startAnimation(int rows) {
@@ -43,7 +45,7 @@ public class PlinkoAnimation {
         if (ballPath == null || ballPath.isEmpty()) {
             throw new IllegalStateException("Il percorso della pallina non è stato calcolato correttamente.");
         }
-        
+
         // Crea il timer per l'animazione (15ms = circa 60fps)
         animationTimer = new Timer(15, e -> {
             if (currentStep < ballPath.size()) {
@@ -76,7 +78,6 @@ public class PlinkoAnimation {
 
         // Simula il percorso della pallina attraverso i pioli
         int[] positions = ControllerForView.getInstance().simulatePlinko(rows, rows + 1);
-        int currentDirection = 0;
         for (int i = 0; i < positions.length; i++) {
             // Calcola la nuova posizione sullo schermo
             int newX = startX + (positions[i] * gap / 2);
@@ -92,52 +93,23 @@ public class PlinkoAnimation {
                 path.add(new Point(interpolatedX, interpolatedY));
             }
 
-            if (i > 0) {
-                if (positions[i] > positions[i - 1]) {
-                    currentDirection = 1; // Destra
-                } else if (positions[i] < positions[i - 1]) {
-                    currentDirection = -1; // Sinistra
-                }
-                // Se positions[i] == positions[i - 1], mantieni la direzione precedente
-            }
         }
-
-        // Calcola la posizione finale
-        // Modifica nella funzione calculateBallPath()
-// Calcola la posizione finale
-        int finalX = startX + (positions[positions.length - 1] * gap / 2);
-        int finalY = startY + ((positions.length) * gap);
-
-// Determina la direzione finale basandoti sugli ultimi due movimenti
-//        if (positions.length > 1) {
-//            int lastPosition = positions[positions.length - 1];
-//            int previousPosition = positions[positions.length - 2];
-//
-//            if (lastPosition > previousPosition) {
-//                // La pallina stava andando a destra
-//                finalX = startX + 30 + (positions[positions.length - 1] * gap / 2); // Leggero offset a destra
-//            } else if (lastPosition < previousPosition) {
-//                // La pallina stava andando a sinistra
-//                finalX = startX - 30 + (positions[positions.length - 1] * gap / 2); // Leggero offset a sinistra
-//            }
-//            // Se uguali, resta al centro
-//        }
-// Aggiungi un offset alla coordinata Y per far "cadere" la pallina nel contenitore
-        int dropOffset = 0; // Puoi regolare questo valore per aumentare o diminuire la caduta
-        int finalYWithOffset = finalY + dropOffset-2;
 
         // Aggiungi punti intermedi per l'ultimo segmento (caduta nel contenitore)
         Point previousPoint = path.get(path.size() - 1);
         int steps = 10; // Numero di passi intermedi per l'ultimo segmento
+        this.finalPosition = Model.getInstance().getFinalPosition();
+        this.finalMultiplier = ControllerForView.getInstance().getMultipliers()[finalPosition];
+        JLabel finalContainer = containers.get(finalPosition);
+        int x = finalContainer.getX() + gap / 2;
+        int y = finalContainer.getY() + gap / 2;
 
         for (int step = 1; step <= steps; step++) {
-            int interpolatedX = previousPoint.x + ((finalX - previousPoint.x) * step / steps);
-            int interpolatedY = previousPoint.y + ((finalYWithOffset - previousPoint.y) * step / steps);
+            int interpolatedX = previousPoint.x + ((x - previousPoint.x) * step / steps);
+            int interpolatedY = previousPoint.y + ((y - previousPoint.y) * step / steps);
             path.add(new Point(interpolatedX, interpolatedY));
         }
 
-        this.finalPosition = Model.getInstance().getFinalPosition();
-        this.finalMultiplier = ControllerForView.getInstance().getMultipliers()[finalPosition];
         return path;
     }
 
@@ -158,8 +130,6 @@ public class PlinkoAnimation {
             g2d.fillOval(ballPosition.x - (ballSize / 2), ballPosition.y - (ballSize / 2), ballSize, ballSize);
         }
     }
-    
-    
 
     private void updateBalanceAfterBet() {
         // Aggiorna il saldo in base alla scommessa e al moltiplicatore
@@ -174,15 +144,15 @@ public class PlinkoAnimation {
                 JOptionPane.showMessageDialog(pyramidPanel,
                         "Peccato! Hai ricevuto €" + winAmount + " (moltiplicatore: " + finalMultiplier + "x)!",
                         "Risultato", JOptionPane.INFORMATION_MESSAGE);
-            }
-            else if (finalMultiplier == 1.00)
+            } else if (finalMultiplier == 1.00) {
                 JOptionPane.showMessageDialog(pyramidPanel,
                         "Bene! Sei andato in pari: €" + winAmount + " (moltiplicatore: " + finalMultiplier + "x)!",
                         "Risultato", JOptionPane.INFORMATION_MESSAGE);
-            else
+            } else {
                 JOptionPane.showMessageDialog(pyramidPanel,
                         "Hai vinto €" + winAmount + " (moltiplicatore: " + finalMultiplier + "x)!",
                         "Risultato", JOptionPane.INFORMATION_MESSAGE);
+            }
 
             // Qui dovresti aggiornare il saldo mostrato nell'interfaccia
             balanceLabel.setText("Balance: €" + ControllerForView.getInstance().getBalance());

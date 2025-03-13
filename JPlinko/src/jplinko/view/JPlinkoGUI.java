@@ -55,7 +55,7 @@ public class JPlinkoGUI extends JFrame {
         }
         this.setFont();
         this.createGUI();
-        this.animation = new PlinkoAnimation(pyramidPanel,balanceLabel);
+        this.animation = new PlinkoAnimation(pyramidPanel,balanceLabel,containerLabels);
     }
 
     private void createGUI() {
@@ -509,7 +509,7 @@ public class JPlinkoGUI extends JFrame {
     private void createContainers(JPanel pyramidPanel, int startX, int startY, int gap, int rows) {
         // Rimuove tutte le JLabel esistenti, altrimenti quando le vado a ridisegnare a fronte di una modifica nel Model, si sovrappongono.
         pyramidPanel.removeAll();
-
+        containerLabels.clear();
         Font globalFont = UIManager.getFont("Label.font");
         Font smallerFont = globalFont.deriveFont(globalFont.getSize() * 0.7f); // 70% of the original size
         int height = screenSize.height;
