@@ -31,4 +31,6 @@ public interface IModel {
     public int[][] simulatePlinko(int rows, int numMultipliers);
     
     public int[] getFinalPosition();
+    
+    public void setBalance(double balance);
 }

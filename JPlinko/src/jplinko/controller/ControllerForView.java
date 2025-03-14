@@ -86,6 +86,16 @@ public class ControllerForView implements IControllerForView {
         return Model.getInstance().simulatePlinko(rows, numMultipliers);
     }
     
+    @Override
+    public void setBalance(double balance){
+        Model.getInstance().setBalance(balance);
+    }
+
+    @Override
+    public int[] getFinalPosition() {
+        return Model.getInstance().getFinalPosition();
+    }
+    
     
 
     public static IControllerForView getInstance() {

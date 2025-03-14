@@ -113,16 +113,17 @@ public class Model implements IModel {
             numBalls = 1;
         }
         this.finalPosition = new int[numBalls];
-        int[][] positions = new int[numMultipliers + 1][numBalls];
+        int[][] positions = new int[numBalls][numMultipliers + 1];
         for (int k = 0; k < numBalls; k++) {
-            this.balance -= this.betValues[this.currentBetIndex];
+            //this.balance -= this.betValues[this.currentBetIndex];
+            //System.err.println(k);
             Random random = new Random();
             
             int position = 0; // Posizione iniziale (centrale)
-            positions[0][k] = position;
+            positions[k][0] = position;
             boolean goRight;
             // Simula il percorso della pallina
-            for (int i = 1; i < positions.length; i++) {
+            for (int i = 1; i < positions[k].length; i++) {
 
                 goRight = random.nextBoolean();
 
@@ -131,13 +132,13 @@ public class Model implements IModel {
                 } else {
                     position--;
                 }
-                positions[i][k] = position;
+                positions[k][i] = position;
 
             }
 
             // Normalizza la posizione per mappare al contenitore corretto
             // La posizione finale dovrebbe essere nell'intervallo [0, rows]
-            this.finalPosition[k] = (positions[positions.length - 1][k] + rows) / 2;
+            this.finalPosition[k] = (positions[k][positions[k].length - 1] + rows) / 2;
 
             // Assicurati che la posizione sia nell'intervallo valido
             if (this.finalPosition[k] < 0) {
@@ -146,15 +147,21 @@ public class Model implements IModel {
             if (this.finalPosition[k] >= numMultipliers) {
                 this.finalPosition[k] = numMultipliers - 1;
             }
-            for (int i = 0; i < positions.length; i++) {
-                System.out.println(positions[i][k]);
-            }
-            System.out.println(this.finalPosition);
-            this.balance += this.betValues[this.currentBetIndex] * this.multipliers[this.finalPosition[k]];
-            this.balance = Math.round(balance * 10) / 10.0;
+            
+            //this.balance += this.betValues[this.currentBetIndex] * this.multipliers[this.finalPosition[k]];
+             //da settare una volta che è finito il thread, tramite il controller
             
         }
         return positions;
     }
 
+    
+    
+    @Override
+    public void setBalance(double balance) {
+        this.balance = balance;
+        this.balance = Math.round(this.balance * 10) / 10.0;
+    }
+
+    
 }

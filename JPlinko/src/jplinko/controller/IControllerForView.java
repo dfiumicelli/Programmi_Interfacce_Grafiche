@@ -32,4 +32,7 @@ public interface IControllerForView {
     
     public int[][] simulatePlinko(int rows, int numMultipliers);
 
+    public void setBalance(double balance);
+    
+    public int[] getFinalPosition();
 }

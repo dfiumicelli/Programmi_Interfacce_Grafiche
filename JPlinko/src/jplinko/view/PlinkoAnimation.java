@@ -11,12 +11,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javax.swing.JLabel;
 
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import jplinko.controller.ControllerForView;
-import jplinko.model.Model;
 
 public class PlinkoAnimation {
 
@@ -33,6 +30,7 @@ public class PlinkoAnimation {
     private List<JLabel> containers;
     private List<BallThread> ballThreads;
     private ScheduledExecutorService executorService;
+    private int[][] positions;
 
     public PlinkoAnimation(JPanel pyramidPanel, JLabel balanceLabel, List<JLabel> containers) {
         this.pyramidPanel = pyramidPanel;
@@ -45,11 +43,12 @@ public class PlinkoAnimation {
 
     public void startMultipleBalls(int rows, int numBalls, int delayBetweenBalls) {
         clearBalls();
+        this.positions = ControllerForView.getInstance().simulatePlinko(rows, rows + 1);
         this.executorService = Executors.newScheduledThreadPool(numBalls);
         for (int i = 0; i < numBalls; i++) {
             Runnable onFinishCallback = this::updateBalanceAfterBet;
 
-            BallThread ballThread = new BallThread(rows, onFinishCallback, i);
+            BallThread ballThread = new BallThread(rows, onFinishCallback, i, this.positions);
             ballThreads.add(ballThread);
 
             // Avvia il thread con un ritardo specifico
@@ -96,8 +95,7 @@ public class PlinkoAnimation {
 //
 //        animationTimer.start();
 //    }
-
-    private List<Point> calculateBallPath(int rows, int k) {
+    private List<Point> calculateBallPath(int rows, int k, int[][] positions) {
         List<Point> path = new ArrayList<>();
 
         // Calcola le dimensioni del pannello per posizionare la pallina
@@ -111,10 +109,9 @@ public class PlinkoAnimation {
         path.add(new Point(startX, startY));
 
         // Simula il percorso della pallina attraverso i pioli
-        int[][] positions = ControllerForView.getInstance().simulatePlinko(rows, rows + 1);
-        for (int i = 0; i < positions.length; i++) {
+        for (int i = 0; i < positions[k].length; i++) {
             // Calcola la nuova posizione sullo schermo
-            int newX = startX + (positions[i][k] * gap / 2);
+            int newX = startX + (positions[k][i] * gap / 2);
             int newY = startY + ((i) * gap);
 
             // Aggiungi punti intermedi per un'animazione più fluida
@@ -132,7 +129,7 @@ public class PlinkoAnimation {
         // Aggiungi punti intermedi per l'ultimo segmento (caduta nel contenitore)
         Point previousPoint = path.get(path.size() - 1);
         int steps = 10; // Numero di passi intermedi per l'ultimo segmento
-        this.finalPosition = Model.getInstance().getFinalPosition()[k];
+        this.finalPosition = ControllerForView.getInstance().getFinalPosition()[k];
         this.finalMultiplier = ControllerForView.getInstance().getMultipliers()[finalPosition];
         JLabel finalContainer = containers.get(finalPosition);
         int x = finalContainer.getX() + gap / 2;
@@ -188,7 +185,7 @@ public class PlinkoAnimation {
 //            }
 
         // Qui dovresti aggiornare il saldo mostrato nell'interfaccia
-        System.out.println("Thread completato. Aggiornamento del saldo...");
+        //System.out.println("Thread completato. Aggiornamento del saldo...");
         balanceLabel.setText("Balance: €" + ControllerForView.getInstance().getBalance());
         //});
     }
@@ -201,21 +198,29 @@ public class PlinkoAnimation {
         private boolean isFinished; // Indica se l'animazione è terminata
         private Point finalPosition; // Posizione finale della pallina
         private final Color ballColor = Color.RED;
-        private final int ballSize = 12;
+        private final int ballSize = 14;
         private Runnable onFinishCallback;
+        private int[][] positions;
+        private int k;
 
-        public BallThread(int rows, Runnable onFinishCallback, int k) {
-            this.ballPath = calculateBallPath(rows, k);
+        public BallThread(int rows, Runnable onFinishCallback, int k, int[][] positions) {
+            this.k = k;
+            this.positions = positions;
+            this.ballPath = calculateBallPath(rows, k, this.positions);
             this.currentStep = 30;
             this.isStarted = false; // Inizialmente non avviato
             this.isFinished = false;
             this.finalPosition = null;
             this.onFinishCallback = onFinishCallback;
+
         }
 
         @Override
         public void run() {
             isStarted = true; // Il thread è stato avviato
+            double balance = ControllerForView.getInstance().getBalance() - ControllerForView.getInstance().getBetValues()[ControllerForView.getInstance().getCurrentBetIndex()];
+            ControllerForView.getInstance().setBalance(balance);
+            updateBalanceAfterBet();
             while (isStarted && currentStep < ballPath.size()) {
                 currentStep++;
                 pyramidPanel.repaint(); // Ridisegna il pannello
@@ -231,10 +236,14 @@ public class PlinkoAnimation {
             isStarted = false;
             isFinished = true;
             finalPosition = ballPath.get(ballPath.size() - 1); // Memorizza la posizione finale
-            if (onFinishCallback != null) {
-                onFinishCallback.run();
-            }
-            //updateBalanceAfterBet(); // Aggiorna il saldo
+            balance = ControllerForView.getInstance().getBalance()
+                    + ControllerForView.getInstance().getBetValues()[ControllerForView.getInstance().getCurrentBetIndex()]
+                    * ControllerForView.getInstance().getMultipliers()[ControllerForView.getInstance().getFinalPosition()[k]];
+            ControllerForView.getInstance().setBalance(balance);
+//            if (onFinishCallback != null) {
+//                onFinishCallback.run();
+//            }
+            updateBalanceAfterBet(); // Aggiorna il saldo
         }
 
         public void paintBall(Graphics2D g2d) {
