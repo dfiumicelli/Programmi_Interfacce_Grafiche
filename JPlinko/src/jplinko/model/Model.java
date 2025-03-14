@@ -129,7 +129,6 @@ public class Model implements IModel {
         }
 
         // Normalizza la posizione per mappare al contenitore corretto
-        // In un gioco Plinko con rows righe, ci sono rows+1 contenitori
         // La posizione finale dovrebbe essere nell'intervallo [0, rows]
         this.finalPosition = (positions[positions.length - 1] + rows) / 2;
 

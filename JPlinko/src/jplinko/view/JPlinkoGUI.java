@@ -574,7 +574,7 @@ public class JPlinkoGUI extends JFrame {
         //int finalPosition = jplinko.model.Model.simulatePlinko(rows, rows + 1);
         //double finalMultiplier = ControllerForView.getInstance().getMultipliers()[finalPosition];
         // Avvia l'animazione
-        animation.startAnimation(rows);
+        animation.startMultipleBalls(rows, 5, 2000);
 
         // Riabilita il pulsante dopo un breve ritardo
         Timer enableTimer = new Timer(3000, event -> {
