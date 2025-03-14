@@ -13,7 +13,7 @@ public class Model implements IModel {
     private double[] multipliers;
     private double balance;
     private String mode;
-    private int finalPosition;
+    private int[] finalPosition;
 
     private Model() {
         this.rows = 16;
@@ -100,51 +100,60 @@ public class Model implements IModel {
     }
 
     @Override
-    public int getFinalPosition() {
+    public int[] getFinalPosition() {
         return finalPosition;
     }
-    
-    
 
     @Override
-    public int[] simulatePlinko(int rows, int numMultipliers) {
-        this.balance -= this.betValues[this.currentBetIndex];
-        Random random = new Random();
-        int[] positions = new int[numMultipliers + 1];
-        int position = 0; // Posizione iniziale (centrale)
-        positions[0] = position;
-        boolean goRight;
-        // Simula il percorso della pallina
-        for (int i = 1; i < positions.length; i++) {
+    public int[][] simulatePlinko(int rows, int numMultipliers) {
+        int numBalls;
+        if (this.mode.equals("Auto")) {
+            numBalls = this.rounds;
+        } else {
+            numBalls = 1;
+        }
+        this.finalPosition = new int[numBalls];
+        int[][] positions = new int[numMultipliers + 1][numBalls];
+        for (int k = 0; k < numBalls; k++) {
+            this.balance -= this.betValues[this.currentBetIndex];
+            Random random = new Random();
+            
+            int position = 0; // Posizione iniziale (centrale)
+            positions[0][k] = position;
+            boolean goRight;
+            // Simula il percorso della pallina
+            for (int i = 1; i < positions.length; i++) {
 
-            goRight = random.nextBoolean();
+                goRight = random.nextBoolean();
 
-            if (goRight) {
-                position++;
-            } else {
-                position--;
+                if (goRight) {
+                    position++;
+                } else {
+                    position--;
+                }
+                positions[i][k] = position;
+
             }
-            positions[i] = position;
 
-        }
+            // Normalizza la posizione per mappare al contenitore corretto
+            // La posizione finale dovrebbe essere nell'intervallo [0, rows]
+            this.finalPosition[k] = (positions[positions.length - 1][k] + rows) / 2;
 
-        // Normalizza la posizione per mappare al contenitore corretto
-        // La posizione finale dovrebbe essere nell'intervallo [0, rows]
-        this.finalPosition = (positions[positions.length - 1] + rows) / 2;
-
-        // Assicurati che la posizione sia nell'intervallo valido
-        if (this.finalPosition < 0) {
-            this.finalPosition = 0;
+            // Assicurati che la posizione sia nell'intervallo valido
+            if (this.finalPosition[k] < 0) {
+                this.finalPosition[k] = 0;
+            }
+            if (this.finalPosition[k] >= numMultipliers) {
+                this.finalPosition[k] = numMultipliers - 1;
+            }
+            for (int i = 0; i < positions.length; i++) {
+                System.out.println(positions[i][k]);
+            }
+            System.out.println(this.finalPosition);
+            this.balance += this.betValues[this.currentBetIndex] * this.multipliers[this.finalPosition[k]];
+            this.balance = Math.round(balance * 10) / 10.0;
+            
         }
-        if (this.finalPosition >= numMultipliers) {
-            this.finalPosition = numMultipliers - 1;
-        }
-        for (int i = 0; i < positions.length; i++) {
-            System.out.println(positions[i]);
-        }
-        System.out.println(this.finalPosition);
-        this.balance += this.betValues[this.currentBetIndex]*this.multipliers[this.finalPosition];
-        this.balance = Math.round(balance * 10)/10.0;
         return positions;
     }
 

@@ -40,15 +40,16 @@ public class PlinkoAnimation {
         this.balanceLabel = balanceLabel;
         this.containers = containers;
         this.ballThreads = new ArrayList<>();
-        this.executorService = Executors.newScheduledThreadPool(5);
+
     }
 
     public void startMultipleBalls(int rows, int numBalls, int delayBetweenBalls) {
         clearBalls();
+        this.executorService = Executors.newScheduledThreadPool(numBalls);
         for (int i = 0; i < numBalls; i++) {
             Runnable onFinishCallback = this::updateBalanceAfterBet;
 
-            BallThread ballThread = new BallThread(rows, onFinishCallback);
+            BallThread ballThread = new BallThread(rows, onFinishCallback, i);
             ballThreads.add(ballThread);
 
             // Avvia il thread con un ritardo specifico
@@ -69,34 +70,34 @@ public class PlinkoAnimation {
         pyramidPanel.repaint(); // Ridisegna il pannello
     }
 
-    public void startAnimation(int rows) {
-        // Calcola il percorso della pallina
-        animationCompleted = false;
-        this.ballPath = calculateBallPath(rows);
-        this.currentStep = 30;
+//    public void startAnimation(int rows) {
+//        // Calcola il percorso della pallina
+//        animationCompleted = false;
+//        this.ballPath = calculateBallPath(rows, k);
+//        this.currentStep = 30;
+//
+//        if (ballPath == null || ballPath.isEmpty()) {
+//            throw new IllegalStateException("Il percorso della pallina non è stato calcolato correttamente.");
+//        }
+//
+//        // Crea il timer per l'animazione (15ms = circa 60fps)
+//        animationTimer = new Timer(15, e -> {
+//            if (currentStep < ballPath.size()) {
+//                currentStep++;
+//                pyramidPanel.repaint(); // Ridisegna il pannello per mostrare la nuova posizione
+//            } else {
+//                // Animazione completata
+//                ((Timer) e.getSource()).stop();
+//                animationCompleted = true;
+//                // Qui puoi aggiungere il codice per aggiornare il saldo, mostrare un messaggio, ecc.
+//                updateBalanceAfterBet();
+//            }
+//        });
+//
+//        animationTimer.start();
+//    }
 
-        if (ballPath == null || ballPath.isEmpty()) {
-            throw new IllegalStateException("Il percorso della pallina non è stato calcolato correttamente.");
-        }
-
-        // Crea il timer per l'animazione (15ms = circa 60fps)
-        animationTimer = new Timer(15, e -> {
-            if (currentStep < ballPath.size()) {
-                currentStep++;
-                pyramidPanel.repaint(); // Ridisegna il pannello per mostrare la nuova posizione
-            } else {
-                // Animazione completata
-                ((Timer) e.getSource()).stop();
-                animationCompleted = true;
-                // Qui puoi aggiungere il codice per aggiornare il saldo, mostrare un messaggio, ecc.
-                updateBalanceAfterBet();
-            }
-        });
-
-        animationTimer.start();
-    }
-
-    private List<Point> calculateBallPath(int rows) {
+    private List<Point> calculateBallPath(int rows, int k) {
         List<Point> path = new ArrayList<>();
 
         // Calcola le dimensioni del pannello per posizionare la pallina
@@ -110,10 +111,10 @@ public class PlinkoAnimation {
         path.add(new Point(startX, startY));
 
         // Simula il percorso della pallina attraverso i pioli
-        int[] positions = ControllerForView.getInstance().simulatePlinko(rows, rows + 1);
+        int[][] positions = ControllerForView.getInstance().simulatePlinko(rows, rows + 1);
         for (int i = 0; i < positions.length; i++) {
             // Calcola la nuova posizione sullo schermo
-            int newX = startX + (positions[i] * gap / 2);
+            int newX = startX + (positions[i][k] * gap / 2);
             int newY = startY + ((i) * gap);
 
             // Aggiungi punti intermedi per un'animazione più fluida
@@ -131,7 +132,7 @@ public class PlinkoAnimation {
         // Aggiungi punti intermedi per l'ultimo segmento (caduta nel contenitore)
         Point previousPoint = path.get(path.size() - 1);
         int steps = 10; // Numero di passi intermedi per l'ultimo segmento
-        this.finalPosition = Model.getInstance().getFinalPosition();
+        this.finalPosition = Model.getInstance().getFinalPosition()[k];
         this.finalMultiplier = ControllerForView.getInstance().getMultipliers()[finalPosition];
         JLabel finalContainer = containers.get(finalPosition);
         int x = finalContainer.getX() + gap / 2;
@@ -203,8 +204,8 @@ public class PlinkoAnimation {
         private final int ballSize = 12;
         private Runnable onFinishCallback;
 
-        public BallThread(int rows, Runnable onFinishCallback) {
-            this.ballPath = calculateBallPath(rows);
+        public BallThread(int rows, Runnable onFinishCallback, int k) {
+            this.ballPath = calculateBallPath(rows, k);
             this.currentStep = 30;
             this.isStarted = false; // Inizialmente non avviato
             this.isFinished = false;

@@ -82,7 +82,7 @@ public class ControllerForView implements IControllerForView {
     }
 
     @Override
-    public int[] simulatePlinko(int rows, int numMultipliers) {
+    public int[][] simulatePlinko(int rows, int numMultipliers) {
         return Model.getInstance().simulatePlinko(rows, numMultipliers);
     }
     
