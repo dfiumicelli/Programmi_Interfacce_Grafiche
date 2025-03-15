@@ -83,8 +83,24 @@ public class PlinkoAnimation {
             int steps = 10; // Numero di passi intermedi per i segmenti normali
 
             for (int step = 1; step <= steps; step++) {
-                int interpolatedX = previousPoint.x + ((newX - previousPoint.x) * step / steps);
-                int interpolatedY = previousPoint.y + ((newY - previousPoint.y) * step / steps);
+                double t = (double) step / steps;
+
+                // Linear interpolation for x-coordinate
+                int interpolatedX = (int) (previousPoint.x + (newX - previousPoint.x) * t);
+
+                // Parabolic interpolation for y-coordinate
+                // We need the ball to appear to bounce upward slightly before falling to the next point
+                double parabolicHeight = gap / 3.0; // Negative value for upward curve
+
+                // Parabola formula: y = a*t^2 + b*t + c
+                // This creates an upward parabola between the two points that still ends at the destination
+                double a = 4 * parabolicHeight;
+                double b = -4 * parabolicHeight + (newY - previousPoint.y);
+                double c = previousPoint.y;
+
+                // Calculate y-coordinate using parabolic formula
+                int interpolatedY = (int) (a * t * t + b * t + c);
+
                 path.add(new Point(interpolatedX, interpolatedY));
             }
 
@@ -94,14 +110,20 @@ public class PlinkoAnimation {
         Point previousPoint = path.get(path.size() - 1);
         int steps = 10; // Numero di passi intermedi per l'ultimo segmento
         this.finalPosition = ControllerForView.getInstance().getFinalPosition()[k];
-        //this.finalMultiplier = ControllerForView.getInstance().getMultipliers()[finalPosition];
         JLabel finalContainer = containers.get(finalPosition);
         int x = finalContainer.getX() + gap / 2;
         int y = finalContainer.getY() + gap / 2;
 
         for (int step = 1; step <= steps; step++) {
-            int interpolatedX = previousPoint.x + ((x - previousPoint.x) * step / steps);
-            int interpolatedY = previousPoint.y + ((y - previousPoint.y) * step / steps);
+            double t = (double) step / steps;
+
+            // Linear interpolation for x-coordinate
+            int interpolatedX = (int) (previousPoint.x + (x - previousPoint.x) * t);
+
+            // Accelerating y-coordinate for falling effect
+            double tSquared = t * t;
+            int interpolatedY = (int) (previousPoint.y + (y - previousPoint.y) * tSquared);
+
             path.add(new Point(interpolatedX, interpolatedY));
         }
 
