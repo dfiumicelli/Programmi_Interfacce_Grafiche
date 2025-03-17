@@ -4,8 +4,6 @@
  */
 package jplinko.controller;
 
-import jplinko.model.Model;
-
 /**
  *
  * @author dfiumicelli

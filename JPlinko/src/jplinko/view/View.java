@@ -1,17 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package jplinko.view;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import jplinko.controller.ControllerForView;
 
-/**
- *
- * @author dfiumicelli
- */
 public class View implements IView {
 
     private static View instance = null;
@@ -36,33 +27,6 @@ public class View implements IView {
             }
         });
     }
-
-//    @Override
-//    public int getRows() {
-//        return ControllerForView.getInstance().getRows();
-//    }
-//
-//    @Override
-//    public void handleRowChanges(int rows) {
-//        ControllerForView.getInstance().handleRowChange(rows);
-//    }
-//
-//    @Override
-//    public int getCurrentBetIndex() {
-//        return ControllerForView.getInstance().getCurrentBetIndex();
-//    }
-//
-//    @Override
-//    public void setCurrentBetIndex(int CurrentBetIndex) {
-//        ControllerForView.getInstance().setCurrentBetIndex(CurrentBetIndex);
-//    }
-//
-//    @Override
-//    public double[] getBetValues() {
-//       return ControllerForView.getInstance().getBetValues();
-//    }
-    
-    
 
     public static IView getInstance() {
         if (instance == null) {

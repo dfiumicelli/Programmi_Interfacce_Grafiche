@@ -8,7 +8,7 @@ public class Model implements IModel {
     private int rows;
     private int currentBetIndex;
     private int rounds;
-    private double[] betValues = {0.10, 0.20, 0.50, 1.00, 2.00, 3.00, 4.00, 5.00, 10.00, 15.00, 25.00, 50.00, 75.00, 100.00};
+    private final double[] betValues = {0.10, 0.20, 0.50, 1.00, 2.00, 3.00, 4.00, 5.00, 10.00, 15.00, 25.00, 50.00, 75.00, 100.00};
     private String risk;
     private double[] multipliers;
     private double balance;
@@ -115,10 +115,8 @@ public class Model implements IModel {
         this.finalPosition = new int[numBalls];
         int[][] positions = new int[numBalls][numMultipliers + 1];
         for (int k = 0; k < numBalls; k++) {
-            //this.balance -= this.betValues[this.currentBetIndex];
-            //System.err.println(k);
             Random random = new Random();
-            
+
             int position = 0; // Posizione iniziale (centrale)
             positions[k][0] = position;
             boolean goRight;
@@ -140,28 +138,22 @@ public class Model implements IModel {
             // La posizione finale dovrebbe essere nell'intervallo [0, rows]
             this.finalPosition[k] = (positions[k][positions[k].length - 1] + rows) / 2;
 
-            // Assicurati che la posizione sia nell'intervallo valido
+            // Assicura che la posizione sia nell'intervallo valido
             if (this.finalPosition[k] < 0) {
                 this.finalPosition[k] = 0;
             }
             if (this.finalPosition[k] >= numMultipliers) {
                 this.finalPosition[k] = numMultipliers - 1;
             }
-            
-            //this.balance += this.betValues[this.currentBetIndex] * this.multipliers[this.finalPosition[k]];
-             //da settare una volta che è finito il thread, tramite il controller
-            
+
         }
         return positions;
     }
 
-    
-    
     @Override
     public void setBalance(double balance) {
         this.balance = balance;
         this.balance = Math.round(this.balance * 10) / 10.0;
     }
 
-    
 }

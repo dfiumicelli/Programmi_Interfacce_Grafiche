@@ -567,10 +567,6 @@ public class JPlinkoGUI extends JFrame {
         // Ottieni i parametri dal modello
         int rows = ControllerForView.getInstance().getRows();
 
-        // Usa il metodo simulatePlinko dal Model per ottenere la posizione finale
-        //int finalPosition = jplinko.model.Model.simulatePlinko(rows, rows + 1);
-        //double finalMultiplier = ControllerForView.getInstance().getMultipliers()[finalPosition];
-        // Avvia l'animazione
         int numBalls;
         if (ControllerForView.getInstance().getMode().equals("Auto")) {
             numBalls = ControllerForView.getInstance().getRounds();
@@ -582,7 +578,7 @@ public class JPlinkoGUI extends JFrame {
         // Riabilita il pulsante dopo un breve ritardo
         Timer timer = new Timer(100, et -> {
             if (animation.areAllThreadsFinished()) {
-                // Sblocca il tasto "Bet"
+                // Sblocca il tasto Bet
                 betButton.setEnabled(true);
                 ((Timer) et.getSource()).stop(); // Ferma il timer
             }
