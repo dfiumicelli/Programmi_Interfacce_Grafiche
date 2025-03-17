@@ -59,6 +59,15 @@ public class PlinkoAnimation {
         pyramidPanel.repaint(); // Ridisegna il pannello
     }
 
+    public boolean areAllThreadsFinished() {
+        for (BallThread ballThread : ballThreads) {
+            if (!ballThread.isFinished) {
+                return false; // Se almeno un thread non è terminato, restituisce false
+            }
+        }
+        return true; // Tutti i thread sono terminati
+    }
+
     private List<Point> calculateBallPath(int rows, int k, int[][] positions) {
         List<Point> path = new ArrayList<>();
 

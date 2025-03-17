@@ -35,7 +35,6 @@ public class JPlinkoGUI extends JFrame {
     private int currentBetIndex;
     private double[] betValues;
     private PlinkoAnimation animation;
-    
 
     public JPlinkoGUI() throws Exception {
         super("JPlinkoGUI");
@@ -55,7 +54,7 @@ public class JPlinkoGUI extends JFrame {
         }
         this.setFont();
         this.createGUI();
-        this.animation = new PlinkoAnimation(pyramidPanel,balanceLabel,containerLabels);
+        this.animation = new PlinkoAnimation(pyramidPanel, balanceLabel, containerLabels);
     }
 
     private void createGUI() {
@@ -476,10 +475,10 @@ public class JPlinkoGUI extends JFrame {
                     // Disegna l'immagine
                     g2d.drawImage(logoImage, imageX, imageY, null);
                 }
-                
+
             }
         };
-        
+
         pyramidPanel.setPreferredSize(new Dimension(screenSize.width, screenSize.height));
         pyramidPanel.addComponentListener(new ComponentAdapter() {
             @Override
@@ -537,11 +536,9 @@ public class JPlinkoGUI extends JFrame {
             containerLabel.setBounds(containerStartX + i * containerWidth, containerStartY, containerWidth, containerHeight);
 
             containerLabels.add(containerLabel);
-            
+
             pyramidPanel.add(containerLabel);
         }
-        
-        
 
         // Rivalida e ridisegna il pannello
         pyramidPanel.revalidate();
@@ -583,12 +580,15 @@ public class JPlinkoGUI extends JFrame {
         animation.startMultipleBalls(rows, numBalls, 1000);
 
         // Riabilita il pulsante dopo un breve ritardo
-        Timer enableTimer = new Timer(3000, event -> {
-            betButton.setEnabled(true);
+        Timer timer = new Timer(100, et -> {
+            if (animation.areAllThreadsFinished()) {
+                // Sblocca il tasto "Bet"
+                betButton.setEnabled(true);
+                ((Timer) et.getSource()).stop(); // Ferma il timer
+            }
         });
-        enableTimer.setRepeats(false);
-        enableTimer.start();
-        
+        timer.start();
+
     }
 
     public void handleIncrease(ActionEvent e) {
