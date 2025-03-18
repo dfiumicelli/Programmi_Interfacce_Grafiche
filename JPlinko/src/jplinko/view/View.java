@@ -1,8 +1,5 @@
 package jplinko.view;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 public class View implements IView {
 
     private static View instance = null;
@@ -20,7 +17,7 @@ public class View implements IView {
                     try {
                         jplinkoGUI = new JPlinkoGUI();
                     } catch (Exception ex) {
-                        Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
+                        ex.printStackTrace();
                     }
                 }
                 jplinkoGUI.setVisible(true);
