@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 
 import jplinko.controller.ControllerForView;
 
-public class PlinkoAnimation {
+public class BallAnimation {
 
     private final JPanel pyramidPanel;
     private int finalPosition;
@@ -24,7 +24,7 @@ public class PlinkoAnimation {
     private ScheduledExecutorService executorService;
     private int[][] positions;
 
-    public PlinkoAnimation(JPanel pyramidPanel, JLabel balanceLabel, List<JLabel> containers) {
+    public BallAnimation(JPanel pyramidPanel, JLabel balanceLabel, List<JLabel> containers) {
         this.pyramidPanel = pyramidPanel;
         this.balanceLabel = balanceLabel;
         this.containers = containers;

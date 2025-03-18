@@ -34,7 +34,7 @@ public class JPlinkoGUI extends JFrame {
     private SoundPlayer click, betClick;
     private int currentBetIndex;
     private double[] betValues;
-    private PlinkoAnimation animation;
+    private BallAnimation animation;
 
     public JPlinkoGUI() throws Exception {
         super("JPlinkoGUI");
@@ -54,7 +54,7 @@ public class JPlinkoGUI extends JFrame {
         }
         this.setFont();
         this.createGUI();
-        this.animation = new PlinkoAnimation(pyramidPanel, balanceLabel, containerLabels);
+        this.animation = new BallAnimation(pyramidPanel, balanceLabel, containerLabels);
     }
 
     private void createGUI() {
