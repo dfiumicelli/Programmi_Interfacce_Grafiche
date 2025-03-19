@@ -14,6 +14,7 @@ public class Model implements IModel {
     private double balance;
     private String mode;
     private int[] finalPosition;
+    private boolean gameOver;
 
     private Model() {
         this.rows = 16;
@@ -21,8 +22,9 @@ public class Model implements IModel {
         this.rounds = 5;
         this.risk = "Medium";
         this.multipliers = Multipliers.generate(rows, risk);
-        this.balance = 5000.00;
+        this.balance = 300.00;
         this.mode = "Manual";
+        this.gameOver = false;
     }
 
     public static IModel getInstance() {
@@ -152,8 +154,19 @@ public class Model implements IModel {
 
     @Override
     public void setBalance(double balance) {
-        this.balance = balance;
-        this.balance = Math.round(this.balance * 10) / 10.0;
+        if (balance < 0) {
+            this.gameOver = true;
+        } else {
+            this.balance = balance;
+            this.balance = Math.round(this.balance * 10) / 10.0;
+        }
     }
+
+    @Override
+    public boolean isGameOver() {
+        return gameOver;
+    }
+    
+    
 
 }

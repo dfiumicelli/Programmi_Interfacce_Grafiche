@@ -95,6 +95,12 @@ public class ControllerForView implements IControllerForView {
     public int[] getFinalPosition() {
         return Model.getInstance().getFinalPosition();
     }
+
+    @Override
+    public boolean isGameOver() {
+        return Model.getInstance().isGameOver();
+    }
+    
     
     
 

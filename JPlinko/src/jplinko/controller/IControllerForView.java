@@ -35,4 +35,6 @@ public interface IControllerForView {
     public void setBalance(double balance);
     
     public int[] getFinalPosition();
+    
+    public boolean isGameOver();
 }

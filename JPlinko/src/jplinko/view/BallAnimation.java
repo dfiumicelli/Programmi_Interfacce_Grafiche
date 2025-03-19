@@ -155,6 +155,8 @@ public class BallAnimation {
         private final int ballSize = 14;
         private final int[][] positions;
         private final int k;
+        private volatile boolean stopRequested;
+        private final int threadIndex;
 
         public BallThread(int rows, int k, int[][] positions) {
             this.k = k;
@@ -164,7 +166,27 @@ public class BallAnimation {
             this.isStarted = false; // Inizialmente non avviato
             this.isFinished = false;
             this.finalPosition = null;
+            this.stopRequested = false;
+            this.threadIndex = k;
+        }
 
+        public void stopFutureThreads(int currentThreadIndex) {
+            // Non interrompere i thread già avviati, ma solo quelli futuri
+            if (executorService != null && !executorService.isShutdown()) {
+                executorService.shutdown(); // Impedisce l'esecuzione di nuovi task
+            }
+
+            // Rimuovi i thread che non sono ancora partiti dalla lista
+            for (int i = ballThreads.size() - 1; i > currentThreadIndex; i--) {
+                if (!ballThreads.get(i).isStarted) {
+                    ballThreads.remove(i);
+                }
+            }
+        }
+
+        public void stopThread() {
+            this.stopRequested = true;
+            this.interrupt(); // Interrompi anche eventuali sleep
         }
 
         @Override
@@ -173,6 +195,10 @@ public class BallAnimation {
             double balance = ControllerForView.getInstance().getBalance() - ControllerForView.getInstance().getBetValues()[ControllerForView.getInstance().getCurrentBetIndex()];
             ControllerForView.getInstance().setBalance(balance);
             updateBalanceAfterBet();
+            if (ControllerForView.getInstance().isGameOver()) {
+                showGameOverMessage();
+                return;
+            }
             while (isStarted && currentStep < ballPath.size()) {
                 currentStep++;
                 pyramidPanel.repaint(); // Ridisegna il pannello
@@ -180,7 +206,7 @@ public class BallAnimation {
                 try {
                     Thread.sleep(30); // Ritardo per l'animazione (circa 60fps)
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    break;
                 }
             }
 
@@ -206,6 +232,19 @@ public class BallAnimation {
                 g2d.setColor(ballColor);
                 g2d.fillOval(ballPosition.x - (ballSize / 2), ballPosition.y - (ballSize / 2), ballSize, ballSize);
             }
+        }
+
+        private void showGameOverMessage() {
+            javax.swing.SwingUtilities.invokeLater(() -> {
+                javax.swing.JOptionPane.showMessageDialog(
+                        pyramidPanel,
+                        "Game Over! Il tuo saldo è esaurito.",
+                        "Game Over",
+                        javax.swing.JOptionPane.WARNING_MESSAGE
+                );
+                stopFutureThreads(threadIndex);
+            });
+            
         }
     }
 }

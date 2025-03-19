@@ -33,4 +33,6 @@ public interface IModel {
     public int[] getFinalPosition();
     
     public void setBalance(double balance);
+    
+    public boolean isGameOver();
 }
