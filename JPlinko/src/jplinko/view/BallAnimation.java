@@ -8,11 +8,15 @@ import java.awt.Graphics2D;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import javax.swing.BorderFactory;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 
 import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
 
 import jplinko.controller.ControllerForView;
+import jplinko.utils.RoundedButton;
 
 public class BallAnimation {
 
@@ -139,7 +143,6 @@ public class BallAnimation {
         return path;
     }
 
-//    
     private void updateBalanceAfterBet() {
         balanceLabel.setText("Balance: €" + ControllerForView.getInstance().getBalance());
     }
@@ -155,7 +158,7 @@ public class BallAnimation {
         private final int ballSize = 14;
         private final int[][] positions;
         private final int k;
-        private volatile boolean stopRequested;
+        private boolean isBlocked;
         private final int threadIndex;
 
         public BallThread(int rows, int k, int[][] positions) {
@@ -166,7 +169,7 @@ public class BallAnimation {
             this.isStarted = false; // Inizialmente non avviato
             this.isFinished = false;
             this.finalPosition = null;
-            this.stopRequested = false;
+            this.isBlocked = false;
             this.threadIndex = k;
         }
 
@@ -176,30 +179,38 @@ public class BallAnimation {
                 executorService.shutdown(); // Impedisce l'esecuzione di nuovi task
             }
 
-            // Rimuovi i thread che non sono ancora partiti dalla lista
-            for (int i = ballThreads.size() - 1; i > currentThreadIndex; i--) {
-                if (!ballThreads.get(i).isStarted) {
+            // Marca come finiti i thread che non sono ancora partiti o il thread corrente
+            for (int i = ballThreads.size() - 1; i >= currentThreadIndex; i--) {
+                BallThread thread = ballThreads.get(i);
+                // Se non è ancora partito, rimuovilo dalla lista
+                if (!thread.isStarted) {
                     ballThreads.remove(i);
+                } // Se è il thread corrente (che ha rilevato il game over), marcalo come finito
+                else if (i == currentThreadIndex) {
+                    thread.isFinished = true;
                 }
             }
         }
 
-        public void stopThread() {
-            this.stopRequested = true;
-            this.interrupt(); // Interrompi anche eventuali sleep
-        }
-
         @Override
         public void run() {
-            isStarted = true; // Il thread è stato avviato
+            isStarted = true;// Il thread è stato avviato
+            if (ControllerForView.getInstance().isGameOver()) {
+                isBlocked = true;
+                isFinished = true;
+                return;
+            }
             double balance = ControllerForView.getInstance().getBalance() - ControllerForView.getInstance().getBetValues()[ControllerForView.getInstance().getCurrentBetIndex()];
             ControllerForView.getInstance().setBalance(balance);
             updateBalanceAfterBet();
             if (ControllerForView.getInstance().isGameOver()) {
-                showGameOverMessage();
-                return;
+                showGameOverMessage(threadIndex);
+                // Imposta questo thread come finito e bloccato prima di uscire
+                isFinished = true;
+                isBlocked = true;
+                return; // Esci subito dal metodo run
             }
-            while (isStarted && currentStep < ballPath.size()) {
+            while (isStarted && currentStep < ballPath.size() && !isBlocked) {
                 currentStep++;
                 pyramidPanel.repaint(); // Ridisegna il pannello
 
@@ -222,7 +233,12 @@ public class BallAnimation {
         }
 
         public void paintBall(Graphics2D g2d) {
-            if (isFinished) {
+            // Non disegnare nulla se il thread è stato bloccato
+            if (isBlocked) {
+                return;
+            }
+
+            if (isFinished && finalPosition != null) {
                 // Disegna la pallina nella posizione finale
                 g2d.setColor(ballColor);
                 g2d.fillOval(finalPosition.x - (ballSize / 2), finalPosition.y - (ballSize / 2), ballSize, ballSize);
@@ -234,17 +250,65 @@ public class BallAnimation {
             }
         }
 
-        private void showGameOverMessage() {
+        private void showGameOverMessage(int threadIndex) {
             javax.swing.SwingUtilities.invokeLater(() -> {
-                javax.swing.JOptionPane.showMessageDialog(
-                        pyramidPanel,
-                        "Game Over! Il tuo saldo è esaurito.",
-                        "Game Over",
-                        javax.swing.JOptionPane.WARNING_MESSAGE
-                );
-                stopFutureThreads(threadIndex);
+                // Crea un dialog personalizzato
+                JDialog rechargeDialog = new JDialog();
+                rechargeDialog.setTitle("Ricarica Saldo");
+                rechargeDialog.setModal(true);
+                rechargeDialog.setSize(300, 200);
+                rechargeDialog.setLocationRelativeTo(pyramidPanel);
+
+                // Crea un pannello con layout
+                JPanel panel = new JPanel();
+                panel.setLayout(new java.awt.BorderLayout(10, 10));
+                panel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+                // Aggiungi il messaggio
+                JLabel messageLabel = new JLabel("Saldo esaurito! Seleziona l'importo da ricaricare:");
+                panel.add(messageLabel, java.awt.BorderLayout.NORTH);
+
+                // Pannello per le opzioni di ricarica
+                JPanel optionsPanel = new JPanel(new java.awt.GridLayout(2, 2, 5, 5));
+
+                // Crea bottoni per diversi importi
+                double[] amounts = {10, 20, 50, 100};
+                for (double amount : amounts) {
+                    RoundedButton amountButton = new RoundedButton("€" + amount,45);
+                    amountButton.setBackground(Color.LIGHT_GRAY);
+                    amountButton.addActionListener(e -> {
+                        // Ricarica il saldo
+                        double currentBalance = ControllerForView.getInstance().getBalance();
+                        ControllerForView.getInstance().setBalance(currentBalance + amount);
+                        updateBalanceAfterBet(); // Aggiorna il label del saldo
+
+                        // Chiudi il dialog
+                        rechargeDialog.dispose();
+
+                        // Interrompi solo i thread futuri
+                        stopFutureThreads(threadIndex);
+                    });
+                    optionsPanel.add(amountButton);
+                }
+
+                panel.add(optionsPanel, java.awt.BorderLayout.CENTER);
+
+                // Aggiungi un pulsante per annullare
+                RoundedButton cancelButton = new RoundedButton("Annulla",25);
+                cancelButton.setBackground(Color.LIGHT_GRAY);
+                cancelButton.addActionListener(e -> {
+                    rechargeDialog.dispose();
+                    stopFutureThreads(threadIndex);
+                });
+                panel.add(cancelButton, java.awt.BorderLayout.SOUTH);
+
+                // Imposta il contenuto del dialog
+                rechargeDialog.setContentPane(panel);
+                rechargeDialog.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+                // Mostra il dialog
+                rechargeDialog.setVisible(true);
             });
-            
         }
     }
 }

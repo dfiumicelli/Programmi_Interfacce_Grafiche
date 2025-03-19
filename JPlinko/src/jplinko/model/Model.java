@@ -157,6 +157,7 @@ public class Model implements IModel {
         if (balance < 0) {
             this.gameOver = true;
         } else {
+            this.gameOver = false;
             this.balance = balance;
             this.balance = Math.round(this.balance * 10) / 10.0;
         }
