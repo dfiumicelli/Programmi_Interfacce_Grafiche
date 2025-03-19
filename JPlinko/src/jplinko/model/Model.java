@@ -53,7 +53,6 @@ public class Model implements IModel {
     @Override
     public void setCurrentBetIndex(int currentBetIndex) {
         this.currentBetIndex = currentBetIndex;
-        this.poorCredit = false;
     }
 
     @Override
