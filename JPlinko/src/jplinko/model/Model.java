@@ -107,6 +107,22 @@ public class Model implements IModel {
     }
 
     @Override
+    public void setBalance(double balance) {
+        if (balance < 0) {
+            this.poorCredit = true;
+        } else {
+            this.poorCredit = false;
+            this.balance = balance;
+            this.balance = Math.round(this.balance * 10) / 10.0;
+        }
+    }
+
+    @Override
+    public boolean isPoorCredit() {
+        return poorCredit;
+    }
+
+    @Override
     public int[][] simulatePlinko(int rows, int numMultipliers) {
         poorCredit = false;
         int numBalls;
@@ -152,23 +168,5 @@ public class Model implements IModel {
         }
         return positions;
     }
-
-    @Override
-    public void setBalance(double balance) {
-        if (balance < 0) {
-            this.poorCredit = true;
-        } else {
-            this.poorCredit = false;
-            this.balance = balance;
-            this.balance = Math.round(this.balance * 10) / 10.0;
-        }
-    }
-
-    @Override
-    public boolean isPoorCredit() {
-        return poorCredit;
-    }
-    
-    
 
 }
