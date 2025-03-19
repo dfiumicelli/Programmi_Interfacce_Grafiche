@@ -97,8 +97,8 @@ public class ControllerForView implements IControllerForView {
     }
 
     @Override
-    public boolean isGameOver() {
-        return Model.getInstance().isGameOver();
+    public boolean isPoorCredit() {
+        return Model.getInstance().isPoorCredit();
     }
     
     

@@ -34,5 +34,5 @@ public interface IModel {
     
     public void setBalance(double balance);
     
-    public boolean isGameOver();
+    public boolean isPoorCredit();
 }

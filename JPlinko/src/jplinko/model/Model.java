@@ -14,7 +14,7 @@ public class Model implements IModel {
     private double balance;
     private String mode;
     private int[] finalPosition;
-    private boolean gameOver;
+    private boolean poorCredit;
 
     private Model() {
         this.rows = 16;
@@ -24,7 +24,7 @@ public class Model implements IModel {
         this.multipliers = Multipliers.generate(rows, risk);
         this.balance = 300.00;
         this.mode = "Manual";
-        this.gameOver = false;
+        this.poorCredit = false;
     }
 
     public static IModel getInstance() {
@@ -53,6 +53,7 @@ public class Model implements IModel {
     @Override
     public void setCurrentBetIndex(int currentBetIndex) {
         this.currentBetIndex = currentBetIndex;
+        this.poorCredit = false;
     }
 
     @Override
@@ -108,6 +109,7 @@ public class Model implements IModel {
 
     @Override
     public int[][] simulatePlinko(int rows, int numMultipliers) {
+        poorCredit = false;
         int numBalls;
         if (this.mode.equals("Auto")) {
             numBalls = this.rounds;
@@ -155,17 +157,17 @@ public class Model implements IModel {
     @Override
     public void setBalance(double balance) {
         if (balance < 0) {
-            this.gameOver = true;
+            this.poorCredit = true;
         } else {
-            this.gameOver = false;
+            this.poorCredit = false;
             this.balance = balance;
             this.balance = Math.round(this.balance * 10) / 10.0;
         }
     }
 
     @Override
-    public boolean isGameOver() {
-        return gameOver;
+    public boolean isPoorCredit() {
+        return poorCredit;
     }
     
     

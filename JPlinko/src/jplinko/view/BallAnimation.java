@@ -174,7 +174,7 @@ public class BallAnimation {
         }
 
         public void stopFutureThreads(int currentThreadIndex) {
-            // Non interrompere i thread già avviati, ma solo quelli futuri
+            // Non interrompe i thread già avviati, ma solo quelli futuri
             if (executorService != null && !executorService.isShutdown()) {
                 executorService.shutdown(); // Impedisce l'esecuzione di nuovi task
             }
@@ -182,10 +182,10 @@ public class BallAnimation {
             // Marca come finiti i thread che non sono ancora partiti o il thread corrente
             for (int i = ballThreads.size() - 1; i >= currentThreadIndex; i--) {
                 BallThread thread = ballThreads.get(i);
-                // Se non è ancora partito, rimuovilo dalla lista
+                // Se non è ancora partito, rimuovo dalla lista
                 if (!thread.isStarted) {
                     ballThreads.remove(i);
-                } // Se è il thread corrente (che ha rilevato il game over), marcalo come finito
+                } // Se è il thread corrente (che ha rilevato il game over), marco come finito
                 else if (i == currentThreadIndex) {
                     thread.isFinished = true;
                 }
@@ -195,7 +195,7 @@ public class BallAnimation {
         @Override
         public void run() {
             isStarted = true;// Il thread è stato avviato
-            if (ControllerForView.getInstance().isGameOver()) {
+            if (ControllerForView.getInstance().isPoorCredit()) {
                 isBlocked = true;
                 isFinished = true;
                 return;
@@ -203,8 +203,8 @@ public class BallAnimation {
             double balance = ControllerForView.getInstance().getBalance() - ControllerForView.getInstance().getBetValues()[ControllerForView.getInstance().getCurrentBetIndex()];
             ControllerForView.getInstance().setBalance(balance);
             updateBalanceAfterBet();
-            if (ControllerForView.getInstance().isGameOver()) {
-                showGameOverMessage(threadIndex);
+            if (ControllerForView.getInstance().isPoorCredit()) {
+                showPoorCreditMessage(threadIndex);
                 // Imposta questo thread come finito e bloccato prima di uscire
                 isFinished = true;
                 isBlocked = true;
@@ -250,7 +250,7 @@ public class BallAnimation {
             }
         }
 
-        private void showGameOverMessage(int threadIndex) {
+        private void showPoorCreditMessage(int threadIndex) {
             javax.swing.SwingUtilities.invokeLater(() -> {
                 // Crea un dialog personalizzato
                 JDialog rechargeDialog = new JDialog();
@@ -285,7 +285,7 @@ public class BallAnimation {
                         // Chiudi il dialog
                         rechargeDialog.dispose();
 
-                        // Interrompi solo i thread futuri
+                        // Interrompe solo i thread futuri
                         stopFutureThreads(threadIndex);
                     });
                     optionsPanel.add(amountButton);

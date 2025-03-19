@@ -36,5 +36,5 @@ public interface IControllerForView {
     
     public int[] getFinalPosition();
     
-    public boolean isGameOver();
+    public boolean isPoorCredit();
 }
