@@ -8,12 +8,10 @@ import java.awt.Graphics2D;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 
 import javax.swing.JPanel;
-import javax.swing.border.LineBorder;
 
 import jplinko.controller.ControllerForView;
 import jplinko.utils.RoundedButton;
@@ -256,7 +254,7 @@ public class BallAnimation {
                 JDialog rechargeDialog = new JDialog();
                 rechargeDialog.setTitle("Ricarica Saldo");
                 rechargeDialog.setModal(true);
-                rechargeDialog.setSize(pyramidPanel.getWidth()/3, pyramidPanel.getHeight()/4);
+                rechargeDialog.setSize(pyramidPanel.getWidth() / 3, pyramidPanel.getHeight() / 4);
                 rechargeDialog.setLocationRelativeTo(pyramidPanel);
 
                 // Crea un pannello con layout
@@ -274,7 +272,7 @@ public class BallAnimation {
                 // Crea bottoni per diversi importi
                 double[] amounts = {10, 20, 50, 100};
                 for (double amount : amounts) {
-                    RoundedButton amountButton = new RoundedButton("€" + amount,45);
+                    RoundedButton amountButton = new RoundedButton("€" + amount, 45);
                     amountButton.setBackground(Color.LIGHT_GRAY);
                     amountButton.addActionListener(e -> {
                         // Ricarica il saldo
@@ -294,7 +292,7 @@ public class BallAnimation {
                 panel.add(optionsPanel, java.awt.BorderLayout.CENTER);
 
                 // Aggiungi un pulsante per annullare
-                RoundedButton cancelButton = new RoundedButton("Annulla",25);
+                RoundedButton cancelButton = new RoundedButton("Annulla", 25);
                 cancelButton.setBackground(Color.LIGHT_GRAY);
                 cancelButton.addActionListener(e -> {
                     rechargeDialog.dispose();
