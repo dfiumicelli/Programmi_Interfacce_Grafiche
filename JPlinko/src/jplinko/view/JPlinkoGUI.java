@@ -44,7 +44,7 @@ public class JPlinkoGUI extends JFrame {
         this.currentBetIndex = ControllerForView.getInstance().getCurrentBetIndex();
         this.betValues = ControllerForView.getInstance().getBetValues();
 
-        Image logo = loadImage("../utils/logo.png"); // Percorso relativo alla cartella delle risorse
+        Image logo = loadImage("../utils/logo1.png"); // Percorso relativo alla cartella delle risorse
 
         // Imposta l'icona della finestra
         if (logo != null) {

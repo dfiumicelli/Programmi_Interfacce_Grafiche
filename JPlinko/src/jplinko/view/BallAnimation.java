@@ -256,7 +256,7 @@ public class BallAnimation {
                 JDialog rechargeDialog = new JDialog();
                 rechargeDialog.setTitle("Ricarica Saldo");
                 rechargeDialog.setModal(true);
-                rechargeDialog.setSize(300, 200);
+                rechargeDialog.setSize(450, 300);
                 rechargeDialog.setLocationRelativeTo(pyramidPanel);
 
                 // Crea un pannello con layout
