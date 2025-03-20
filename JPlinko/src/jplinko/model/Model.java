@@ -22,7 +22,7 @@ public class Model implements IModel {
         this.rounds = 5;
         this.risk = "Medium";
         this.multipliers = Multipliers.generate(rows, risk);
-        this.balance = 300.00;
+        this.balance = 5000.00;
         this.mode = "Manual";
         this.poorCredit = false;
     }
