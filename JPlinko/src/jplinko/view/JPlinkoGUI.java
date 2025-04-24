@@ -44,7 +44,7 @@ public class JPlinkoGUI extends JFrame {
         this.currentBetIndex = ControllerForView.getInstance().getCurrentBetIndex();
         this.betValues = ControllerForView.getInstance().getBetValues();
 
-        Image logo = loadImage("../utils/logo1.png"); // Percorso relativo alla cartella delle risorse
+        Image logo = loadImage("/jplinko/utils/logo1.png"); // Percorso relativo alla cartella delle risorse
 
         // Imposta l'icona della finestra
         if (logo != null) {
@@ -632,7 +632,7 @@ public class JPlinkoGUI extends JFrame {
 
     public void loadLogoImage(int panelHeigth) {
         try {
-            BufferedImage originalImage = ImageIO.read(getClass().getResource("../utils/logo1.png"));
+            BufferedImage originalImage = ImageIO.read(getClass().getResource("/jplinko/utils/logo1.png"));
             double scaleFactor = panelHeigth * 0.0007; // Riduce l'immagine
             int newWidth = (int) (originalImage.getWidth() * scaleFactor);
             int newHeight = (int) (originalImage.getHeight() * scaleFactor);
@@ -649,7 +649,7 @@ public class JPlinkoGUI extends JFrame {
 
     public void loadBackgroundImage() {
         try {
-            backgroundImage = ImageIO.read(getClass().getResource("../utils/background.jpg")); // Percorso relativo dell'immagine
+            backgroundImage = ImageIO.read(getClass().getResource("/jplinko/utils/background.jpg")); // Percorso relativo dell'immagine
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -673,7 +673,7 @@ public class JPlinkoGUI extends JFrame {
         int fontSize = screenHeight / 70; // Formula scalabile per ridimensionare il font e adattarlo ai diversi schermi
 
         try {
-            InputStream fontStream = JPlinkoGUI.class.getResourceAsStream("../utils/Orbitron-VariableFont_wght.ttf");
+            InputStream fontStream = JPlinkoGUI.class.getResourceAsStream("/jplinko/utils/Orbitron-VariableFont_wght.ttf");
             if (fontStream == null) {
                 throw new RuntimeException("Font file not found!");
             }

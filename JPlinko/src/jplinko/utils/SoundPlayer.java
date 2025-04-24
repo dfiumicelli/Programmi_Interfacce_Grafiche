@@ -1,5 +1,6 @@
 package jplinko.utils;
 
+import java.io.BufferedInputStream;
 import javax.sound.sampled.*;
 import java.io.InputStream;
 
@@ -7,18 +8,31 @@ public class SoundPlayer {
 
     private Clip clip;
 
-    // Metodo per caricare il suono all'avvio
     public SoundPlayer(String fileName) {
         try {
-            InputStream audioSrc = SoundPlayer.class.getResourceAsStream("../utils/" + fileName);
+            // Carica il file audio come risorsa dal classpath
+            InputStream audioSrc = SoundPlayer.class.getResourceAsStream("/jplinko/utils/" + fileName);
             if (audioSrc == null) {
                 System.out.println("File audio non trovato: " + fileName);
                 return;
             }
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioSrc);
+
+            BufferedInputStream bufferedIn = new BufferedInputStream(audioSrc);
+
+            // Ottieni lo stream audio
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(bufferedIn);
+
+            // Ottieni una Clip e aprila
             clip = AudioSystem.getClip();
             clip.open(audioStream);
+        } catch (UnsupportedAudioFileException e) {
+            System.err.println("Formato audio non supportato: " + fileName);
+            e.printStackTrace();
+        } catch (LineUnavailableException e) {
+            System.err.println("Risorsa audio non disponibile (Clip): " + fileName);
+            e.printStackTrace();
         } catch (Exception e) {
+            System.err.println("Errore nel caricamento audio: " + fileName);
             e.printStackTrace();
         }
     }
@@ -35,5 +49,4 @@ public class SoundPlayer {
             System.out.println("Errore: Clip non inizializzato!");
         }
     }
-
 }
