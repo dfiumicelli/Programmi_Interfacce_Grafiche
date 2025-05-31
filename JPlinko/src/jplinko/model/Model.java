@@ -3,8 +3,29 @@ package jplinko.model;
 import java.util.Random;
 
 public class Model implements IModel {
+    
+    //---------------------------------------------------------------
+    // STATIC CONSTANTS
+    //---------------------------------------------------------------
+    
+    private final static int DEFAULT_ROWS = 16;
+    private final static int DEFAULT_CURRENT_BET_INDEX = 4;
+    private final static int DEFAULT_ROUNDS = 5;
+    private final static String DEFAULT_RISK = "Medium";
+    private final static double DEFAULT_BALANCE = 5000.00;
+    private final static String DEFAULT_MODE = "Manual";
+    private final static boolean DEFAULT_POORCREDIT = false;
 
+    //---------------------------------------------------------------
+    // STATIC FIELDS
+    //---------------------------------------------------------------
+    
     private static Model instance = null;
+    
+    //---------------------------------------------------------------
+    // INSTANCE ATTRIBUTES
+    //---------------------------------------------------------------
+    
     private int rows;
     private int currentBetIndex;
     private int rounds;
@@ -17,14 +38,14 @@ public class Model implements IModel {
     private boolean poorCredit;
 
     private Model() {
-        this.rows = 16;
-        this.currentBetIndex = 4;
-        this.rounds = 5;
-        this.risk = "Medium";
-        this.multipliers = Multipliers.generate(rows, risk);
-        this.balance = 5000.00;
-        this.mode = "Manual";
-        this.poorCredit = false;
+        this.rows = DEFAULT_ROWS;
+        this.currentBetIndex = DEFAULT_CURRENT_BET_INDEX;
+        this.rounds = DEFAULT_ROUNDS;
+        this.risk = DEFAULT_RISK;
+        this.multipliers = Multipliers.generate(this.rows, this.risk);
+        this.balance = DEFAULT_BALANCE;
+        this.mode = DEFAULT_MODE;
+        this.poorCredit = DEFAULT_POORCREDIT;
     }
 
     public static IModel getInstance() {
